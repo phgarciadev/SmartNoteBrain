@@ -1,0 +1,15 @@
+{
+  "types": {
+    "aliases": "aliases",
+    "cssclasses": "multitext",
+    "tags": "tags",
+    "primeiro_contato": "date",
+    "R1": "checkbox",
+    "R2": "checkbox",
+    "R3": "checkbox",
+    "R4": "checkbox",
+    "iniciado": "checkbox",
+    "data_inicio": "date",
+    "NotebookLM": "text"
+  }
+}

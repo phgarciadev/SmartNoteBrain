@@ -1,0 +1,54 @@
+filters:
+  and:
+    - file.inFolder("DailyLearning/Disciplinas")
+    - file.ext == "md"
+    - iniciado == true
+formulas:
+  materia: file.folder.split("/")[2]
+  assunto: file.folder.split("/")[3]
+  primeiro_contato: primeiro_contato
+  proximo_estudo: if(R4, formula.primeiro_contato + "112d", if(R3, formula.primeiro_contato + "52d", if(R2, formula.primeiro_contato + "22d", if(R1, formula.primeiro_contato + "8d", formula.primeiro_contato + "1d"))))
+properties:
+  file.name:
+    displayName: Conteúdo
+  dificuldade:
+    displayName: Dificuldade
+  formula.materia:
+    displayName: Matéria
+  formula.assunto:
+    displayName: Assunto
+  formula.primeiro_contato:
+    displayName: 1º Contato
+  formula.proximo_estudo:
+    displayName: Próximo estudo em...
+  R1:
+    displayName: R1
+  R2:
+    displayName: R2
+  R3:
+    displayName: R3
+  R4:
+    displayName: R4
+  NotebookLM:
+    displayName: NotebookLM
+views:
+  - type: table
+    name: Revisão Espaçada
+    order:
+      - file.name
+      - formula.primeiro_contato
+      - formula.proximo_estudo
+      - formula.assunto
+      - formula.materia
+      - R1
+      - R2
+      - R3
+      - R4
+    sort:
+      - property: formula.primeiro_contato
+        direction: DESC
+      - property: formula.proximo_estudo
+        direction: ASC
+    columnSize:
+      formula.primeiro_contato: 228
+      note.R4: 52

@@ -1,0 +1,19 @@
+{
+	"nodes":[
+		{"id":"57f3dcdb53b00b53","type":"file","file":"DailyLearning/Prompts/GenVid.md","x":-2800,"y":170,"width":1732,"height":1732,"color":"6"},
+		{"id":"3891303101c58778","type":"file","file":"DailyLearning/Prompts/GenVidExpert.md","x":1054,"y":170,"width":1732,"height":1732,"color":"6"},
+		{"id":"42667a8c90f1406e","type":"file","file":"DailyLearning/Prompts/GenVidPersonalization.md","x":-873,"y":-1562,"width":1732,"height":1732,"color":"6"},
+		{"id":"a3ced2dd4e548320","type":"file","file":"DailyLearning/Prompts/DeepSearch.md","x":1054,"y":-4160,"width":1732,"height":1732,"color":"6"},
+		{"id":"7814b86c36544abc","type":"file","file":"DailyLearning/Prompts/GenQuest.md","x":-1739,"y":2942,"width":1732,"height":1732,"color":"6"},
+		{"id":"31e029eadf46c1bb","x":2351,"y":-4512,"width":250,"height":60,"type":"text","text":""},
+		{"id":"c2ec94fccfa33c93","type":"file","file":"DailyLearning/Prompts/GenQuestExpert.md","x":320,"y":2960,"width":1732,"height":1732,"color":"6"}
+	],
+	"edges":[
+		{"id":"2202bc923726b1c7","fromNode":"a3ced2dd4e548320","fromSide":"left","toNode":"42667a8c90f1406e","toSide":"top"},
+		{"id":"b9de94ad8a20fc99","fromNode":"42667a8c90f1406e","fromSide":"left","toNode":"57f3dcdb53b00b53","toSide":"top"},
+		{"id":"b27a372ff22fe75d","fromNode":"42667a8c90f1406e","fromSide":"right","toNode":"3891303101c58778","toSide":"top"},
+		{"id":"d99036c78cf26e5a","fromNode":"7814b86c36544abc","fromSide":"top","toNode":"c2ec94fccfa33c93","toSide":"top"},
+		{"id":"c3c25b234af3fafa","fromNode":"57f3dcdb53b00b53","fromSide":"bottom","toNode":"7814b86c36544abc","toSide":"top"},
+		{"id":"2b31ed837346897d","fromNode":"3891303101c58778","fromSide":"bottom","toNode":"c2ec94fccfa33c93","toSide":"top"}
+	]
+}

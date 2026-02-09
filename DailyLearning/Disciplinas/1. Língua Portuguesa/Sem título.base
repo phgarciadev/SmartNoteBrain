@@ -1,0 +1,9 @@
+views:
+  - type: cards
+    name: Tabela
+    filters:
+      and:
+        - file.folder == "Disciplinas/1. Língua Portuguesa"
+    groupBy:
+      property: file.folder
+      direction: ASC
