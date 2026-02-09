@@ -4,21 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "8ddd3d7389034875",
+        "id": "ecb21634d2c334f0",
         "type": "tabs",
         "children": [
           {
-            "id": "c7ca940d2f9f17ce",
+            "id": "7980a8b243e178a7",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "Dashboard.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "Dashboard"
+              "title": "Nova aba"
             }
           }
         ]
@@ -202,8 +198,11 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "c7ca940d2f9f17ce",
+  "active": "55eb13d7fd2b6288",
   "lastOpenFiles": [
+    "2026-02-09.md",
+    "DailyLearning/RunBook.base",
+    "DailyLearning/Allshit.md",
     "Dashboard.md",
     "README.md",
     "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
@@ -212,7 +211,6 @@
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
     "DailyLearning/Revisao Espacada.base",
     "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
-    "DailyLearning/RunBook.base",
     "DailyLearning/Disciplinas/9. Sociologia/2. Cultura e Sociedade/1. Conceitos de cultura.md",
     "PyScripts/add_buttons.py",
     "DailyLearning/Disciplinas/5. Química/2. Química Inorgânica/4. Substâncias e Aplicações-.md",
@@ -228,7 +226,6 @@
     "DailyLearning/Templates/GenQuest.md",
     "DailyLearning/Templates/DeepSearch.md",
     "DailyLearning/Templates",
-    "DailyLearning/Allshit.md",
     "DailyLearning/Prompts.canvas",
     "DailyLearning/Cronograma de Estudos.md",
     "PyScripts/add_frontmatter.py",
@@ -236,7 +233,6 @@
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/7. Potenciação e Notação Científica.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/5. Números Racionais e Frações.md",
     "DailyLearning/Prompts/GenVidPersonalization.md",
-    "DailyLearning/Prompts/GenQuestExpert.md",
     "PyScripts/add_notebooklm_field.py",
     "PyScripts",
     "DailyLearning/Disciplinas/13. Literatura/11. Leituras Obrigatórias Comvest-Unicamp",

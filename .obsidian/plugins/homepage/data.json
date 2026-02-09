@@ -1,12 +1,23 @@
 {
   "version": 4,
-  "kind": "File",
-  "value": "Dashboard",
-  "openOnStartup": true,
-  "hasRibbonIcon": true,
-  "openMode": "Replace all open notes",
-  "manualOpenMode": "Keep open notes",
-  "view": "Reading",
-  "revertView": true,
-  "refreshDataview": true
+  "homepages": {
+    "Main Homepage": {
+      "value": "Dashboard",
+      "kind": "File",
+      "openOnStartup": true,
+      "openMode": "Replace all open notes",
+      "manualOpenMode": "Keep open notes",
+      "view": "Default view",
+      "revertView": true,
+      "openWhenEmpty": true,
+      "refreshDataview": false,
+      "autoCreate": false,
+      "autoScroll": false,
+      "pin": false,
+      "commands": [],
+      "alwaysApply": false,
+      "hideReleaseNotes": false
+    }
+  },
+  "separateMobile": false
 }
