@@ -13,14 +13,71 @@
             "state": {
               "type": "bases",
               "state": {
-                "file": "DailyLearning/RunBook.base",
+                "file": "DailyLearning/Revisao Espacada.base",
                 "viewName": "Revisão Espaçada"
               },
               "icon": "lucide-table",
-              "title": "RunBook"
+              "title": "Revisao Espacada"
+            }
+          },
+          {
+            "id": "ba6f17961132af95",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "1. Níveis de Significação"
+            }
+          },
+          {
+            "id": "e7baf3d2861a4420",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/5. - 9..md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "5. - 9."
+            }
+          },
+          {
+            "id": "4a0d26f7d1ad96cc",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. - 10..md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "4. - 10."
+            }
+          },
+          {
+            "id": "ab3439b25d626625",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "🛠️ PyScripts — Documentação e Ferramentas"
             }
           }
-        ]
+        ],
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -200,19 +257,21 @@
       "obsidian-git:Open Git source control": false
     }
   },
-  "active": "67f6569773731d09",
+  "active": "ab3439b25d626625",
   "lastOpenFiles": [
     "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
+    "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
+    "DailyLearning/Revisao Espacada.base",
+    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. - 10..md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/5. - 9..md",
-    "DailyLearning/Disciplinas/9. Sociologia/2. Cultura e Sociedade/1. Conceitos de cultura.md",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
+    "DailyLearning/RunBook.base",
+    "DailyLearning/Disciplinas/9. Sociologia/2. Cultura e Sociedade/1. Conceitos de cultura.md",
     "PyScripts/add_buttons.py",
     "DailyLearning/Disciplinas/5. Química/2. Química Inorgânica/4. Substâncias e Aplicações-.md",
     "PyScripts/clean_prompts.py",
     "PyScripts/add_prompt_buttons.py",
     "README.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. - 10..md",
-    "DailyLearning/Revisao Espacada.base",
     "_prompt_temp.md",
     "_prompt_temp 2.md",
     "_prompt_temp 1.md",
@@ -224,7 +283,6 @@
     "DailyLearning/Templates/DeepSearch.md",
     "DailyLearning/Templates",
     "DailyLearning/Allshit.md",
-    "DailyLearning/RunBook.base",
     "DailyLearning/Prompts.canvas",
     "DailyLearning/Cronograma de Estudos.md",
     "PyScripts/add_frontmatter.py",
