@@ -1,0 +1,12 @@
+{
+  "version": 4,
+  "kind": "File",
+  "value": "Dashboard",
+  "openOnStartup": true,
+  "hasRibbonIcon": true,
+  "openMode": "Replace all open notes",
+  "manualOpenMode": "Keep open notes",
+  "view": "Reading",
+  "revertView": true,
+  "refreshDataview": true
+}

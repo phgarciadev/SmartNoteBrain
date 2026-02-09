@@ -1,4 +1,7 @@
 {
   "cssTheme": "Flexoki",
-  "accentColor": "#6600ff"
+  "accentColor": "#6600ff",
+  "enabledCssSnippets": [
+    "dashboard"
+  ]
 }

@@ -1,142 +1,386 @@
-/* Dashboard Styles - SmartNoteBrain */
+/* ============================================================
+   SmartNote Dashboard — LifeOS-style Premium Theme
+   ============================================================ */
 
-/* Grid layout para cards lado a lado */
-.dashboard .dashboard-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 1rem;
+/* ── Base: hide inline title & frontmatter ─────────────────── */
+.dashboard .inline-title {
+  display: none !important;
 }
 
-/* Estilo do banner */
-.dashboard .banner-wrapper {
-  border-radius: 12px;
-  overflow: hidden;
+.dashboard .metadata-container,
+.dashboard .frontmatter-container {
+  display: none !important;
 }
 
-/* Cards estilizados */
-.dashboard .callout {
-  border-radius: 12px !important;
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-  transition:
-    transform 0.2s ease,
-    box-shadow 0.2s ease;
+/* ── Page background ───────────────────────────────────────── */
+.dashboard .markdown-preview-sizer {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
 }
 
-.dashboard .callout:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
-}
-
-/* Callout warning (revisões) */
-.dashboard .callout[data-callout="warning"] {
-  background: linear-gradient(
-    135deg,
-    rgba(255, 170, 50, 0.1),
-    rgba(255, 100, 50, 0.05)
-  ) !important;
-  border-left: 4px solid #ffaa32 !important;
-}
-
-/* Callout info (estatísticas) */
-.dashboard .callout[data-callout="info"] {
-  background: linear-gradient(
-    135deg,
-    rgba(50, 150, 255, 0.1),
-    rgba(100, 100, 255, 0.05)
-  ) !important;
-  border-left: 4px solid #3296ff !important;
-}
-
-/* Callout success (progresso) */
-.dashboard .callout[data-callout="success"] {
-  background: linear-gradient(
-    135deg,
-    rgba(50, 200, 100, 0.1),
-    rgba(100, 255, 150, 0.05)
-  ) !important;
-  border-left: 4px solid #32c864 !important;
-}
-
-/* Callout note (matérias) */
-.dashboard .callout[data-callout="note"] {
-  background: linear-gradient(
-    135deg,
-    rgba(100, 100, 200, 0.1),
-    rgba(150, 100, 255, 0.05)
-  ) !important;
-  border-left: 4px solid #6464c8 !important;
-}
-
-/* Callout example (recentes) */
-.dashboard .callout[data-callout="example"] {
-  background: linear-gradient(
-    135deg,
-    rgba(200, 100, 200, 0.1),
-    rgba(255, 100, 255, 0.05)
-  ) !important;
-  border-left: 4px solid #c864c8 !important;
-}
-
-/* Callout tip (navegação) */
-.dashboard .callout[data-callout="tip"] {
-  background: linear-gradient(
-    135deg,
-    rgba(50, 200, 200, 0.1),
-    rgba(100, 255, 255, 0.05)
-  ) !important;
-  border-left: 4px solid #32c8c8 !important;
-}
-
-/* Título principal */
+/* ── H1: hero title with gradient ──────────────────────────── */
 .dashboard h1 {
   text-align: center;
-  font-size: 2.5em;
-  margin-top: 1rem;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  font-size: 2.8em;
+  font-weight: 800;
+  margin: 0.5rem 0 0.25rem 0;
+  padding: 0;
+  background: linear-gradient(135deg, #a855f7 0%, #6366f1 40%, #3b82f6 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  letter-spacing: -0.5px;
 }
 
-/* Tabelas estilizadas */
+/* ── Date area (dataviewjs span right after h1) ────────────── */
+.dashboard h1 + .block-language-dataviewjs {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.dashboard h1 + .block-language-dataviewjs p,
+.dashboard h1 + .block-language-dataviewjs span {
+  font-size: 1.05em;
+  opacity: 0.7;
+  font-weight: 500;
+}
+
+/* ── Horizontal rules: subtle dividers ─────────────────────── */
+.dashboard hr {
+  border: none;
+  height: 1px;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    var(--background-modifier-border) 20%,
+    var(--background-modifier-border) 80%,
+    transparent
+  );
+  margin: 1.5rem 0;
+}
+
+/* ── H2: section headers ───────────────────────────────────── */
+.dashboard h2 {
+  font-size: 1.5em;
+  font-weight: 700;
+  margin: 0.5rem 0 0.75rem 0;
+  padding-bottom: 0.25rem;
+  color: var(--text-normal);
+}
+
+/* ============================================================
+   CALLOUT CARDS — glassmorphism + colored accents
+   ============================================================ */
+
+.dashboard .callout {
+  border-radius: 16px !important;
+  border: 1px solid rgba(255, 255, 255, 0.06) !important;
+  background: rgba(255, 255, 255, 0.03) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow:
+    0 4px 16px rgba(0, 0, 0, 0.15),
+    0 1px 3px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+  margin-bottom: 0.75rem;
+  overflow: hidden;
+}
+
+.dashboard .callout:hover {
+  transform: translateY(-3px);
+  box-shadow:
+    0 8px 24px rgba(0, 0, 0, 0.2),
+    0 2px 6px rgba(0, 0, 0, 0.12);
+}
+
+/* Callout title bar */
+.dashboard .callout-title {
+  padding: 0.65rem 1rem;
+  font-weight: 600;
+  font-size: 1em;
+  letter-spacing: 0.2px;
+}
+
+.dashboard .callout-content {
+  padding: 0.5rem 1rem 1rem 1rem;
+}
+
+/* ── Color variants ────────────────────────────────────────── */
+
+/* Warning — amber/orange (Revisões) */
+.dashboard .callout[data-callout="warning"] {
+  border-left: 4px solid #f59e0b !important;
+  background: linear-gradient(
+    135deg,
+    rgba(245, 158, 11, 0.08),
+    rgba(245, 158, 11, 0.02)
+  ) !important;
+}
+
+.dashboard .callout[data-callout="warning"] .callout-title {
+  color: #fbbf24;
+}
+
+/* Info — blue (Estatísticas) */
+.dashboard .callout[data-callout="info"] {
+  border-left: 4px solid #3b82f6 !important;
+  background: linear-gradient(
+    135deg,
+    rgba(59, 130, 246, 0.08),
+    rgba(59, 130, 246, 0.02)
+  ) !important;
+}
+
+.dashboard .callout[data-callout="info"] .callout-title {
+  color: #60a5fa;
+}
+
+/* Success — emerald (Progresso) */
+.dashboard .callout[data-callout="success"] {
+  border-left: 4px solid #10b981 !important;
+  background: linear-gradient(
+    135deg,
+    rgba(16, 185, 129, 0.08),
+    rgba(16, 185, 129, 0.02)
+  ) !important;
+}
+
+.dashboard .callout[data-callout="success"] .callout-title {
+  color: #34d399;
+}
+
+/* Note — purple (Matérias) */
+.dashboard .callout[data-callout="note"] {
+  border-left: 4px solid #8b5cf6 !important;
+  background: linear-gradient(
+    135deg,
+    rgba(139, 92, 246, 0.08),
+    rgba(139, 92, 246, 0.02)
+  ) !important;
+}
+
+.dashboard .callout[data-callout="note"] .callout-title {
+  color: #a78bfa;
+}
+
+/* Example — pink/rose (Recentes) */
+.dashboard .callout[data-callout="example"] {
+  border-left: 4px solid #ec4899 !important;
+  background: linear-gradient(
+    135deg,
+    rgba(236, 72, 153, 0.08),
+    rgba(236, 72, 153, 0.02)
+  ) !important;
+}
+
+.dashboard .callout[data-callout="example"] .callout-title {
+  color: #f472b6;
+}
+
+/* Tip — teal (Navegação) */
+.dashboard .callout[data-callout="tip"] {
+  border-left: 4px solid #14b8a6 !important;
+  background: linear-gradient(
+    135deg,
+    rgba(20, 184, 166, 0.08),
+    rgba(20, 184, 166, 0.02)
+  ) !important;
+}
+
+.dashboard .callout[data-callout="tip"] .callout-title {
+  color: #2dd4bf;
+}
+
+/* ============================================================
+   GRID: consecutive info + success callouts side-by-side
+   ============================================================
+   In reading mode, consecutive callouts (info then success)
+   after an hr share the same parent container. We use a trick:
+   target the hr that precedes them, and use CSS grid on the
+   markdown-preview-sizer level by making callouts flex.
+   ============================================================ */
+
+/* 
+   The callouts [info] and [success] that are adjacent 
+   (separated only by whitespace) will be placed side-by-side
+   using a flex wrapper approach via the > selector.
+*/
+
+.dashboard .callout[data-callout="info"] {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(50% - 0.5rem);
+  margin-right: 0.5rem;
+}
+
+.dashboard .callout[data-callout="success"] {
+  display: inline-block;
+  vertical-align: top;
+  width: calc(50% - 0.5rem);
+}
+
+/* ============================================================
+   TABLES — styled with dark header, hover rows
+   ============================================================ */
+
 .dashboard table {
   width: 100%;
-  border-collapse: collapse;
+  border-collapse: separate;
+  border-spacing: 0;
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 0.92em;
+}
+
+.dashboard thead tr {
+  background: rgba(255, 255, 255, 0.05) !important;
 }
 
 .dashboard th {
-  background: var(--background-secondary) !important;
-  padding: 0.75rem !important;
-  font-weight: 600;
+  padding: 0.7rem 0.85rem !important;
+  font-weight: 700;
+  text-transform: uppercase;
+  font-size: 0.8em;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.08) !important;
 }
 
 .dashboard td {
-  padding: 0.5rem 0.75rem !important;
-  border-bottom: 1px solid var(--background-modifier-border);
+  padding: 0.55rem 0.85rem !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+  transition: background 0.15s ease;
 }
 
-.dashboard tr:hover td {
-  background: var(--background-secondary-alt);
+.dashboard tbody tr:hover td {
+  background: rgba(255, 255, 255, 0.04);
 }
 
-/* Navegação rápida */
-.dashboard table:last-of-type {
+.dashboard tbody tr:last-child td {
+  border-bottom: none;
+}
+
+/* ============================================================
+   NAVIGATION BUTTONS — accent-colored pill buttons
+   ============================================================ */
+
+.dashboard .callout[data-callout="tip"] table {
   text-align: center;
+  border: none;
+  background: transparent;
 }
 
-.dashboard table:last-of-type td {
-  padding: 1rem !important;
+.dashboard .callout[data-callout="tip"] th {
+  background: transparent !important;
+  border-bottom: none !important;
+  font-size: 1em;
+  text-transform: none;
+  font-weight: 600;
+  letter-spacing: 0;
 }
 
-.dashboard table:last-of-type a {
-  padding: 0.5rem 1.5rem;
-  background: var(--interactive-accent);
-  color: var(--text-on-accent) !important;
-  border-radius: 8px;
+.dashboard .callout[data-callout="tip"] td {
+  padding: 0.75rem 0.5rem !important;
+  border-bottom: none;
+}
+
+.dashboard .callout[data-callout="tip"] a.internal-link {
+  display: inline-block;
+  padding: 0.5rem 1.8rem;
+  background: linear-gradient(135deg, #6366f1, #8b5cf6);
+  color: #ffffff !important;
+  border-radius: 10px;
+  text-decoration: none !important;
+  font-weight: 600;
+  font-size: 0.95em;
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    opacity 0.2s ease;
+  box-shadow: 0 2px 8px rgba(99, 102, 241, 0.3);
+}
+
+.dashboard .callout[data-callout="tip"] a.internal-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 16px rgba(99, 102, 241, 0.45);
+  opacity: 0.95;
+}
+
+/* ============================================================
+   PROGRESS BAR EMOJI — better spacing
+   ============================================================ */
+
+.dashboard .callout[data-callout="success"] .callout-content p {
+  font-size: 1.1em;
+  line-height: 1.8;
+  letter-spacing: 1px;
+}
+
+/* ============================================================
+   RESPONSIVE — single column on narrow viewports
+   ============================================================ */
+
+@media (max-width: 700px) {
+  .dashboard .callout[data-callout="info"],
+  .dashboard .callout[data-callout="success"] {
+    display: block;
+    width: 100%;
+    margin-right: 0;
+  }
+
+  .dashboard h1 {
+    font-size: 2em;
+  }
+
+  .dashboard .markdown-preview-sizer {
+    padding: 1rem;
+  }
+}
+
+/* ============================================================
+   SCROLLBAR — subtle custom scrollbar for the dashboard
+   ============================================================ */
+
+.dashboard ::-webkit-scrollbar {
+  width: 6px;
+}
+
+.dashboard ::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.dashboard ::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 3px;
+}
+
+.dashboard ::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* ============================================================
+   DATAVIEW — style dataview results container
+   ============================================================ */
+
+.dashboard .block-language-dataviewjs {
+  margin: 0;
+}
+
+.dashboard .callout .block-language-dataviewjs {
+  margin: 0;
+}
+
+/* ── Links inside tables — accent colored ──────────────────── */
+.dashboard td a.internal-link {
+  color: #a78bfa !important;
   text-decoration: none;
-  transition: opacity 0.2s;
+  border-bottom: 1px solid rgba(167, 139, 250, 0.3);
+  transition: border-color 0.2s ease;
 }
 
-.dashboard table:last-of-type a:hover {
-  opacity: 0.8;
+.dashboard td a.internal-link:hover {
+  border-bottom-color: #a78bfa;
 }
