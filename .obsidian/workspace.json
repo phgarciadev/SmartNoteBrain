@@ -8,16 +8,17 @@
         "type": "tabs",
         "children": [
           {
-            "id": "67f6569773731d09",
+            "id": "c91a140acf55ac24",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "DailyLearning/Revisao Espacada.base",
-                "viewName": "Revisão Espaçada"
+                "file": "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-table",
-              "title": "Revisao Espacada"
+              "icon": "lucide-file",
+              "title": "1. Gêneros Literários"
             }
           },
           {
@@ -61,23 +62,8 @@
               "icon": "lucide-file",
               "title": "4. - 10."
             }
-          },
-          {
-            "id": "ab3439b25d626625",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "🛠️ PyScripts — Documentação e Ferramentas"
-            }
           }
-        ],
-        "currentTab": 4
+        ]
       }
     ],
     "direction": "vertical"
@@ -254,17 +240,18 @@
       "templater-obsidian:Templater": false,
       "homepage:Open homepage": false,
       "periodic-para:LifeOS Creation": false,
-      "obsidian-git:Open Git source control": false
+      "obsidian-git:Open Git source control": false,
+      "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "ab3439b25d626625",
+  "active": "c91a140acf55ac24",
   "lastOpenFiles": [
-    "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
-    "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
-    "DailyLearning/Revisao Espacada.base",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. - 10..md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/5. - 9..md",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
+    "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
+    "DailyLearning/Revisao Espacada.base",
+    "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
+    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. - 10..md",
     "DailyLearning/RunBook.base",
     "DailyLearning/Disciplinas/9. Sociologia/2. Cultura e Sociedade/1. Conceitos de cultura.md",
     "PyScripts/add_buttons.py",
@@ -292,7 +279,6 @@
     "DailyLearning/Prompts/GenVidPersonalization.md",
     "DailyLearning/Prompts/GenQuestExpert.md",
     "DailyLearning/Disciplinas/6. História/1. Teoria da História e Historiografia.md",
-    "DailyLearning/Disciplinas/11. Artes/1. História da Arte.md",
     "PyScripts/add_notebooklm_field.py",
     "PyScripts",
     "DailyLearning/Disciplinas/13. Literatura/11. Leituras Obrigatórias Comvest-Unicamp",
