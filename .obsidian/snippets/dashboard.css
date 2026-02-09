@@ -1,0 +1,142 @@
+/* Dashboard Styles - SmartNoteBrain */
+
+/* Grid layout para cards lado a lado */
+.dashboard .dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 1rem;
+}
+
+/* Estilo do banner */
+.dashboard .banner-wrapper {
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+/* Cards estilizados */
+.dashboard .callout {
+  border-radius: 12px !important;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.dashboard .callout:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 12px rgba(0, 0, 0, 0.15);
+}
+
+/* Callout warning (revisões) */
+.dashboard .callout[data-callout="warning"] {
+  background: linear-gradient(
+    135deg,
+    rgba(255, 170, 50, 0.1),
+    rgba(255, 100, 50, 0.05)
+  ) !important;
+  border-left: 4px solid #ffaa32 !important;
+}
+
+/* Callout info (estatísticas) */
+.dashboard .callout[data-callout="info"] {
+  background: linear-gradient(
+    135deg,
+    rgba(50, 150, 255, 0.1),
+    rgba(100, 100, 255, 0.05)
+  ) !important;
+  border-left: 4px solid #3296ff !important;
+}
+
+/* Callout success (progresso) */
+.dashboard .callout[data-callout="success"] {
+  background: linear-gradient(
+    135deg,
+    rgba(50, 200, 100, 0.1),
+    rgba(100, 255, 150, 0.05)
+  ) !important;
+  border-left: 4px solid #32c864 !important;
+}
+
+/* Callout note (matérias) */
+.dashboard .callout[data-callout="note"] {
+  background: linear-gradient(
+    135deg,
+    rgba(100, 100, 200, 0.1),
+    rgba(150, 100, 255, 0.05)
+  ) !important;
+  border-left: 4px solid #6464c8 !important;
+}
+
+/* Callout example (recentes) */
+.dashboard .callout[data-callout="example"] {
+  background: linear-gradient(
+    135deg,
+    rgba(200, 100, 200, 0.1),
+    rgba(255, 100, 255, 0.05)
+  ) !important;
+  border-left: 4px solid #c864c8 !important;
+}
+
+/* Callout tip (navegação) */
+.dashboard .callout[data-callout="tip"] {
+  background: linear-gradient(
+    135deg,
+    rgba(50, 200, 200, 0.1),
+    rgba(100, 255, 255, 0.05)
+  ) !important;
+  border-left: 4px solid #32c8c8 !important;
+}
+
+/* Título principal */
+.dashboard h1 {
+  text-align: center;
+  font-size: 2.5em;
+  margin-top: 1rem;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Tabelas estilizadas */
+.dashboard table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dashboard th {
+  background: var(--background-secondary) !important;
+  padding: 0.75rem !important;
+  font-weight: 600;
+}
+
+.dashboard td {
+  padding: 0.5rem 0.75rem !important;
+  border-bottom: 1px solid var(--background-modifier-border);
+}
+
+.dashboard tr:hover td {
+  background: var(--background-secondary-alt);
+}
+
+/* Navegação rápida */
+.dashboard table:last-of-type {
+  text-align: center;
+}
+
+.dashboard table:last-of-type td {
+  padding: 1rem !important;
+}
+
+.dashboard table:last-of-type a {
+  padding: 0.5rem 1.5rem;
+  background: var(--interactive-accent);
+  color: var(--text-on-accent) !important;
+  border-radius: 8px;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.dashboard table:last-of-type a:hover {
+  opacity: 0.8;
+}

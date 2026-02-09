@@ -4,17 +4,17 @@
     "type": "split",
     "children": [
       {
-        "id": "fd1ce2b34ed1f736",
+        "id": "b8f5530a43a25845",
         "type": "tabs",
         "children": [
           {
-            "id": "806092d1c8abb11e",
+            "id": "410f696104475ead",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
                 "file": "Dashboard.md",
-                "mode": "preview",
+                "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
@@ -202,13 +202,14 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "806092d1c8abb11e",
+  "active": "410f696104475ead",
   "lastOpenFiles": [
+    "README.md",
+    "Dashboard.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. - 10..md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/5. - 9..md",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
     "DailyLearning/Revisao Espacada.base",
-    "Dashboard.md",
     "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
     "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
     "DailyLearning/RunBook.base",
@@ -217,7 +218,6 @@
     "DailyLearning/Disciplinas/5. Química/2. Química Inorgânica/4. Substâncias e Aplicações-.md",
     "PyScripts/clean_prompts.py",
     "PyScripts/add_prompt_buttons.py",
-    "README.md",
     "_prompt_temp.md",
     "_prompt_temp 2.md",
     "_prompt_temp 1.md",

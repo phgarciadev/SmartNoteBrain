@@ -1,24 +1,29 @@
-# 📊 Dashboard de Estudos
+---
+banner: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=1200"
+banner_y: 0.5
+cssclass: dashboard
+---
+
+# 📚 SmartNote Dashboard
 
 ```dataviewjs
 const today = dv.date("today");
-const todayStr = today.toFormat("yyyy-MM-dd");
-dv.paragraph(`📅 **Hoje:** ${today.toFormat("dd/MM/yyyy")} (${today.weekdayLong})`);
+dv.span(`📅 **${today.toFormat("dd 'de' MMMM, yyyy")}** — ${today.weekdayLong}`);
 ```
 
 ---
 
-## 🔥 Revisões para Hoje
+## 🔥 Revisões de Hoje
+
+> [!warning]+ ⚡ Pendentes para Revisar
 
 ```dataviewjs
 const today = dv.date("today");
 
-// Função para calcular próximo estudo
 function calcProximoEstudo(page) {
     if (!page.primeiro_contato) return null;
     const pc = dv.date(page.primeiro_contato);
     if (!pc) return null;
-    
     if (page.R4) return pc.plus({days: 112});
     if (page.R3) return pc.plus({days: 52});
     if (page.R2) return pc.plus({days: 22});
@@ -27,127 +32,113 @@ function calcProximoEstudo(page) {
 }
 
 const pages = dv.pages('"DailyLearning/Disciplinas"')
-    .where(p => p.iniciado === true && p.primeiro_contato)
-    .map(p => {
-        const proximo = calcProximoEstudo(p);
-        const materia = p.file.folder.split("/")[2] || "";
-        const assunto = p.file.folder.split("/")[3] || materia;
-        return {...p, proximo, materia, assunto};
-    })
+    .where(p => p.iniciado && p.primeiro_contato)
+    .map(p => ({...p, proximo: calcProximoEstudo(p), materia: (p.file.folder.split("/")[2] || "").replace(/^\d+\.\s*/, "")}))
     .where(p => p.proximo && p.proximo <= today)
     .sort(p => p.proximo, 'asc');
 
 if (pages.length === 0) {
-    dv.paragraph("✅ **Nenhuma revisão pendente para hoje!**");
+    dv.paragraph("✅ **Parabéns! Nenhuma revisão pendente.**");
 } else {
-    dv.paragraph(`⚠️ **${pages.length} tópico(s) para revisar:**`);
-    dv.table(
-        ["Tópico", "Matéria", "Próximo Estudo", "Progresso"],
-        pages.map(p => [
+    dv.table(["📖 Tópico", "📚 Matéria", "📅 Data", "🔄"],
+        pages.slice(0, 8).map(p => [
             p.file.link,
-            p.materia.replace(/^\d+\.\s*/, ""),
+            p.materia,
             p.proximo.toFormat("dd/MM"),
-            `${[p.R1, p.R2, p.R3, p.R4].filter(Boolean).length}/4`
+            `${[p.R1,p.R2,p.R3,p.R4].filter(Boolean).length}/4`
         ])
     );
+    if (pages.length > 8) dv.paragraph(`*...e mais ${pages.length - 8} tópicos*`);
 }
 ```
 
 ---
 
-## 📈 Estatísticas Gerais
+<div class="dashboard-grid">
 
-```dataviewjs
-const pages = dv.pages('"DailyLearning/Disciplinas"').where(p => p.file.ext === "md");
-const iniciados = pages.where(p => p.iniciado === true);
+> [!info]+ � Estatísticas
+> ```dataviewjs
+> const all = dv.pages('"DailyLearning/Disciplinas"').where(p => p.file.ext === "md");
+> const ini = all.where(p => p.iniciado);
+> const pct = Math.round(ini.length / all.length * 100);
+> 
+> dv.paragraph(`
+> **Total:** ${all.length} tópicos
+> **Estudados:** ${ini.length} (${pct}%)
+> **R1:** ${ini.where(p => p.R1).length} | **R2:** ${ini.where(p => p.R2).length}
+> **R3:** ${ini.where(p => p.R3).length} | **R4:** ${ini.where(p => p.R4).length}
+> `);
+> ```
 
-const total = pages.length;
-const estudados = iniciados.length;
-const pendentes = total - estudados;
+> [!success]+ 🏆 Progresso Geral
+> ```dataviewjs
+> const all = dv.pages('"DailyLearning/Disciplinas"').where(p => p.file.ext === "md");
+> const ini = all.where(p => p.iniciado).length;
+> const total = all.length;
+> const pct = Math.round(ini / total * 100);
+> const bars = Math.floor(pct / 5);
+> const bar = "�".repeat(bars) + "⬜".repeat(20 - bars);
+> dv.paragraph(`${bar}\n**${pct}%** concluído`);
+> ```
 
-// Contagem por revisão
-const r1 = iniciados.where(p => p.R1 === true).length;
-const r2 = iniciados.where(p => p.R2 === true).length;
-const r3 = iniciados.where(p => p.R3 === true).length;
-const r4 = iniciados.where(p => p.R4 === true).length;
-
-dv.paragraph(`
-| 📊 Métrica | Valor |
-|------------|-------|
-| 📚 Total de Tópicos | **${total}** |
-| ✅ Estudados | **${estudados}** (${Math.round(estudados/total*100)}%) |
-| ⏳ Não iniciados | **${pendentes}** |
-| 🔁 R1 completadas | **${r1}** |
-| 🔁 R2 completadas | **${r2}** |
-| 🔁 R3 completadas | **${r3}** |
-| 🔁 R4 completadas | **${r4}** |
-`);
-```
+</div>
 
 ---
 
-## 📚 Progresso por Matéria
+## 📚 Top 5 Matérias
+
+> [!note]+ Progresso por Disciplina
 
 ```dataviewjs
 const pages = dv.pages('"DailyLearning/Disciplinas"').where(p => p.file.ext === "md");
-
 const materias = {};
+
 for (const p of pages) {
-    const materia = (p.file.folder.split("/")[2] || "Outros").replace(/^\d+\.\s*/, "");
-    if (!materias[materia]) {
-        materias[materia] = {total: 0, iniciados: 0, r4: 0};
-    }
-    materias[materia].total++;
-    if (p.iniciado) materias[materia].iniciados++;
-    if (p.R4) materias[materia].r4++;
+    const m = (p.file.folder.split("/")[2] || "Outros").replace(/^\d+\.\s*/, "");
+    if (!materias[m]) materias[m] = {t: 0, i: 0};
+    materias[m].t++;
+    if (p.iniciado) materias[m].i++;
 }
 
 const rows = Object.entries(materias)
-    .sort((a, b) => b[1].total - a[1].total)
-    .map(([nome, stats]) => {
-        const pct = Math.round(stats.iniciados / stats.total * 100);
-        const bar = "█".repeat(Math.floor(pct/10)) + "░".repeat(10 - Math.floor(pct/10));
-        return [nome, stats.total, stats.iniciados, `${bar} ${pct}%`];
+    .sort((a, b) => b[1].t - a[1].t)
+    .slice(0, 5)
+    .map(([n, s]) => {
+        const pct = Math.round(s.i / s.t * 100);
+        const bars = Math.floor(pct / 10);
+        return [n, s.t, s.i, "█".repeat(bars) + "░".repeat(10-bars) + ` ${pct}%`];
     });
 
-dv.table(["Matéria", "Total", "Estudados", "Progresso"], rows);
+dv.table(["Matéria", "Total", "✅", "Progresso"], rows);
 ```
 
 ---
 
-## 🗓️ Últimos Estudos
+## 🗓️ Últimos Estudados
+
+> [!example]+ Recentes
 
 ```dataviewjs
-const pages = dv.pages('"DailyLearning/Disciplinas"')
-    .where(p => p.iniciado === true && p.primeiro_contato)
-    .sort(p => p.primeiro_contato, 'desc')
-    .limit(10);
-
-dv.table(
-    ["Tópico", "1º Contato", "R1", "R2", "R3", "R4"],
-    pages.map(p => [
-        p.file.link,
-        dv.date(p.primeiro_contato)?.toFormat("dd/MM") || "-",
-        p.R1 ? "✅" : "⬜",
-        p.R2 ? "✅" : "⬜",
-        p.R3 ? "✅" : "⬜",
-        p.R4 ? "✅" : "⬜"
-    ])
+dv.table(["Tópico", "Data", "R1", "R2", "R3", "R4"],
+    dv.pages('"DailyLearning/Disciplinas"')
+        .where(p => p.iniciado && p.primeiro_contato)
+        .sort(p => p.primeiro_contato, 'desc')
+        .limit(5)
+        .map(p => [
+            p.file.link,
+            dv.date(p.primeiro_contato)?.toFormat("dd/MM") || "-",
+            p.R1 ? "✅" : "⬜", p.R2 ? "✅" : "⬜",
+            p.R3 ? "✅" : "⬜", p.R4 ? "✅" : "⬜"
+        ])
 );
 ```
 
 ---
 
-## 🚀 Ações Rápidas
+## 🚀 Acesso Rápido
 
-```button
-name 📋 Abrir RunBook
-type link
-action obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FRunBook
-```
+> [!tip]+ Navegação
 
-```button
-name 🔄 Abrir Revisão Espaçada
-type link
-action obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FRevisao%20Espacada
-```
+| 📋 RunBook | 🔄 Revisão Espaçada | 📂 Disciplinas |
+|:---:|:---:|:---:|
+| [[DailyLearning/RunBook\|Abrir]] | [[DailyLearning/Revisao Espacada\|Abrir]] | [[DailyLearning/Disciplinas\|Explorar]] |
