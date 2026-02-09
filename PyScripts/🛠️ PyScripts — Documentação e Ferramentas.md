@@ -53,14 +53,7 @@ action Shell commands: Execute: python3 add_buttons.py
 
 ---
 
-### 4. `clean_prompts.py`
-Remove a seção `## 📋 Prompts Preenchidos` hardcoded dos arquivos.
 
-```button
-name ▶️ Executar clean_prompts.py
-type command
-action Shell commands: Execute: python3 clean_prompts.py
-```
 
 ---
 
