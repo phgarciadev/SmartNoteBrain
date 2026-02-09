@@ -240,21 +240,26 @@
       "publish:Publicar mudanças": false,
       "templater-obsidian:Templater": false,
       "homepage:Open homepage": false,
-      "periodic-para:LifeOS Creation": false
+      "periodic-para:LifeOS Creation": false,
+      "obsidian-git:Open Git source control": false
     }
   },
   "active": "41ea45c124b93f2b",
   "lastOpenFiles": [
+    "PyScripts/add_buttons.py",
+    "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
+    "DailyLearning/Disciplinas/5. Química/2. Química Inorgânica/4. Substâncias e Aplicações-.md",
     "DailyLearning/Disciplinas/9. Sociologia/2. Cultura e Sociedade/1. Conceitos de cultura.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. - 10..md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/5. - 9..md",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
+    "PyScripts/clean_prompts.py",
+    "PyScripts/add_prompt_buttons.py",
+    "README.md",
+    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. - 10..md",
     "DailyLearning/Revisao Espacada.base",
-    "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
     "_prompt_temp.md",
     "_prompt_temp 2.md",
     "_prompt_temp 1.md",
-    "PyScripts/add_prompt_buttons.py",
     "DailyLearning/Templates/GenVidPersonalization.md",
     "DailyLearning/Templates/GenVidExpert.md",
     "DailyLearning/Templates/GenVid.md",
@@ -274,14 +279,10 @@
     "DailyLearning/Prompts/GenQuestExpert.md",
     "DailyLearning/Disciplinas/6. História/1. Teoria da História e Historiografia.md",
     "DailyLearning/Disciplinas/11. Artes/1. História da Arte.md",
-    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/1. Teoria dos Conjuntos.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades.md",
-    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/2. - 4..md",
     "PyScripts/add_notebooklm_field.py",
     "PyScripts",
     "DailyLearning/Disciplinas/13. Literatura/11. Leituras Obrigatórias Comvest-Unicamp",
     "DailyLearning/Disciplinas/13. Literatura/10. Leituras Obrigatórias Fuvest",
-    "DailyLearning/Disciplinas/13. Literatura/9. Literatura Contemporânea Brasileira",
     "Sem título.canvas"
   ]
 }
