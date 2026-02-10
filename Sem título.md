@@ -63,17 +63,18 @@ que permita ao aluno resolver com segurança questões reais de FUVEST, UNICAMP 
 dominando completamente o tópico estudado.
 
 Tópico(s) deste notebook (Somente esses):
-1. **Grandezas Físicas e Processos de Medida** (Definição de grandezas fundamentais e derivadas, reconhecimento de grandezas significativas, procedimentos de mensuração e instrumentos de medida),,,,,.
-        2. **Sistemas de Unidades** (O Sistema Internacional de Unidades - SI, conversão de unidades entre sistemas, uso de prefixos, múltiplos e submúltiplos),,,,.
+Análise do Período e da Oração
 
 
 Outros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):
 
-Metodologia Científica na Física
-Notação Científica e Algarismos Significativos
-Ordens de Grandeza e Estimativas
-Análise Dimensional
-Grandezas Escalares e Vetoriais
-Vetores e Operações Vetoriais
-Relações Matemáticas e Proporcionalidade
-Linguagem Gráfica na Física
+Reorganização de Orações e Períodos
+Conectivos e Operadores Argumentativos
+Processos de Coordenação e Subordinação
+Concordância
+Regência
+Crase
+Colocação e Emprego de Pronomes
+Pontuação
+Paralelismo Sintático
+Ordem dos Constituintes da Sentença
