@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "b859b3806a9e6817",
+        "id": "4509724f8bf84da7",
         "type": "tabs",
         "children": [
           {
-            "id": "74f0b1c699271fcd",
+            "id": "e7a7b303c61786dc",
             "type": "leaf",
             "state": {
               "type": "markdown",
@@ -212,16 +212,17 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "74f0b1c699271fcd",
+  "active": "e7a7b303c61786dc",
   "lastOpenFiles": [
     "DailyLearning/Revisao Espacada.base",
-    "Dashboard.md",
     "DailyLearning/RunBook.base",
+    "DailyLearning/Prompts.canvas",
+    "Dashboard.md",
+    "DailyLearning/Allshit.md",
     "Sem título.md",
     "DailyLearning/Disciplinas/6. História/1. Teoria da História e Historiografia.md",
     "Sem título 1.md",
     "DailyLearning/Cronograma de Estudos.md",
-    "DailyLearning/Allshit.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/3. Notação Científica e Algarismos Significativos.md",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
@@ -236,7 +237,6 @@
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/8. Relações Matemáticas e Proporcionalidade.md",
     "DailyLearning/Prompts/GenVid.md",
     "DailyLearning/Prompts/GenVidPersonalization.md",
-    "DailyLearning/Prompts.canvas",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/10. Metodologia Científica na Física.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/6. Grandezas Escalares e Vetoriais.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/5. Análise Dimensional.md",
