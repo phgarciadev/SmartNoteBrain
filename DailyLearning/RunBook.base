@@ -41,16 +41,13 @@ properties:
 views:
   - type: table
     name: Revisão Espaçada
-    groupBy:
-      property: formula.materia
-      direction: ASC
     order:
       - file.name
       - formula.assunto
       - formula.materia
       - iniciado
-      - NotebookLM
       - primeiro_contato
+      - NotebookLM
     sort:
       - property: primeiro_contato
         direction: ASC
