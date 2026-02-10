@@ -101,16 +101,10 @@ def fill_prompt(template: str, disciplina: str, assunto: str, topico: str, promp
         result = re.sub(r'Tópico\(s\) deste notebook \(Somente esses\):\s*$', 
                        f'Tópico(s) deste notebook (Somente esses):\n{topico}', result)
         
-        # Append the "Other topics" section if it's not GenVidPersonalization (checked in generate_buttons)
-        # We add it after the topic section, with the specified text.
-        # The user requested adding it after "Tópico(s) deste notebook (Somente esses):" with 3 lines of space.
-        # But we just replaced that line with the topic. So we append to the end of that replacement?
-        # Actually, the user said: "após o 'tópico(s) deste notebook (Somente esses):', com umas 3 linhas de espaço, adicione também: ..."
-        # Since I replaced the marker with the topic content, I should append the other topics block after the topic content.
+    # Replace other topics placeholder
+    if "<OTHER_TOPICS>" in result:
+        result = result.replace("<OTHER_TOPICS>", other_topics_block)
         
-        if other_topics_block:
-             result += f"\n\n\nOutros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):\n\n{other_topics_block}"
-
     return result
 
 
