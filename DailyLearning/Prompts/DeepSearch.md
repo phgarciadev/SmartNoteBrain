@@ -128,14 +128,14 @@ Se não cai, **não inclua**.
 
 Para todos os tópicos citados, sem outros assuntos, são eles: <>
 
-
-Outros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):
-<OTHER_TOPICS>
-
-
 do assunto: <>
 
 da disciplina: <>
+
+
+
+Outros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):
+<OTHER_TOPICS>
 
 
 

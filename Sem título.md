@@ -125,12 +125,21 @@ Se não cai, **não inclua**.
 
 ---
 
-Para todos os tópicos citados, sem outros assuntos, são eles: Análise do Período e da Oração
+Para todos os tópicos citados, sem outros assuntos, são eles: Notação Científica e Algarismos Significativos
+
+do assunto: Fundamentos da Física
+
+da disciplina: Física
 
 
 
-
-
-do assunto: Sintaxe
-
-da disciplina: Língua Portuguesa
+Outros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):
+1. **Grandezas Físicas e Processos de Medida** (Definição de grandezas fundamentais e derivadas, reconhecimento de grandezas significativas, procedimentos de mensuração e instrumentos de medida),,,,,.
+        2. **Sistemas de Unidades** (O Sistema Internacional de Unidades - SI, conversão de unidades entre sistemas, uso de prefixos, múltiplos e submúltiplos),,,,.
+Metodologia Científica na Física
+Ordens de Grandeza e Estimativas
+Análise Dimensional
+Grandezas Escalares e Vetoriais
+Vetores e Operações Vetoriais
+Relações Matemáticas e Proporcionalidade
+Linguagem Gráfica na Física
