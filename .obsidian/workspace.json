@@ -22,17 +22,17 @@
             }
           },
           {
-            "id": "f43d9c80ca08697b",
+            "id": "16f3d9119ef4b147",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DailyLearning/Prompts/GenVidExpert.md",
+                "file": "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "GenVidExpert"
+              "title": "1. Níveis de Significação"
             }
           },
           {
@@ -50,20 +50,21 @@
             }
           },
           {
-            "id": "f8b435d5286430eb",
+            "id": "332ae9447fc622b0",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DailyLearning/Prompts/GenVidExpert.md",
+                "file": "Sem título.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "GenVidExpert"
+              "title": "Sem título"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -254,13 +255,15 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "13fe01d0e7fe73e6",
+  "active": "332ae9447fc622b0",
   "lastOpenFiles": [
-    "DailyLearning/Prompts/GenVidExpert.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades.md",
+    "DailyLearning/Disciplinas/1. Língua Portuguesa/Sem título.base",
+    "DailyLearning/Prompts/GenVidExpert.md",
+    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
+    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/8. Relações Matemáticas e Proporcionalidade.md",
     "Sem título.md",
     "DailyLearning/Allshit.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/8. Relações Matemáticas e Proporcionalidade.md",
     "Dashboard.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/update_prompts.py",
     "DailyLearning/Revisao Espacada.base",
@@ -284,15 +287,12 @@
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/6. Números Reais e Irracionais.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/5. Números Racionais e Frações.md",
     "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
-    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/9. Módulo e Valor Absoluto.md",
-    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/4. Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC).md",
     "PyScripts/add_buttons.py",
     "PyScripts/clean_prompts.py",
     "PyScripts/add_prompt_buttons.py",
     "DailyLearning/Templates",
     "PyScripts/add_frontmatter.py",
-    "PyScripts/add_notebooklm_field.py",
     "Sem título.canvas"
   ]
 }
