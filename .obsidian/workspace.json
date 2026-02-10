@@ -171,9 +171,19 @@
               "icon": "lucide-ghost",
               "title": "calendar"
             }
+          },
+          {
+            "id": "c3f3b97837f7a971",
+            "type": "leaf",
+            "state": {
+              "type": "git-view",
+              "state": {},
+              "icon": "git-pull-request",
+              "title": "Source Control"
+            }
           }
         ],
-        "currentTab": 2
+        "currentTab": 6
       }
     ],
     "direction": "horizontal",
@@ -206,14 +216,15 @@
   "lastOpenFiles": [
     "Dashboard.md",
     "DailyLearning/RunBook.base",
+    "DailyLearning/Revisao Espacada.base",
+    "DailyLearning/Cronograma de Estudos.md",
+    "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
     "2026-02-09.md",
     "DailyLearning/Allshit.md",
     "README.md",
-    "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. - 10..md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/5. - 9..md",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
-    "DailyLearning/Revisao Espacada.base",
     "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
     "DailyLearning/Disciplinas/9. Sociologia/2. Cultura e Sociedade/1. Conceitos de cultura.md",
     "PyScripts/add_buttons.py",
@@ -231,7 +242,6 @@
     "DailyLearning/Templates/DeepSearch.md",
     "DailyLearning/Templates",
     "DailyLearning/Prompts.canvas",
-    "DailyLearning/Cronograma de Estudos.md",
     "PyScripts/add_frontmatter.py",
     "da.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/7. Potenciação e Notação Científica.md",
