@@ -8,46 +8,63 @@
         "type": "tabs",
         "children": [
           {
-            "id": "6f7f027675643d92",
+            "id": "348bd16465613646",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DailyLearning/Cronograma de Estudos.md",
+                "file": "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/1. Espaço geográfico e sua produção.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Cronograma de Estudos"
+              "title": "1. Espaço geográfico e sua produção"
             }
           },
           {
-            "id": "452d0ff77d3bc58d",
+            "id": "a10a223a86620687",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "DailyLearning/RunBook.base",
-                "viewName": "Revisão Espaçada"
+                "file": "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/2. Ácidos Nucleicos e Código Genético.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-table",
-              "title": "RunBook"
+              "icon": "lucide-file",
+              "title": "2. Ácidos Nucleicos e Código Genético"
             }
           },
           {
-            "id": "79db73ef456283ae",
+            "id": "0b48388a91eefc2e",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "DailyLearning/Revisao Espacada.base",
-                "viewName": "Revisão Espaçada"
+                "file": "DailyLearning/Disciplinas/6. História/2. História Antiga/1. Antiguidade Oriental-.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-table",
-              "title": "Revisao Espacada"
+              "icon": "lucide-file",
+              "title": "1. Antiguidade Oriental-"
+            }
+          },
+          {
+            "id": "c68402a7138d4f9c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/1. Propriedades e estados físicos da matéria-.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "1. Propriedades e estados físicos da matéria-"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -238,17 +255,21 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "6f7f027675643d92",
+  "active": "c68402a7138d4f9c",
   "lastOpenFiles": [
-    "Dashboard.md",
-    "DailyLearning/Revisao Espacada.base",
+    "DailyLearning/Disciplinas/6. História/2. História Antiga/1. Antiguidade Oriental-.md",
+    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/2. Ácidos Nucleicos e Código Genético.md",
+    "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/1. Espaço geográfico e sua produção.md",
     "DailyLearning/RunBook.base",
+    "DailyLearning/Cronograma de Estudos.md",
+    "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/1. Propriedades e estados físicos da matéria-.md",
+    "DailyLearning/Revisao Espacada.base",
+    "Dashboard.md",
     "DailyLearning/Prompts.canvas",
     "DailyLearning/Allshit.md",
     "Sem título.md",
     "DailyLearning/Disciplinas/6. História/1. Teoria da História e Historiografia.md",
     "Sem título 1.md",
-    "DailyLearning/Cronograma de Estudos.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/3. Notação Científica e Algarismos Significativos.md",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
@@ -267,9 +288,6 @@
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/6. Grandezas Escalares e Vetoriais.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/5. Análise Dimensional.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. Ordens de Grandeza e Estimativas.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. - 4.1.10..md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/9. Linguagem Gráfica na Física.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/7. Vetores e Operações Vetoriais.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/split_notebook.py",
     "PyScripts/add_buttons.py",
     "PyScripts/clean_prompts.py",

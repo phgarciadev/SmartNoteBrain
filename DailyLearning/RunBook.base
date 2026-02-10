@@ -41,6 +41,9 @@ properties:
 views:
   - type: table
     name: Revisão Espaçada
+    groupBy:
+      property: formula.materia
+      direction: ASC
     order:
       - file.name
       - formula.assunto
