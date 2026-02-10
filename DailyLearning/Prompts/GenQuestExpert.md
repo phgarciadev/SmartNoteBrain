@@ -49,4 +49,9 @@ sem dependência de dicas externas.
 
 Tópico(s) deste notebook (Somente esses):
 
+
+Outros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):
+<OTHER_TOPICS>
+
+
 ```
