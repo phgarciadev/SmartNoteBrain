@@ -34,9 +34,23 @@
               "icon": "lucide-file",
               "title": "GenVidExpert"
             }
+          },
+          {
+            "id": "77150ce1dc9ebc9c",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades.md",
+                "mode": "preview",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades"
+            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -227,11 +241,17 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "f43d9c80ca08697b",
+  "active": "77150ce1dc9ebc9c",
   "lastOpenFiles": [
+    "DailyLearning/Allshit.md",
+    "DailyLearning/Prompts/GenVidExpert.md",
+    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades.md",
+    "DailyLearning/Revisao Espacada.base",
+    "Dashboard.md",
+    "DailyLearning/Prompts/GenQuestExpert.md",
+    "DailyLearning/Prompts/GenVid.md",
     "DailyLearning/Prompts/GenVidPersonalization.md",
     "DailyLearning/Prompts.canvas",
-    "DailyLearning/Revisao Espacada.base",
     "DailyLearning/RunBook.base",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/10. Metodologia Científica na Física.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/6. Grandezas Escalares e Vetoriais.md",
@@ -243,7 +263,6 @@
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/8. Relações Matemáticas e Proporcionalidade.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/7. Vetores e Operações Vetoriais.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/split_notebook.py",
-    "Dashboard.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/8. Radiciação.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/5. - 2.1.9..md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/7. Potenciação e Notação Científica.md",
@@ -254,11 +273,6 @@
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/9. Módulo e Valor Absoluto.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/4. Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC).md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/2. - 2.1.4..md",
-    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/3. Divisibilidade e Fatoração.md",
-    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/2. Números Naturais e Inteiros.md",
-    "README.md",
-    "DailyLearning/Cronograma de Estudos.md",
-    "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
     "PyScripts/add_buttons.py",
     "PyScripts/clean_prompts.py",
     "PyScripts/add_prompt_buttons.py",
