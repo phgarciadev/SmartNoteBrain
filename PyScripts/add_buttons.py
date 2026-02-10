@@ -65,7 +65,29 @@ def get_file_info(filepath: Path, base_dir: Path, content: str):
         return None, None, None
 
 
-def fill_prompt(template: str, disciplina: str, assunto: str, topico: str, prompt_name: str) -> str:
+
+def get_directory_topics(directory: Path) -> dict[str, str]:
+    """
+    Scans the directory for .md files and extracts their topic strings.
+    Returns a dict {filename: topic_string}.
+    """
+    topics = {}
+    for filepath in directory.glob("*.md"):
+        try:
+            content = filepath.read_text(encoding="utf-8")
+            code_block = extract_code_block(content)
+            if code_block:
+                # If there's a code block, use it as the topic description
+                topics[filepath.name] = code_block
+            else:
+                # Otherwise use the cleaned filename
+                topics[filepath.name] = clean_name(filepath.name)
+        except Exception:
+            continue
+    return topics
+
+
+def fill_prompt(template: str, disciplina: str, assunto: str, topico: str, prompt_name: str, other_topics_block: str = "") -> str:
     """Preenche o template com os valores."""
     result = template
     
@@ -75,13 +97,24 @@ def fill_prompt(template: str, disciplina: str, assunto: str, topico: str, promp
         result = re.sub(r'do assunto: <>', f'do assunto: {assunto}', result)
         result = re.sub(r'da disciplina: <>', f'da disciplina: {disciplina}', result)
     else:
+        # Replace the main topic
         result = re.sub(r'Tópico\(s\) deste notebook \(Somente esses\):\s*$', 
                        f'Tópico(s) deste notebook (Somente esses):\n{topico}', result)
-    
+        
+        # Append the "Other topics" section if it's not GenVidPersonalization (checked in generate_buttons)
+        # We add it after the topic section, with the specified text.
+        # The user requested adding it after "Tópico(s) deste notebook (Somente esses):" with 3 lines of space.
+        # But we just replaced that line with the topic. So we append to the end of that replacement?
+        # Actually, the user said: "após o 'tópico(s) deste notebook (Somente esses):', com umas 3 linhas de espaço, adicione também: ..."
+        # Since I replaced the marker with the topic content, I should append the other topics block after the topic content.
+        
+        if other_topics_block:
+             result += f"\n\n\nOutros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):\n\n{other_topics_block}"
+
     return result
 
 
-def generate_buttons(prompts: dict, disciplina: str, assunto: str, topico: str) -> str:
+def generate_buttons(prompts: dict, disciplina: str, assunto: str, topico: str, other_topics_block: str) -> str:
     """Gera os blocos de botões."""
     buttons = []
     
@@ -97,10 +130,10 @@ def generate_buttons(prompts: dict, disciplina: str, assunto: str, topico: str) 
     for prompt_name, button_label in button_config:
         if prompt_name in prompts:
             if prompt_name == "GenVidPersonalization":
-                # Este não precisa de substituição
+                # Este não precisa de substituição nem do bloco de outros tópicos
                 filled = prompts[prompt_name]
             else:
-                filled = fill_prompt(prompts[prompt_name], disciplina, assunto, topico, prompt_name)
+                filled = fill_prompt(prompts[prompt_name], disciplina, assunto, topico, prompt_name, other_topics_block)
             
             # Escapa backticks triplos no conteúdo para não quebrar o botão
             filled_escaped = filled.replace('```', '~~~')
@@ -129,11 +162,22 @@ def process_file(filepath: Path, base_dir: Path, prompts: dict) -> str:
     if not disciplina:
         return "skipped: estrutura inválida"
     
+    # Get other topics in the same directory
+    dir_topics_map = get_directory_topics(filepath.parent)
+    
+    # Filter out current file and sort
+    other_topics_list = []
+    for fname, ftopic in sorted(dir_topics_map.items()):
+        if fname != filepath.name:
+            other_topics_list.append(ftopic)
+            
+    other_topics_block = "\n".join(other_topics_list)
+
     # Remove seção antiga se existir
     content = re.sub(r'\n?## 📋 Prompts.*', '', content, flags=re.DOTALL).rstrip()
     
     # Gera botões
-    buttons = generate_buttons(prompts, disciplina, assunto, topico)
+    buttons = generate_buttons(prompts, disciplina, assunto, topico, other_topics_block)
     
     # Adiciona seção de botões
     new_content = content + "\n\n## 📋 Prompts\n\n" + buttons + "\n"
@@ -162,6 +206,7 @@ def main():
     
     print("\n🔘 Adicionando botões...\n")
     
+    # We need to process all files again to update the buttons
     for md_file in base_dir.rglob("*.md"):
         result = process_file(md_file, base_dir, prompts)
         

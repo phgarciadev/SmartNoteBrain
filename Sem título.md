@@ -1,64 +1,79 @@
 Objetivo do vídeo:
-Gerar um vídeo introdutório de alta qualidade sobre o tópico solicitado, destinado ao estudo. 
-Este será o PRIMEIRO de dois vídeos do tema e deve funcionar como a base conceitual completa para o avanço posterior.
+Gerar o SEGUNDO vídeo do tópico, imediatamente após o vídeo introdutório.
+Este vídeo tem como função consolidar, aprofundar e levar o aluno ao domínio completo do assunto,
+no nível exigido oficialmente por FUVEST, UNICAMP e ENEM.
 
 Público-alvo:
-Estudantes com TDAH.
-Considere limitações de atenção, necessidade de propósito claro e aprendizado orientado por significado.
-Nada deve ser apresentado sem justificar sua existência e utilidade.
+Estudantes com TDAH que já assistiram ao vídeo introdutório e possuem compreensão conceitual básica.
+Ainda é obrigatório explicitar o sentido do conteúdo, mas agora com foco em aplicação e domínio.
 
-Princípios obrigatórios:
-- O cérebro só aprende quando entende o PORQUÊ.
-- Toda definição, fórmula, conceito ou ideia deve responder explicitamente:
-  • O que é
-  • Por que isso existe
-  • Para que serve
-  • Onde é usado
-  • Que tipo de problema resolve
-- Não avance para formalismos ou nível técnico antes da compreensão conceitual total.
+Princípios cognitivos:
+- Nenhuma técnica sem justificativa.
+- Toda fórmula deve responder:
+  • Por que funciona
+  • Quando usar
+  • Quando NÃO usar
+- Aprendizado orientado à resolução de problemas reais de prova.
 
 Escopo do vídeo:
-- Vídeo introdutório e conceitual.
-- Explicação partindo do zero absoluto.
-- Nível abaixo do aprofundamento técnico, mas alinhado às exigências da FUVEST, ENEM e COMVEST.
-- Nenhum conteúdo fora do tópico solicitado.
+- Pós-introdução.
+- Aprofundamento completo do tópico.
+- Nível técnico compatível com provas reais.
+- Foco total no tópico solicitado, sem desvios.
 
-Estrutura esperada do vídeo:
-1. Contextualização inicial
-   - Apresentar o problema real que motivou a criação do conceito.
-   - Situações concretas onde ele aparece.
-   - Por que o estudante precisa aprender isso.
+Estrutura obrigatória do vídeo:
+1. Reconexão conceitual
+   - Relembrar rapidamente o sentido do conceito aprendido no vídeo 1.
+   - Deixar claro o que será dominado neste vídeo.
 
-2. Sentido e finalidade
-   - Por que esse conceito/fórmula existe.
-   - Qual limitação anterior ele resolve.
-   - Qual ganho prático ele oferece.
+2. Formalização completa
+   - Apresentação rigorosa das fórmulas, leis ou métodos.
+   - Explicação do significado de cada termo.
+   - Interpretação física/matemática/conceitual.
 
-3. Área do conhecimento
-   - Em que área se insere.
-   - Como se conecta com outros conteúdos já conhecidos.
-   - Onde ele aparece em provas e aplicações reais.
+3. Estratégias de uso em prova
+   - Como identificar quando o conteúdo deve ser aplicado.
+   - Padrões recorrentes em FUVEST, UNICAMP e ENEM.
+   - Armadilhas comuns e erros frequentes.
 
-4. Construção conceitual
-   - Explicação progressiva, do intuitivo ao formal.
-   - Linguagem clara, objetiva e sem saltos lógicos.
-   - Exemplos simples, reais e didáticos.
+4. Exemplos resolvidos progressivos
+   - Questões fáceis → médias → difíceis.
+   - Resolução comentada passo a passo.
+   - Justificativa de cada decisão tomada.
 
-5. Consolidação
-   - Reforço do entendimento global.
-   - O que o aluno deve ser capaz de explicar após o vídeo.
-   - Preparação mental para o segundo vídeo (nível mais técnico).
+5. Casos limite e variações
+   - Situações em que a aplicação muda.
+   - Adaptações do método.
+   - Comparação com abordagens alternativas.
+
+6. Consolidação de domínio
+   - O que o aluno deve saber fazer sem ajuda.
+   - Checklist mental de resolução.
+   - Preparação para exercícios avançados e listas de treino.
 
 Restrições:
-- Não assumir conhecimento prévio.
-- Não usar explicações mecânicas sem significado.
-- Não focar em decoreba.
-- Não introduzir conteúdos avançados neste vídeo.
+- Não reensinar do zero.
+- Não repetir explicações introdutórias longas.
+- Não apresentar fórmulas sem interpretação.
+- Não simplificar além do nível real de prova.
 
 Resultado esperado:
-Um vídeo claro, lógico e psicologicamente eficaz, que gere compreensão profunda do tema,
-estabeleça propósito de aprendizado e crie base sólida para o aprofundamento posterior.
-t
+Um vídeo tecnicamente sólido, cognitivamente organizado e orientado à performance em prova,
+que permita ao aluno resolver com segurança questões reais de FUVEST, UNICAMP e ENEM,
+dominando completamente o tópico estudado.
 
 Tópico(s) deste notebook (Somente esses):
-Níveis de Significação
+1. **Grandezas Físicas e Processos de Medida** (Definição de grandezas fundamentais e derivadas, reconhecimento de grandezas significativas, procedimentos de mensuração e instrumentos de medida),,,,,.
+        2. **Sistemas de Unidades** (O Sistema Internacional de Unidades - SI, conversão de unidades entre sistemas, uso de prefixos, múltiplos e submúltiplos),,,,.
+
+
+Outros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):
+
+Metodologia Científica na Física
+Notação Científica e Algarismos Significativos
+Ordens de Grandeza e Estimativas
+Análise Dimensional
+Grandezas Escalares e Vetoriais
+Vetores e Operações Vetoriais
+Relações Matemáticas e Proporcionalidade
+Linguagem Gráfica na Física
