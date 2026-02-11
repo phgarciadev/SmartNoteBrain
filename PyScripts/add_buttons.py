@@ -97,9 +97,9 @@ def fill_prompt(template: str, disciplina: str, assunto: str, topico: str, promp
         result = re.sub(r'do assunto: <>', f'do assunto: {assunto}', result)
         result = re.sub(r'da disciplina: <>', f'da disciplina: {disciplina}', result)
     else:
-        # Replace the main topic
+        # Replace the main topic (re.MULTILINE para $ dar match no fim da LINHA, não da string)
         result = re.sub(r'Tópico\(s\) deste notebook \(Somente esses\):\s*$', 
-                       f'Tópico(s) deste notebook (Somente esses):\n{topico}', result)
+                       f'Tópico(s) deste notebook (Somente esses):\n{topico}\n', result, flags=re.MULTILINE)
         
     # Replace other topics placeholder
     if "<OTHER_TOPICS>" in result:
