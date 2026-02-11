@@ -36,6 +36,7 @@ views:
     name: Revisão Espaçada
     order:
       - file.name
+      - iniciado
       - formula.primeiro_contato
       - formula.proximo_estudo
       - formula.assunto
@@ -45,10 +46,10 @@ views:
       - R3
       - R4
     sort:
+      - property: formula.proximo_estudo
+        direction: DESC
       - property: formula.primeiro_contato
         direction: DESC
-      - property: formula.proximo_estudo
-        direction: ASC
     columnSize:
       formula.primeiro_contato: 228
       note.R4: 52
