@@ -13,12 +13,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DailyLearning/Disciplinas/10. Educação Fisica/3. Linguagem Corporal e Expressão/4. Códigos e Símbolos.md",
+                "file": "Dashboard.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "4. Códigos e Símbolos"
+              "title": "Dashboard"
             }
           }
         ]
@@ -212,8 +212,11 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "f3ef44095932ba57",
+  "active": "55eb13d7fd2b6288",
   "lastOpenFiles": [
+    "temp",
+    "DailyLearning/Prompts.canvas",
+    "DailyLearning/Disciplinas/10. Educação Fisica/3. Linguagem Corporal e Expressão/4. Códigos e Símbolos.md",
     "Allshit.md",
     "DailyLearning/RunBook.base",
     "DailyLearning/Revisao Espacada.base",
@@ -241,8 +244,6 @@
     "DailyLearning/Disciplinas/13. Literatura/5. Literatura Brasileira - Romantismo/1. Primeira Geração Romântica (Indianista-Nacionalista).md",
     "DailyLearning/Disciplinas/13. Literatura/4. Literatura Brasileira - Quinhentismo ao Arcadismo/3. Arcadismo Brasileiro.md",
     "DailyLearning/Disciplinas/13. Literatura/4. Literatura Brasileira - Quinhentismo ao Arcadismo/2. Barroco Brasileiro.md",
-    "DailyLearning/Disciplinas/13. Literatura/4. Literatura Brasileira - Quinhentismo ao Arcadismo/1. Quinhentismo.md",
-    "DailyLearning/Disciplinas/13. Literatura/3. Literatura Portuguesa - Barroco ao Romantismo/3. Romantismo Português.md",
     "DailyLearning/Disciplinas/13. Literatura/9. Literatura Contemporânea Brasileira",
     "DailyLearning/Disciplinas/13. Literatura/8. Literatura Brasileira - Modernismo",
     "DailyLearning/Disciplinas/13. Literatura/7. Literatura Brasileira - Simbolismo e Pré-Modernismo",
@@ -250,7 +251,6 @@
     "DailyLearning/Disciplinas/13. Literatura/5. Literatura Brasileira - Romantismo",
     "DailyLearning/Disciplinas/13. Literatura/4. Literatura Brasileira - Quinhentismo ao Arcadismo",
     "DailyLearning/Disciplinas/13. Literatura/3. Literatura Portuguesa - Barroco ao Romantismo",
-    "DailyLearning/Prompts.canvas",
     "Sem título.canvas"
   ]
 }
