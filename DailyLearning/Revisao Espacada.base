@@ -46,8 +46,6 @@ views:
       - R3
       - R4
     sort:
-      - property: formula.proximo_estudo
-        direction: DESC
       - property: formula.primeiro_contato
         direction: DESC
     columnSize:
