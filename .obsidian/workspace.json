@@ -21,17 +21,16 @@
             }
           },
           {
-            "id": "29f2edaab1e0e92d",
+            "id": "c3e792059e2f3b4c",
             "type": "leaf",
             "state": {
-              "type": "markdown",
+              "type": "bases",
               "state": {
-                "file": "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/1. Propriedades e estados físicos da matéria-.md",
-                "mode": "source",
-                "source": false
+                "file": "DailyLearning/RunBook.base",
+                "viewName": "Revisão Espaçada"
               },
-              "icon": "lucide-file",
-              "title": "1. Propriedades e estados físicos da matéria-"
+              "icon": "lucide-table",
+              "title": "RunBook"
             }
           }
         ]
@@ -227,16 +226,18 @@
   },
   "active": "e7a7b303c61786dc",
   "lastOpenFiles": [
-    "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/1. Propriedades e estados físicos da matéria-.md",
-    "DailyLearning/Cronograma de Estudos.md",
+    "DailyLearning/RunBook.base",
+    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades.md",
+    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/1. Teoria dos Conjuntos.md",
     "DailyLearning/Revisao Espacada.base",
+    "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/1. Propriedades e estados físicos da matéria-.md",
+    "DailyLearning/Disciplinas/9. Sociologia/1. Fundamentos e Teoria Sociológica/1. O surgimento da Sociologia e o contexto histórico.md",
+    "DailyLearning/Cronograma de Estudos.md",
     "DailyLearning/Disciplinas/8. Filosofia/1. História da Filosofia/1. Pré-socráticos e a origem da filosofia.md",
     "DailyLearning/Prompts.canvas",
     "DailyLearning/Allshit.md",
     "Dashboard.md",
-    "DailyLearning/Disciplinas/9. Sociologia/1. Fundamentos e Teoria Sociológica/1. O surgimento da Sociologia e o contexto histórico.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/2. Números Naturais e Inteiros.md",
-    "DailyLearning/RunBook.base",
     "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/3. Modelos atômicos-.md",
     "temp",
     "DailyLearning/Disciplinas/10. Educação Fisica/3. Linguagem Corporal e Expressão/4. Códigos e Símbolos.md",
@@ -255,8 +256,6 @@
     "DailyLearning/Disciplinas/13. Literatura/8. Literatura Brasileira - Modernismo/2. Segunda Fase Modernista (1930-1945).md",
     "DailyLearning/Disciplinas/13. Literatura/8. Literatura Brasileira - Modernismo/1. Primeira Fase Modernista (1922-1930).md",
     "DailyLearning/Disciplinas/13. Literatura/7. Literatura Brasileira - Simbolismo e Pré-Modernismo/2. Pré-Modernismo.md",
-    "DailyLearning/Disciplinas/13. Literatura/7. Literatura Brasileira - Simbolismo e Pré-Modernismo/1. Simbolismo.md",
-    "DailyLearning/Disciplinas/13. Literatura/6. Literatura Brasileira - Realismo, Naturalismo e Parnasianismo/3. Parnasianismo.md",
     "DailyLearning/Disciplinas/13. Literatura/9. Literatura Contemporânea Brasileira",
     "DailyLearning/Disciplinas/13. Literatura/8. Literatura Brasileira - Modernismo",
     "DailyLearning/Disciplinas/13. Literatura/7. Literatura Brasileira - Simbolismo e Pré-Modernismo",
