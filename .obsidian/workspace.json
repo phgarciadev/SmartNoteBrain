@@ -11,26 +11,14 @@
             "id": "e7a7b303c61786dc",
             "type": "leaf",
             "state": {
-              "type": "bases",
+              "type": "markdown",
               "state": {
-                "file": "DailyLearning/Revisao Espacada.base",
-                "viewName": "Revisão Espaçada"
+                "file": "Dashboard.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "lucide-table",
-              "title": "Revisao Espacada"
-            }
-          },
-          {
-            "id": "c3e792059e2f3b4c",
-            "type": "leaf",
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "DailyLearning/RunBook.base",
-                "viewName": "Revisão Espaçada"
-              },
-              "icon": "lucide-table",
-              "title": "RunBook"
+              "icon": "lucide-file",
+              "title": "Dashboard"
             }
           }
         ]
@@ -226,10 +214,10 @@
   },
   "active": "e7a7b303c61786dc",
   "lastOpenFiles": [
+    "DailyLearning/Revisao Espacada.base",
     "DailyLearning/RunBook.base",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/1. Teoria dos Conjuntos.md",
-    "DailyLearning/Revisao Espacada.base",
     "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/1. Propriedades e estados físicos da matéria-.md",
     "DailyLearning/Disciplinas/9. Sociologia/1. Fundamentos e Teoria Sociológica/1. O surgimento da Sociologia e o contexto histórico.md",
     "DailyLearning/Cronograma de Estudos.md",
