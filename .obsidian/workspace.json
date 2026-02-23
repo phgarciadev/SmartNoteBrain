@@ -4,21 +4,53 @@
     "type": "split",
     "children": [
       {
-        "id": "4509724f8bf84da7",
+        "id": "ab1214f38cab78f3",
         "type": "tabs",
         "children": [
           {
-            "id": "e7a7b303c61786dc",
+            "id": "d97b0520921f2634",
             "type": "leaf",
+            "pinned": true,
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Dashboard.md",
+                "file": "DailyLearning/Cronograma de Estudos.md",
                 "mode": "source",
                 "source": false
               },
+              "pinned": true,
               "icon": "lucide-file",
-              "title": "Dashboard"
+              "title": "Cronograma de Estudos"
+            }
+          },
+          {
+            "id": "cfddd22420d64996",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "bases",
+              "state": {
+                "file": "DailyLearning/RunBook.base",
+                "viewName": "Revisão Espaçada"
+              },
+              "pinned": true,
+              "icon": "lucide-table",
+              "title": "RunBook"
+            }
+          },
+          {
+            "id": "9cf64a3f32ecec57",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "bases",
+              "state": {
+                "file": "DailyLearning/Revisao Espacada.base",
+                "viewName": "Revisão Espaçada"
+              },
+              "pinned": true,
+              "icon": "lucide-table",
+              "title": "Revisao Espacada"
             }
           }
         ]
@@ -212,17 +244,18 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "e7a7b303c61786dc",
+  "active": "d97b0520921f2634",
   "lastOpenFiles": [
-    "Dashboard.md",
-    "DailyLearning/Cronograma de Estudos.md",
+    "DailyLearning/RunBook.base",
     "DailyLearning/Revisao Espacada.base",
+    "DailyLearning/Cronograma de Estudos.md",
+    "DailyLearning/Disciplinas/11. Artes/3. Elementos da Linguagem e Processos de Criação/1. Sintaxe e Morfologia da Linguagem Artística.md",
+    "Dashboard.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/3. Síntese Proteica e Expressão Gênica.md",
     "DailyLearning/Disciplinas/12. Atualidades/1. Geopolítica e Relações Internacionais/1. Nova Ordem Mundial e Multipolaridade.md",
     "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/1. Espaço geográfico e sua produção.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/1. Teoria dos Conjuntos.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/3. Notação Científica e Algarismos Significativos.md",
-    "DailyLearning/RunBook.base",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades.md",
     "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/1. Propriedades e estados físicos da matéria-.md",
     "DailyLearning/Disciplinas/9. Sociologia/1. Fundamentos e Teoria Sociológica/1. O surgimento da Sociologia e o contexto histórico.md",
@@ -243,7 +276,6 @@
     "DailyLearning/Prompts",
     "DailyLearning/Disciplinas/13. Literatura/9. Literatura Contemporânea Brasileira/3. Prosa Contemporânea.md",
     "DailyLearning/Disciplinas/13. Literatura/9. Literatura Contemporânea Brasileira/2. Poesia Marginal-Geração Mimeógrafo.md",
-    "DailyLearning/Disciplinas/13. Literatura/9. Literatura Contemporânea Brasileira/1. Poesia Concreta e Tendências Experimentais.md",
     "DailyLearning/Disciplinas/13. Literatura/9. Literatura Contemporânea Brasileira",
     "DailyLearning/Disciplinas/13. Literatura/8. Literatura Brasileira - Modernismo",
     "DailyLearning/Disciplinas/13. Literatura/7. Literatura Brasileira - Simbolismo e Pré-Modernismo",
