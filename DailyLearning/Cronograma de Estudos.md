@@ -1,4 +1,4 @@
-# 🧠 Cr.onograma Semanal de Estudos Otimizado (Neurociência Aplicada)
+# 🧠 Cr..0onograma Semanal de Estudos Otimizado (Neurociência Aplicada)
 > **Foco: Retenção de Longo Prazo e Flexibilidade Cognitiva**
 > Estratégia: *High-Frequency Interleaving* (Alta Alternância), *Spacing Effect* (Espaçamento) e *Variabilidade Contextual*.
 
