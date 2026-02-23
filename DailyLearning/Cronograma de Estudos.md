@@ -6,12 +6,12 @@
 
 ## 🔬 Princípios Neurocientíficos Deste Cronograma
 
-| Princípio | O que mudou? | Por que funciona? |
-|-----------|--------------|-------------------|
-| **Interleaving Rigoroso** | Blocos de máx. 1h por área. | Força o cérebro a recarregar o contexto a cada troca, fortalecendo a recuperação ativa. |
-| **Recuperação Cognitiva** | Exatas intercaladas com Linguagens/Humanas. | Usa diferentes redes neurais, permitindo descanso ativo de uma área enquanto exercita outra. |
+| Princípio                    | O que mudou?                                             | Por que funciona?                                                                                                         |
+| ---------------------------- | -------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| **Interleaving Rigoroso**    | Blocos de máx. 1h por área.                              | Força o cérebro a recarregar o contexto a cada troca, fortalecendo a recuperação ativa.                                   |
+| **Recuperação Cognitiva**    | Exatas intercaladas com Linguagens/Humanas.              | Usa diferentes redes neurais, permitindo descanso ativo de uma área enquanto exercita outra.                              |
 | **Variabilidade Contextual** | A mesma matéria nunca cai sempre no mesmo horário/ordem. | Quebra a dependência de pistas contextuais (ex: "só sei matemática se for as 18h"), tornando o conhecimento mais robusto. |
-| **Spacing Distribuído** | Matérias distribuídas ao longo da semana. | A curva de esquecimento é combatida com reconsolidações frequentes. |
+| **Spacing Distribuído**      | Matérias distribuídas ao longo da semana.                | A curva de esquecimento é combatida com reconsolidações frequentes.                                                       |
 
 ---
 
