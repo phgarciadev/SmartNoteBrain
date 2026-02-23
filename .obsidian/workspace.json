@@ -4,53 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "a01700a7789685cd",
+        "id": "4509724f8bf84da7",
         "type": "tabs",
         "children": [
           {
-            "id": "205997d79cbe91a2",
+            "id": "e7a7b303c61786dc",
             "type": "leaf",
-            "pinned": true,
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DailyLearning/Cronograma de Estudos.md",
+                "file": "Dashboard.md",
                 "mode": "source",
                 "source": false
               },
-              "pinned": true,
               "icon": "lucide-file",
-              "title": "Cronograma de Estudos"
-            }
-          },
-          {
-            "id": "da1bc49c171ca620",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "DailyLearning/RunBook.base",
-                "viewName": "Revisão Espaçada"
-              },
-              "pinned": true,
-              "icon": "lucide-table",
-              "title": "RunBook"
-            }
-          },
-          {
-            "id": "7c9d975d4a3e7515",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "DailyLearning/Revisao Espacada.base",
-                "viewName": "Revisão Espaçada"
-              },
-              "pinned": true,
-              "icon": "lucide-table",
-              "title": "Revisao Espacada"
+              "title": "Dashboard"
             }
           }
         ]
@@ -244,15 +212,15 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "205997d79cbe91a2",
+  "active": "e7a7b303c61786dc",
   "lastOpenFiles": [
+    "DailyLearning/Cronograma de Estudos.md",
     "DailyLearning/RunBook.base",
     "DailyLearning/Revisao Espacada.base",
     "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/1. Teoria dos Conjuntos.md",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
-    "DailyLearning/Cronograma de Estudos.md",
     "Dashboard.md",
     "DailyLearning/Disciplinas/11. Artes/3. Elementos da Linguagem e Processos de Criação/1. Sintaxe e Morfologia da Linguagem Artística.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/3. Síntese Proteica e Expressão Gênica.md",
