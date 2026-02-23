@@ -8,17 +8,49 @@
         "type": "tabs",
         "children": [
           {
-            "id": "e7a7b303c61786dc",
+            "id": "6dbda3ebddf94359",
             "type": "leaf",
+            "pinned": true,
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Dashboard.md",
+                "file": "DailyLearning/Cronograma de Estudos.md",
                 "mode": "source",
                 "source": false
               },
+              "pinned": true,
               "icon": "lucide-file",
-              "title": "Dashboard"
+              "title": "Cronograma de Estudos"
+            }
+          },
+          {
+            "id": "74aed641e13f525c",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "bases",
+              "state": {
+                "file": "DailyLearning/Revisao Espacada.base",
+                "viewName": "Revisão Espaçada"
+              },
+              "pinned": true,
+              "icon": "lucide-table",
+              "title": "Revisao Espacada"
+            }
+          },
+          {
+            "id": "e01430ee113f7342",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "bases",
+              "state": {
+                "file": "DailyLearning/RunBook.base",
+                "viewName": "Revisão Espaçada"
+              },
+              "pinned": true,
+              "icon": "lucide-table",
+              "title": "RunBook"
             }
           }
         ]
@@ -212,16 +244,16 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "e7a7b303c61786dc",
+  "active": "6dbda3ebddf94359",
   "lastOpenFiles": [
-    "DailyLearning/Cronograma de Estudos.md",
     "DailyLearning/RunBook.base",
     "DailyLearning/Revisao Espacada.base",
+    "Dashboard.md",
+    "DailyLearning/Cronograma de Estudos.md",
     "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/1. Teoria dos Conjuntos.md",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
-    "Dashboard.md",
     "DailyLearning/Disciplinas/11. Artes/3. Elementos da Linguagem e Processos de Criação/1. Sintaxe e Morfologia da Linguagem Artística.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/3. Síntese Proteica e Expressão Gênica.md",
     "DailyLearning/Disciplinas/12. Atualidades/1. Geopolítica e Relações Internacionais/1. Nova Ordem Mundial e Multipolaridade.md",
