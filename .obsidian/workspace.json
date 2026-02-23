@@ -4,53 +4,21 @@
     "type": "split",
     "children": [
       {
-        "id": "ab1214f38cab78f3",
+        "id": "4509724f8bf84da7",
         "type": "tabs",
         "children": [
           {
-            "id": "d97b0520921f2634",
+            "id": "e7a7b303c61786dc",
             "type": "leaf",
-            "pinned": true,
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DailyLearning/Cronograma de Estudos.md",
+                "file": "Dashboard.md",
                 "mode": "source",
                 "source": false
               },
-              "pinned": true,
               "icon": "lucide-file",
-              "title": "Cronograma de Estudos"
-            }
-          },
-          {
-            "id": "cfddd22420d64996",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "DailyLearning/RunBook.base",
-                "viewName": "Revisão Espaçada"
-              },
-              "pinned": true,
-              "icon": "lucide-table",
-              "title": "RunBook"
-            }
-          },
-          {
-            "id": "9cf64a3f32ecec57",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "DailyLearning/Revisao Espacada.base",
-                "viewName": "Revisão Espaçada"
-              },
-              "pinned": true,
-              "icon": "lucide-table",
-              "title": "Revisao Espacada"
+              "title": "Dashboard"
             }
           }
         ]
@@ -244,11 +212,11 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "d97b0520921f2634",
+  "active": "e7a7b303c61786dc",
   "lastOpenFiles": [
+    "DailyLearning/Cronograma de Estudos.md",
     "DailyLearning/RunBook.base",
     "DailyLearning/Revisao Espacada.base",
-    "DailyLearning/Cronograma de Estudos.md",
     "DailyLearning/Disciplinas/11. Artes/3. Elementos da Linguagem e Processos de Criação/1. Sintaxe e Morfologia da Linguagem Artística.md",
     "Dashboard.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/3. Síntese Proteica e Expressão Gênica.md",
