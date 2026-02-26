@@ -4,71 +4,20 @@
     "type": "split",
     "children": [
       {
-        "id": "fea68e57512ce156",
+        "id": "4509724f8bf84da7",
         "type": "tabs",
         "children": [
           {
-            "id": "1ea2301453fab9f6",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "DailyLearning/RunBook.base",
-                "viewName": "Revisão Espaçada"
-              },
-              "pinned": true,
-              "icon": "lucide-table",
-              "title": "RunBook"
-            }
-          },
-          {
-            "id": "077c5e294fbd529f",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "DailyLearning/Revisao Espacada.base",
-                "viewName": "Revisão Espaçada"
-              },
-              "pinned": true,
-              "icon": "lucide-table",
-              "title": "Revisao Espacada"
-            }
-          },
-          {
-            "id": "10db8d928826cc26",
+            "id": "e7a7b303c61786dc",
             "type": "leaf",
             "state": {
-              "type": "markdown",
-              "state": {
-                "file": "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/3. Notação Científica e Algarismos Significativos.md",
-                "mode": "source",
-                "source": false
-              },
+              "type": "empty",
+              "state": {},
               "icon": "lucide-file",
-              "title": "3. Notação Científica e Algarismos Significativos"
-            }
-          },
-          {
-            "id": "c970b6c64fa72d6e",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "DailyLearning/Cronograma de Estudos.md",
-                "mode": "source",
-                "source": false
-              },
-              "pinned": true,
-              "icon": "lucide-file",
-              "title": "Cronograma de Estudos"
+              "title": "Nova aba"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -259,12 +208,13 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "077c5e294fbd529f",
+  "active": "e7a7b303c61786dc",
   "lastOpenFiles": [
-    "DailyLearning/RunBook.base",
+    "DailyLearning/Disciplinas/12. Atualidades/1. Geopolítica e Relações Internacionais/1. Nova Ordem Mundial e Multipolaridade.md",
     "DailyLearning/Revisao Espacada.base",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/3. Notação Científica e Algarismos Significativos.md",
     "DailyLearning/Cronograma de Estudos.md",
+    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/3. Notação Científica e Algarismos Significativos.md",
+    "DailyLearning/RunBook.base",
     "Dashboard.md",
     "DailyLearning/Disciplinas/6. História/1. Teoria da História e Historiografia.md",
     "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/1. Propriedades e estados físicos da matéria-.md",
@@ -276,7 +226,6 @@
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
     "DailyLearning/Disciplinas/11. Artes/3. Elementos da Linguagem e Processos de Criação/1. Sintaxe e Morfologia da Linguagem Artística.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/3. Síntese Proteica e Expressão Gênica.md",
-    "DailyLearning/Disciplinas/12. Atualidades/1. Geopolítica e Relações Internacionais/1. Nova Ordem Mundial e Multipolaridade.md",
     "DailyLearning/Disciplinas/9. Sociologia/1. Fundamentos e Teoria Sociológica/1. O surgimento da Sociologia e o contexto histórico.md",
     "DailyLearning/Disciplinas/8. Filosofia/1. História da Filosofia/1. Pré-socráticos e a origem da filosofia.md",
     "DailyLearning/Prompts.canvas",
