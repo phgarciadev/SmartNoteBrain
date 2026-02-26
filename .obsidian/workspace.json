@@ -68,7 +68,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -259,11 +259,12 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "10db8d928826cc26",
+  "active": "077c5e294fbd529f",
   "lastOpenFiles": [
-    "DailyLearning/Revisao Espacada.base",
-    "DailyLearning/Cronograma de Estudos.md",
     "DailyLearning/RunBook.base",
+    "DailyLearning/Revisao Espacada.base",
+    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/3. Notação Científica e Algarismos Significativos.md",
+    "DailyLearning/Cronograma de Estudos.md",
     "Dashboard.md",
     "DailyLearning/Disciplinas/6. História/1. Teoria da História e Historiografia.md",
     "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/1. Propriedades e estados físicos da matéria-.md",
@@ -276,7 +277,6 @@
     "DailyLearning/Disciplinas/11. Artes/3. Elementos da Linguagem e Processos de Criação/1. Sintaxe e Morfologia da Linguagem Artística.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/3. Síntese Proteica e Expressão Gênica.md",
     "DailyLearning/Disciplinas/12. Atualidades/1. Geopolítica e Relações Internacionais/1. Nova Ordem Mundial e Multipolaridade.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/3. Notação Científica e Algarismos Significativos.md",
     "DailyLearning/Disciplinas/9. Sociologia/1. Fundamentos e Teoria Sociológica/1. O surgimento da Sociologia e o contexto histórico.md",
     "DailyLearning/Disciplinas/8. Filosofia/1. História da Filosofia/1. Pré-socráticos e a origem da filosofia.md",
     "DailyLearning/Prompts.canvas",
