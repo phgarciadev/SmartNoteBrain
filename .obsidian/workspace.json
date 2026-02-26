@@ -4,24 +4,57 @@
     "type": "split",
     "children": [
       {
-        "id": "4509724f8bf84da7",
+        "id": "fea68e57512ce156",
         "type": "tabs",
         "children": [
           {
-            "id": "e7a7b303c61786dc",
+            "id": "1ea2301453fab9f6",
             "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "bases",
+              "state": {
+                "file": "DailyLearning/RunBook.base",
+                "viewName": "Revisão Espaçada"
+              },
+              "pinned": true,
+              "icon": "lucide-table",
+              "title": "RunBook"
+            }
+          },
+          {
+            "id": "077c5e294fbd529f",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "bases",
+              "state": {
+                "file": "DailyLearning/Revisao Espacada.base",
+                "viewName": "Revisão Espaçada"
+              },
+              "pinned": true,
+              "icon": "lucide-table",
+              "title": "Revisao Espacada"
+            }
+          },
+          {
+            "id": "c970b6c64fa72d6e",
+            "type": "leaf",
+            "pinned": true,
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Dashboard.md",
+                "file": "DailyLearning/Cronograma de Estudos.md",
                 "mode": "source",
                 "source": false
               },
+              "pinned": true,
               "icon": "lucide-file",
-              "title": "Dashboard"
+              "title": "Cronograma de Estudos"
             }
           }
-        ]
+        ],
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -212,16 +245,16 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "e7a7b303c61786dc",
+  "active": "077c5e294fbd529f",
   "lastOpenFiles": [
-    "DailyLearning/Disciplinas/6. História/1. Teoria da História e Historiografia.md",
+    "DailyLearning/Cronograma de Estudos.md",
+    "DailyLearning/RunBook.base",
     "DailyLearning/Revisao Espacada.base",
+    "Dashboard.md",
+    "DailyLearning/Disciplinas/6. História/1. Teoria da História e Historiografia.md",
     "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/1. Propriedades e estados físicos da matéria-.md",
     "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/1. Espaço geográfico e sua produção.md",
-    "DailyLearning/Cronograma de Estudos.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/1. Componentes Químicos da Célula.md",
-    "DailyLearning/RunBook.base",
-    "Dashboard.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/1. Teoria dos Conjuntos.md",
     "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/1. Gêneros Literários.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/1. & 2. - Grandezas Físicas e Processos de Medida & Sistemas de Unidades.md",
