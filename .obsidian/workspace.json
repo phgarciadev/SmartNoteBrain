@@ -39,6 +39,20 @@
             }
           },
           {
+            "id": "bcbe4fff8ba78ed7",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/2. Procedimentos de Leitura.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "2. Procedimentos de Leitura"
+            }
+          },
+          {
             "id": "6b410f354e3e0089",
             "type": "leaf",
             "state": {
@@ -53,21 +67,21 @@
             }
           },
           {
-            "id": "9428ad9290d75394",
+            "id": "82b0ca982067a5c8",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DailyLearning/Disciplinas/11. Artes/1. História da Arte.md",
+                "file": "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/2. Números Naturais e Inteiros.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "1. História da Arte"
+              "title": "2. Números Naturais e Inteiros"
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -260,12 +274,13 @@
   },
   "active": "6b410f354e3e0089",
   "lastOpenFiles": [
+    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/2. Procedimentos de Leitura.md",
+    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/linkdonotebooklm.md",
+    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/2. Números Naturais e Inteiros.md",
     "DailyLearning/Revisao Espacada.base",
     "DailyLearning/Disciplinas/6. História/2. História Antiga/1. Antiguidade Oriental-.md",
-    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/2. Números Naturais e Inteiros.md",
-    "DailyLearning/Disciplinas/11. Artes/1. História da Arte.md",
-    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/linkdonotebooklm.md",
     "DailyLearning/Cronograma de Estudos.md",
+    "DailyLearning/Disciplinas/11. Artes/1. História da Arte.md",
     "DailyLearning/RunBook.base",
     "Dashboard.md",
     "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/2. Território e territorialidade.md",
