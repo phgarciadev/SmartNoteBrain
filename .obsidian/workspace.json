@@ -8,16 +8,66 @@
         "type": "tabs",
         "children": [
           {
-            "id": "e7a7b303c61786dc",
+            "id": "a845a67656d67b33",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "DailyLearning/Cronograma de Estudos.md",
+                "mode": "source",
+                "source": false
+              },
+              "pinned": true,
+              "icon": "lucide-file",
+              "title": "Cronograma de Estudos"
+            }
+          },
+          {
+            "id": "6c3887d5c785a6e3",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "bases",
+              "state": {
+                "file": "DailyLearning/Revisao Espacada.base",
+                "viewName": "Revisão Espaçada"
+              },
+              "pinned": true,
+              "icon": "lucide-table",
+              "title": "Revisao Espacada"
+            }
+          },
+          {
+            "id": "6b410f354e3e0089",
             "type": "leaf",
             "state": {
-              "type": "empty",
-              "state": {},
+              "type": "markdown",
+              "state": {
+                "file": "DailyLearning/Disciplinas/6. História/2. História Antiga/1. Antiguidade Oriental-.md",
+                "mode": "source",
+                "source": false
+              },
               "icon": "lucide-file",
-              "title": "Nova aba"
+              "title": "1. Antiguidade Oriental-"
+            }
+          },
+          {
+            "id": "9428ad9290d75394",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "DailyLearning/Disciplinas/11. Artes/1. História da Arte.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "1. História da Arte"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -208,17 +258,20 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "e7a7b303c61786dc",
+  "active": "6b410f354e3e0089",
   "lastOpenFiles": [
-    "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/2. Território e territorialidade.md",
     "DailyLearning/Revisao Espacada.base",
+    "DailyLearning/Disciplinas/6. História/2. História Antiga/1. Antiguidade Oriental-.md",
+    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/2. Números Naturais e Inteiros.md",
+    "DailyLearning/Disciplinas/11. Artes/1. História da Arte.md",
+    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/linkdonotebooklm.md",
+    "DailyLearning/Cronograma de Estudos.md",
+    "DailyLearning/RunBook.base",
+    "Dashboard.md",
+    "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/2. Território e territorialidade.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/3. Notação Científica e Algarismos Significativos.md",
     "DailyLearning/Disciplinas/12. Atualidades/1. Geopolítica e Relações Internacionais/1. Nova Ordem Mundial e Multipolaridade.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/2. Ácidos Nucleicos e Código Genético.md",
-    "DailyLearning/RunBook.base",
-    "Dashboard.md",
-    "DailyLearning/Cronograma de Estudos.md",
-    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/linkdonotebooklm.md",
     "DailyLearning/Prompts.canvas",
     "DailyLearning/Disciplinas/6. História/1. Teoria da História e Historiografia.md",
     "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/1. Propriedades e estados físicos da matéria-.md",
@@ -233,12 +286,9 @@
     "DailyLearning/Disciplinas/9. Sociologia/1. Fundamentos e Teoria Sociológica/1. O surgimento da Sociologia e o contexto histórico.md",
     "DailyLearning/Disciplinas/8. Filosofia/1. História da Filosofia/1. Pré-socráticos e a origem da filosofia.md",
     "DailyLearning/Allshit.md",
-    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/2. Números Naturais e Inteiros.md",
     "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/3. Modelos atômicos-.md",
     "temp",
     "DailyLearning/Disciplinas/10. Educação Fisica/3. Linguagem Corporal e Expressão/4. Códigos e Símbolos.md",
-    "Allshit.md",
-    "DailyLearning/Prompts/GenVidPersonalization.md",
     "DailyLearning/Prompts",
     "DailyLearning/Disciplinas/13. Literatura/9. Literatura Contemporânea Brasileira",
     "DailyLearning/Disciplinas/13. Literatura/8. Literatura Brasileira - Modernismo",
