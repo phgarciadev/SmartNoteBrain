@@ -8,18 +8,17 @@
         "type": "tabs",
         "children": [
           {
-            "id": "358543b9f55b81bb",
+            "id": "33e794c6ad5cdb22",
             "type": "leaf",
             "pinned": true,
             "state": {
-              "type": "bases",
+              "type": "html-view",
               "state": {
-                "file": "DailyLearning/RunBook.base",
-                "viewName": "Revisão Espaçada"
+                "file": "Dashboard.html"
               },
               "pinned": true,
-              "icon": "lucide-table",
-              "title": "RunBook"
+              "icon": "code-glyph",
+              "title": "Dashboard"
             }
           },
           {
@@ -38,15 +37,32 @@
             }
           },
           {
-            "id": "33e794c6ad5cdb22",
+            "id": "6e233082f63fb959",
             "type": "leaf",
             "state": {
-              "type": "html-view",
+              "type": "markdown",
               "state": {
-                "file": "Dashboard.html"
+                "file": "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/3. Coesão Textual.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "code-glyph",
-              "title": "Dashboard"
+              "icon": "lucide-file",
+              "title": "3. Coesão Textual"
+            }
+          },
+          {
+            "id": "358543b9f55b81bb",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "bases",
+              "state": {
+                "file": "DailyLearning/RunBook.base",
+                "viewName": "Revisão Espaçada"
+              },
+              "pinned": true,
+              "icon": "lucide-table",
+              "title": "RunBook"
             }
           }
         ],
@@ -241,25 +257,25 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "33e794c6ad5cdb22",
+  "active": "6e233082f63fb959",
   "lastOpenFiles": [
+    "DailyLearning/Revisao Espacada.base",
+    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/3. Coesão Textual.md",
+    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/3. Divisibilidade e Fatoração.md",
+    "DailyLearning/RunBook.base",
+    "Dashboard.html",
     "DailyLearning/Allshit.md",
     "DailyLearning/Cronograma de Estudos.md",
-    "Dashboard.html",
     "Dashboard.md",
     "semtitulo.html",
-    "DailyLearning/Revisao Espacada.base",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/4. Coerência Textual.md",
     "DailyLearning/Prompts/DeepSearch.md",
     "PyScripts/generate_dashboard.py",
-    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/3. Divisibilidade e Fatoração.md",
     "semtitulo.html.md",
     "Sem título.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/linkdonotebooklm.md",
     "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/2. Elementos da Narrativa.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. Ordens de Grandeza e Estimativas.md",
-    "DailyLearning/RunBook.base",
-    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/3. Coesão Textual.md",
     "DailyLearning/Prompts.canvas",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/5. Números Racionais e Frações.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/6. Números Reais e Irracionais.md",
