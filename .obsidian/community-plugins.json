@@ -11,5 +11,8 @@
   "obsidian-git",
   "obsidian-shellcommands",
   "cursor-integration",
-  "obsidian-html-plugin"
+  "obsidian-html-plugin",
+  "obsidian-style-settings",
+  "css-snippets",
+  "obsidian-custom-frames"
 ]

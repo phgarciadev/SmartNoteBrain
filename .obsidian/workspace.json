@@ -52,9 +52,21 @@
               "icon": "lucide-table",
               "title": "Revisao Espacada"
             }
+          },
+          {
+            "id": "e4d62f52360c9359",
+            "type": "leaf",
+            "state": {
+              "type": "html-view",
+              "state": {
+                "file": "Dashboard.html"
+              },
+              "icon": "code-glyph",
+              "title": "Dashboard"
+            }
           }
         ],
-        "currentTab": 2
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -245,14 +257,17 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "b319895822a7e61c",
+  "active": "e4d62f52360c9359",
   "lastOpenFiles": [
+    "Dashboard.md",
+    "DailyLearning/Revisao Espacada.base",
+    "Dashboard.html",
+    "PyScripts/generate_dashboard.py",
     "semtitulo.html",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/3. Divisibilidade e Fatoração.md",
     "semtitulo.html.md",
     "Sem título.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/linkdonotebooklm.md",
-    "DailyLearning/Revisao Espacada.base",
     "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/2. Elementos da Narrativa.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. Ordens de Grandeza e Estimativas.md",
     "DailyLearning/RunBook.base",
@@ -281,8 +296,6 @@
     "DailyLearning/Disciplinas/13. Literatura/9. Literatura Contemporânea Brasileira",
     "DailyLearning/Disciplinas/13. Literatura/8. Literatura Brasileira - Modernismo",
     "DailyLearning/Disciplinas/13. Literatura/7. Literatura Brasileira - Simbolismo e Pré-Modernismo",
-    "DailyLearning/Disciplinas/13. Literatura/6. Literatura Brasileira - Realismo, Naturalismo e Parnasianismo",
-    "DailyLearning/Disciplinas/13. Literatura/5. Literatura Brasileira - Romantismo",
     "Sem título.canvas"
   ]
 }
