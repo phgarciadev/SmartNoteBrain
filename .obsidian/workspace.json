@@ -35,6 +35,20 @@
             }
           },
           {
+            "id": "f150a422c4a0cc57",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "DailyLearning/Disciplinas/6. História/2. História Antiga/1. Antiguidade Oriental-.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "1. Antiguidade Oriental-"
+            }
+          },
+          {
             "id": "2851cb64baf6b1fa",
             "type": "leaf",
             "state": {
@@ -47,23 +61,9 @@
               "icon": "lucide-file",
               "title": "2. Território e territorialidade"
             }
-          },
-          {
-            "id": "97bb1b47cbf82f11",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/2. Ácidos Nucleicos e Código Genético.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "2. Ácidos Nucleicos e Código Genético"
-            }
           }
         ],
-        "currentTab": 1
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -254,16 +254,16 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "f46171fc223ed38b",
+  "active": "2851cb64baf6b1fa",
   "lastOpenFiles": [
-    "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/2. Território e territorialidade.md",
-    "DailyLearning/Revisao Espacada.base",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/2. Ácidos Nucleicos e Código Genético.md",
+    "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/2. Território e territorialidade.md",
+    "DailyLearning/Disciplinas/6. História/2. História Antiga/1. Antiguidade Oriental-.md",
+    "DailyLearning/Revisao Espacada.base",
     "Dashboard.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/2. Números Naturais e Inteiros.md",
     "DailyLearning/Disciplinas/11. Artes/1. História da Arte.md",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/2. Procedimentos de Leitura.md",
-    "DailyLearning/Disciplinas/6. História/2. História Antiga/1. Antiguidade Oriental-.md",
     "DailyLearning/Cronograma de Estudos.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/linkdonotebooklm.md",
     "DailyLearning/RunBook.base",
