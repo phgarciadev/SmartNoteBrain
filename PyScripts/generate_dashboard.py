@@ -135,9 +135,13 @@ def build_dashboard_data(pages: list[dict]) -> dict:
         key=lambda x: x["primeiro_contato"], reverse=True
     )[:8]
 
+    meses = [
+        "", "Janeiro", "Fevereiro", "Março", "Abril", "Maio", "Junho",
+        "Julho", "Agosto", "Setembro", "Outubro", "Novembro", "Dezembro",
+    ]
     return {
         "generated": today.isoformat(),
-        "today_display": today.strftime("%d de %B de %Y"),
+        "today_display": f"{today.day:02d} de {meses[today.month]} de {today.year}",
         "weekday": ["Segunda", "Terça", "Quarta", "Quinta", "Sexta", "Sábado", "Domingo"][today.weekday()],
         "total": total,
         "iniciados": len(iniciados),

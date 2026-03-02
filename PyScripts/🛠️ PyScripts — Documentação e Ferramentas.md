@@ -53,9 +53,26 @@ action Shell commands: Execute: python3 add_buttons.py
 
 ---
 
+### 4. `generate_dashboard.py`
+Gera `Dashboard.html` na raiz do vault — um dashboard visual estilo Notion com dark theme.
 
+**Dados exibidos (lidos do frontmatter):**
+- Estatísticas gerais (total, estudados, R1–R4)
+- Progresso geral com barra animada
+- Revisões pendentes (revisão espaçada)
+- Progresso por disciplina
+- Últimos tópicos estudados
+- Links rápidos (RunBook, Revisão Espaçada, Disciplinas)
+
+```button
+name ▶️ Gerar Dashboard HTML
+type command
+action Shell commands: Execute: python3 generate_dashboard.py
+```
 
 ---
+
+
 
 ## 📁 Estrutura de Pastas
 
