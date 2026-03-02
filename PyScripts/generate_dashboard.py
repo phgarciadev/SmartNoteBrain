@@ -38,6 +38,58 @@ ACCENT_COLORS = [
     ("#C85B8E", "rgba(200,91,142,0.12)"),    # pink
 ]
 
+# Cronograma semanal: weekday index (0=Mon) → lista de disciplinas do dia
+CRONOGRAMA = {
+    0: ["Matemática", "Língua Portuguesa", "Física", "Literatura"],       # Segunda
+    1: ["Química", "História", "Biologia", "Geografia"],                  # Terça
+    2: ["Filosofia", "Matemática", "Sociologia", "Química"],              # Quarta
+    3: ["Física", "Atualidades", "Biologia", "Geografia"],                # Quinta
+    4: ["Matemática", "Artes", "História", "Língua Portuguesa"],          # Sexta
+    5: ["Física", "Educação Fisica", "Química", "Biologia"],              # Sábado
+    6: ["Sociologia", "Filosofia"],                                       # Domingo
+}
+
+
+def find_next_topics(pages: list[dict], today_weekday: int) -> list[dict]:
+    """Para cada disciplina do dia, encontra o próximo tópico não iniciado
+    em cada assunto (o primeiro não-iniciado após o último iniciado)."""
+    disciplinas_hoje = CRONOGRAMA.get(today_weekday, [])
+    # Unique, mantendo ordem
+    disc_unique = list(dict.fromkeys(disciplinas_hoje))
+
+    # Agrupar páginas: materia → assunto → lista de páginas (já ordenadas pelo rglob)
+    from collections import defaultdict
+    tree: dict[str, dict[str, list[dict]]] = defaultdict(lambda: defaultdict(list))
+    for p in pages:
+        tree[p["materia"]][p["assunto"]].append(p)
+
+    results = []
+    for disc in disc_unique:
+        if disc not in tree:
+            continue
+        # Encontrar o assunto com progresso mais recente (último iniciado)
+        # e pegar o próximo tópico não-iniciado nesse assunto
+        best_candidate = None
+        best_priority = (-1, "")  # (last_ini_idx, assunto) — para priorizar progresso
+
+        for assunto, topics in sorted(tree[disc].items()):
+            last_ini_idx = -1
+            for i, t in enumerate(topics):
+                if t["iniciado"]:
+                    last_ini_idx = i
+            next_idx = last_ini_idx + 1
+            if next_idx < len(topics) and not topics[next_idx]["iniciado"]:
+                # Priorizar assuntos onde já há progresso
+                priority = (1 if last_ini_idx >= 0 else 0, assunto)
+                if best_candidate is None or priority > best_priority:
+                    best_candidate = topics[next_idx]
+                    best_priority = priority
+
+        if best_candidate:
+            results.append(best_candidate)
+    return results
+
+
 # ── Leitura dos dados do vault ──────────────────────────────────────────────
 
 def parse_frontmatter(text: str) -> dict | None:
@@ -141,6 +193,11 @@ def build_html(pages: list[dict]) -> str:
 
     today_str = f"{today.day:02d} de {MESES[today.month]} de {today.year}"
     weekday_str = DIAS[today.weekday()]
+
+    # ── Tópicos a iniciar hoje ──
+    next_topics = find_next_topics(pages, today.weekday())
+    disc_hoje = CRONOGRAMA.get(today.weekday(), [])
+    disc_hoje_unique = list(dict.fromkeys(disc_hoje))
 
     # ── Pendentes ──
     pendentes = []
@@ -251,6 +308,28 @@ def build_html(pages: list[dict]) -> str:
             + '</tbody></table>'
         )
 
+    # ── Build tópicos a iniciar HTML ──
+    if not next_topics:
+        iniciar_html = '<div class="empty-state"><span class="emoji">✨</span>Nenhum tópico novo programado para hoje.</div>'
+    else:
+        iniciar_items = []
+        for t in next_topics:
+            color_fg, color_bg = materia_color(t["materia"])
+            iniciar_items.append(
+                f'<div class="iniciar-card">'
+                f'<div class="iniciar-card-header">'
+                f'<span class="iniciar-topic">{escape(t["name"])}</span>'
+                f'</div>'
+                f'<div class="iniciar-card-meta">'
+                f'<span class="materia-tag" style="background:{color_bg};color:{color_fg}">{escape(t["materia"])}</span>'
+                f'<span class="iniciar-assunto">{escape(t["assunto"])}</span>'
+                f'</div>'
+                f'</div>'
+            )
+        iniciar_html = '<div class="iniciar-grid">' + "\n".join(iniciar_items) + '</div>'
+
+    disc_hoje_str = ", ".join(disc_hoje_unique) if disc_hoje_unique else "—"
+
     # ── Final HTML ──
     return f"""<!DOCTYPE html>
 <html lang="pt-BR">
@@ -331,6 +410,46 @@ body {{
   font-size: 14px; font-weight: 600; color: var(--text-secondary);
   text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px;
   display: flex; align-items: center; gap: 8px;
+}}
+
+/* ── Iniciar Hoje (hero) ── */
+.iniciar-section {{
+  background: linear-gradient(135deg, rgba(82,156,202,0.08) 0%, rgba(157,109,215,0.08) 100%);
+  border: 1px solid rgba(82,156,202,0.15);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 36px;
+}}
+.iniciar-section .section-title {{
+  color: var(--accent-blue); margin-bottom: 6px;
+}}
+.iniciar-subtitle {{
+  font-size: 12px; color: var(--text-tertiary); margin-bottom: 16px;
+}}
+.iniciar-grid {{
+  display: flex; flex-direction: column; gap: 8px;
+}}
+.iniciar-card {{
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  transition: all var(--transition);
+}}
+.iniciar-card:hover {{
+  background: rgba(255,255,255,0.07);
+  transform: translateX(4px);
+  border-color: rgba(82,156,202,0.25);
+}}
+.iniciar-card-header {{
+  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+}}
+.iniciar-topic {{ font-size: 14px; font-weight: 600; }}
+.iniciar-card-meta {{
+  display: flex; align-items: center; gap: 8px;
+}}
+.iniciar-assunto {{
+  font-size: 11.5px; color: var(--text-tertiary);
 }}
 
 /* ── Stats Grid ── */
@@ -519,6 +638,12 @@ body {{
       <span>{today_str} — {weekday_str}</span>
     </div>
   </header>
+
+  <div class="iniciar-section">
+    <div class="section-title"><span>🎯</span> Tópicos a Iniciar Hoje</div>
+    <div class="iniciar-subtitle">Disciplinas de hoje: {disc_hoje_str} · {len(next_topics)} tópico(s) sugerido(s)</div>
+    {iniciar_html}
+  </div>
 
   <section class="section">
     <div class="section-title"><span>📊</span> Estatísticas</div>

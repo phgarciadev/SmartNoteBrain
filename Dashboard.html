@@ -79,6 +79,46 @@ body {
   display: flex; align-items: center; gap: 8px;
 }
 
+/* ── Iniciar Hoje (hero) ── */
+.iniciar-section {
+  background: linear-gradient(135deg, rgba(82,156,202,0.08) 0%, rgba(157,109,215,0.08) 100%);
+  border: 1px solid rgba(82,156,202,0.15);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 36px;
+}
+.iniciar-section .section-title {
+  color: var(--accent-blue); margin-bottom: 6px;
+}
+.iniciar-subtitle {
+  font-size: 12px; color: var(--text-tertiary); margin-bottom: 16px;
+}
+.iniciar-grid {
+  display: flex; flex-direction: column; gap: 8px;
+}
+.iniciar-card {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 14px 18px;
+  transition: all var(--transition);
+}
+.iniciar-card:hover {
+  background: rgba(255,255,255,0.07);
+  transform: translateX(4px);
+  border-color: rgba(82,156,202,0.25);
+}
+.iniciar-card-header {
+  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+}
+.iniciar-topic { font-size: 14px; font-weight: 600; }
+.iniciar-card-meta {
+  display: flex; align-items: center; gap: 8px;
+}
+.iniciar-assunto {
+  font-size: 11.5px; color: var(--text-tertiary);
+}
+
 /* ── Stats Grid ── */
 .stats-grid {
   display: grid;
@@ -265,6 +305,15 @@ body {
       <span>02 de Março de 2026 — Segunda-feira</span>
     </div>
   </header>
+
+  <div class="iniciar-section">
+    <div class="section-title"><span>🎯</span> Tópicos a Iniciar Hoje</div>
+    <div class="iniciar-subtitle">Disciplinas de hoje: Matemática, Língua Portuguesa, Física, Literatura · 4 tópico(s) sugerido(s)</div>
+    <div class="iniciar-grid"><div class="iniciar-card"><div class="iniciar-card-header"><span class="iniciar-topic">Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC)</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span><span class="iniciar-assunto">Aritmética e Conjuntos Numéricos</span></div></div>
+<div class="iniciar-card"><div class="iniciar-card-header"><span class="iniciar-topic">Coerência Textual</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(200,91,142,0.12);color:#C85B8E">Língua Portuguesa</span><span class="iniciar-assunto">Leitura e Interpretação de Texto</span></div></div>
+<div class="iniciar-card"><div class="iniciar-card-header"><span class="iniciar-topic">Análise Dimensional</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span><span class="iniciar-assunto">Fundamentos da Física</span></div></div>
+<div class="iniciar-card"><div class="iniciar-card-header"><span class="iniciar-topic">Versificação e Poética</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(198,168,56,0.12);color:#C6A838">Literatura</span><span class="iniciar-assunto">Teoria Literária e Gêneros</span></div></div></div>
+  </div>
 
   <section class="section">
     <div class="section-title"><span>📊</span> Estatísticas</div>
