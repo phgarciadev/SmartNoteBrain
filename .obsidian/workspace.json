@@ -8,52 +8,20 @@
         "type": "tabs",
         "children": [
           {
-            "id": "a845a67656d67b33",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "DailyLearning/Cronograma de Estudos.md",
-                "mode": "source",
-                "source": false
-              },
-              "pinned": true,
-              "icon": "lucide-file",
-              "title": "Cronograma de Estudos"
-            }
-          },
-          {
-            "id": "6c3887d5c785a6e3",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "DailyLearning/Revisao Espacada.base",
-                "viewName": "Revisão Espaçada"
-              },
-              "pinned": true,
-              "icon": "lucide-table",
-              "title": "Revisao Espacada"
-            }
-          },
-          {
-            "id": "6b410f354e3e0089",
+            "id": "e7a7b303c61786dc",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DailyLearning/Disciplinas/6. História/2. História Antiga/1. Antiguidade Oriental-.md",
+                "file": "Dashboard.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "1. Antiguidade Oriental-"
+              "title": "Dashboard"
             }
           }
-        ],
-        "currentTab": 2
+        ]
       }
     ],
     "direction": "vertical"
@@ -244,10 +212,10 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "6b410f354e3e0089",
+  "active": "e7a7b303c61786dc",
   "lastOpenFiles": [
-    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/2. Procedimentos de Leitura.md",
     "DailyLearning/Disciplinas/6. História/2. História Antiga/1. Antiguidade Oriental-.md",
+    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/2. Procedimentos de Leitura.md",
     "DailyLearning/Disciplinas/11. Artes/1. História da Arte.md",
     "DailyLearning/Revisao Espacada.base",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/2. Números Naturais e Inteiros.md",
