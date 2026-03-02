@@ -8,22 +8,6 @@
         "type": "tabs",
         "children": [
           {
-            "id": "02c90f5bdcac5577",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "DailyLearning/Cronograma de Estudos.md",
-                "mode": "source",
-                "source": false
-              },
-              "pinned": true,
-              "icon": "lucide-file",
-              "title": "Cronograma de Estudos"
-            }
-          },
-          {
             "id": "358543b9f55b81bb",
             "type": "leaf",
             "pinned": true,
@@ -51,6 +35,18 @@
               "pinned": true,
               "icon": "lucide-table",
               "title": "Revisao Espacada"
+            }
+          },
+          {
+            "id": "33e794c6ad5cdb22",
+            "type": "leaf",
+            "state": {
+              "type": "html-view",
+              "state": {
+                "file": "Dashboard.html"
+              },
+              "icon": "code-glyph",
+              "title": "Dashboard"
             }
           }
         ],
@@ -111,7 +107,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 472.5
+    "width": 200
   },
   "right": {
     "id": "1516f9c17b50bdbb",
@@ -245,16 +241,17 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "b319895822a7e61c",
+  "active": "33e794c6ad5cdb22",
   "lastOpenFiles": [
+    "DailyLearning/Allshit.md",
     "DailyLearning/Cronograma de Estudos.md",
-    "DailyLearning/Revisao Espacada.base",
-    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/4. Coerência Textual.md",
     "Dashboard.html",
     "Dashboard.md",
+    "semtitulo.html",
+    "DailyLearning/Revisao Espacada.base",
+    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/4. Coerência Textual.md",
     "DailyLearning/Prompts/DeepSearch.md",
     "PyScripts/generate_dashboard.py",
-    "semtitulo.html",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/3. Divisibilidade e Fatoração.md",
     "semtitulo.html.md",
     "Sem título.md",
@@ -263,7 +260,6 @@
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. Ordens de Grandeza e Estimativas.md",
     "DailyLearning/RunBook.base",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/3. Coesão Textual.md",
-    "DailyLearning/Allshit.md",
     "DailyLearning/Prompts.canvas",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/5. Números Racionais e Frações.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/6. Números Reais e Irracionais.md",
