@@ -52,21 +52,9 @@
               "icon": "lucide-table",
               "title": "Revisao Espacada"
             }
-          },
-          {
-            "id": "e4d62f52360c9359",
-            "type": "leaf",
-            "state": {
-              "type": "html-view",
-              "state": {
-                "file": "Dashboard.html"
-              },
-              "icon": "code-glyph",
-              "title": "Dashboard"
-            }
           }
         ],
-        "currentTab": 3
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -257,11 +245,14 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "e4d62f52360c9359",
+  "active": "b319895822a7e61c",
   "lastOpenFiles": [
-    "Dashboard.md",
-    "Dashboard.html",
+    "DailyLearning/Cronograma de Estudos.md",
     "DailyLearning/Revisao Espacada.base",
+    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/4. Coerência Textual.md",
+    "Dashboard.html",
+    "Dashboard.md",
+    "DailyLearning/Prompts/DeepSearch.md",
     "PyScripts/generate_dashboard.py",
     "semtitulo.html",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/3. Divisibilidade e Fatoração.md",
@@ -271,7 +262,6 @@
     "DailyLearning/Disciplinas/13. Literatura/1. Teoria Literária e Gêneros/2. Elementos da Narrativa.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. Ordens de Grandeza e Estimativas.md",
     "DailyLearning/RunBook.base",
-    "DailyLearning/Cronograma de Estudos.md",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/3. Coesão Textual.md",
     "DailyLearning/Allshit.md",
     "DailyLearning/Prompts.canvas",
@@ -288,8 +278,6 @@
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/10. Metodologia Científica na Física.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/9. Linguagem Gráfica na Física.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/8. Relações Matemáticas e Proporcionalidade.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/7. Vetores e Operações Vetoriais.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/6. Grandezas Escalares e Vetoriais.md",
     "temp",
     "DailyLearning/Prompts",
     "DailyLearning/Disciplinas/13. Literatura/9. Literatura Contemporânea Brasileira",

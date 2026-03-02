@@ -97,11 +97,12 @@ body {
   display: flex; flex-direction: column; gap: 8px;
 }
 .iniciar-card {
+  display: block; text-decoration: none; color: var(--text-primary);
   background: rgba(255,255,255,0.04);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 14px 18px;
-  transition: all var(--transition);
+  transition: all var(--transition); cursor: pointer;
 }
 .iniciar-card:hover {
   background: rgba(255,255,255,0.07);
@@ -109,14 +110,44 @@ body {
   border-color: rgba(82,156,202,0.25);
 }
 .iniciar-card-header {
-  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;
 }
 .iniciar-topic { font-size: 14px; font-weight: 600; }
+.iniciar-arrow {
+  font-size: 16px; color: var(--text-tertiary); transition: all var(--transition);
+}
+.iniciar-card:hover .iniciar-arrow { color: var(--accent-blue); transform: translateX(4px); }
 .iniciar-card-meta {
   display: flex; align-items: center; gap: 8px;
 }
 .iniciar-assunto {
   font-size: 11.5px; color: var(--text-tertiary);
+}
+
+/* ── Cronograma ── */
+.crono-grid {
+  display: flex; flex-direction: column; gap: 6px;
+}
+.crono-day {
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px 16px;
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); transition: all var(--transition);
+}
+.crono-day:hover { background: var(--bg-card-hover); }
+.crono-day.today {
+  background: rgba(82,156,202,0.06);
+  border-color: rgba(82,156,202,0.2);
+}
+.crono-label {
+  font-size: 13px; font-weight: 700; min-width: 36px;
+  color: var(--text-secondary);
+}
+.crono-day.today .crono-label { color: var(--accent-blue); }
+.crono-discs { display: flex; flex-wrap: wrap; gap: 6px; }
+.crono-pill {
+  padding: 2px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 500;
 }
 
 /* ── Stats Grid ── */
@@ -309,10 +340,10 @@ body {
   <div class="iniciar-section">
     <div class="section-title"><span>🎯</span> Tópicos a Iniciar Hoje</div>
     <div class="iniciar-subtitle">Disciplinas de hoje: Matemática, Língua Portuguesa, Física, Literatura · 4 tópico(s) sugerido(s)</div>
-    <div class="iniciar-grid"><div class="iniciar-card"><div class="iniciar-card-header"><span class="iniciar-topic">Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC)</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span><span class="iniciar-assunto">Aritmética e Conjuntos Numéricos</span></div></div>
-<div class="iniciar-card"><div class="iniciar-card-header"><span class="iniciar-topic">Coerência Textual</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(200,91,142,0.12);color:#C85B8E">Língua Portuguesa</span><span class="iniciar-assunto">Leitura e Interpretação de Texto</span></div></div>
-<div class="iniciar-card"><div class="iniciar-card-header"><span class="iniciar-topic">Análise Dimensional</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span><span class="iniciar-assunto">Fundamentos da Física</span></div></div>
-<div class="iniciar-card"><div class="iniciar-card-header"><span class="iniciar-topic">Versificação e Poética</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(198,168,56,0.12);color:#C6A838">Literatura</span><span class="iniciar-assunto">Teoria Literária e Gêneros</span></div></div></div>
+    <div class="iniciar-grid"><a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/2.%20Matem%C3%A1tica/1.%20Aritm%C3%A9tica%20e%20Conjuntos%20Num%C3%A9ricos/4.%20M%C3%A1ximo%20Divisor%20Comum%20%28MDC%29%20e%20M%C3%ADnimo%20M%C3%BAltiplo%20Comum%20%28MMC%29"><div class="iniciar-card-header"><span class="iniciar-topic">Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC)</span><span class="iniciar-arrow">→</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span><span class="iniciar-assunto">Aritmética e Conjuntos Numéricos</span></div></a>
+<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/1.%20L%C3%ADngua%20Portuguesa/1.%20Leitura%20e%20Interpreta%C3%A7%C3%A3o%20de%20Texto/4.%20Coer%C3%AAncia%20Textual"><div class="iniciar-card-header"><span class="iniciar-topic">Coerência Textual</span><span class="iniciar-arrow">→</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(200,91,142,0.12);color:#C85B8E">Língua Portuguesa</span><span class="iniciar-assunto">Leitura e Interpretação de Texto</span></div></a>
+<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/4.%20F%C3%ADsica/1.%20Fundamentos%20da%20F%C3%ADsica/5.%20An%C3%A1lise%20Dimensional"><div class="iniciar-card-header"><span class="iniciar-topic">Análise Dimensional</span><span class="iniciar-arrow">→</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span><span class="iniciar-assunto">Fundamentos da Física</span></div></a>
+<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/13.%20Literatura/1.%20Teoria%20Liter%C3%A1ria%20e%20G%C3%AAneros/3.%20Versifica%C3%A7%C3%A3o%20e%20Po%C3%A9tica"><div class="iniciar-card-header"><span class="iniciar-topic">Versificação e Poética</span><span class="iniciar-arrow">→</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(198,168,56,0.12);color:#C6A838">Literatura</span><span class="iniciar-assunto">Teoria Literária e Gêneros</span></div></a></div>
   </div>
 
   <section class="section">
@@ -384,6 +415,21 @@ body {
 <tr><td class="topic-name">Antiguidade Oriental-</td><td>27/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
 <tr><td class="topic-name">Nova Ordem Mundial e Multipolaridade</td><td>26/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
 <tr><td class="topic-name">Ácidos Nucleicos e Código Genético</td><td>26/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr></tbody></table>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section">
+    <div class="section-title"><span>🗓️</span> Cronograma Semanal</div>
+    <div class="crono-grid">
+<div class="crono-day today"><div class="crono-label">Seg</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Língua Portuguesa</span> <span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span> <span class="crono-pill" style="background:rgba(198,168,56,0.12);color:#C6A838">Literatura</span></div></div>
+<div class="crono-day"><div class="crono-label">Ter</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span> <span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">História</span> <span class="crono-pill" style="background:rgba(203,123,62,0.12);color:#CB7B3E">Biologia</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Geografia</span></div></div>
+<div class="crono-day"><div class="crono-label">Qua</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">Filosofia</span> <span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Sociologia</span> <span class="crono-pill" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span></div></div>
+<div class="crono-day"><div class="crono-label">Qui</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Atualidades</span> <span class="crono-pill" style="background:rgba(203,123,62,0.12);color:#CB7B3E">Biologia</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Geografia</span></div></div>
+<div class="crono-day"><div class="crono-label">Sex</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span> <span class="crono-pill" style="background:rgba(198,168,56,0.12);color:#C6A838">Artes</span> <span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">História</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Língua Portuguesa</span></div></div>
+<div class="crono-day"><div class="crono-label">Sáb</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Educação Fisica</span> <span class="crono-pill" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span> <span class="crono-pill" style="background:rgba(203,123,62,0.12);color:#CB7B3E">Biologia</span></div></div>
+<div class="crono-day"><div class="crono-label">Dom</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Sociologia</span> <span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">Filosofia</span></div></div>
+    </div>
   </section>
 
   <div class="divider"></div>

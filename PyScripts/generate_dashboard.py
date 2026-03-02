@@ -15,6 +15,7 @@ import json
 from pathlib import Path
 from datetime import datetime, timedelta, date
 from html import escape
+from urllib.parse import quote
 
 VAULT_ROOT = Path(__file__).parent.parent
 DISCIPLINAS = VAULT_ROOT / "DailyLearning" / "Disciplinas"
@@ -167,6 +168,15 @@ def materia_color(name: str) -> tuple[str, str]:
     return ACCENT_COLORS[h % len(ACCENT_COLORS)]
 
 
+def obs_link(file_path: str) -> str:
+    """Gera URI obsidian://open para um arquivo do vault."""
+    # Remove extensão .md para o Obsidian
+    path = file_path
+    if path.endswith(".md"):
+        path = path[:-3]
+    return f"obsidian://open?vault=SmartNoteBrain&file={quote(path)}"
+
+
 def format_date(iso: str) -> str:
     if not iso:
         return "-"
@@ -315,18 +325,42 @@ def build_html(pages: list[dict]) -> str:
         iniciar_items = []
         for t in next_topics:
             color_fg, color_bg = materia_color(t["materia"])
+            link = obs_link(t["file"])
             iniciar_items.append(
-                f'<div class="iniciar-card">'
+                f'<a class="iniciar-card" href="{link}">'
                 f'<div class="iniciar-card-header">'
                 f'<span class="iniciar-topic">{escape(t["name"])}</span>'
+                f'<span class="iniciar-arrow">→</span>'
                 f'</div>'
                 f'<div class="iniciar-card-meta">'
                 f'<span class="materia-tag" style="background:{color_bg};color:{color_fg}">{escape(t["materia"])}</span>'
                 f'<span class="iniciar-assunto">{escape(t["assunto"])}</span>'
                 f'</div>'
-                f'</div>'
+                f'</a>'
             )
         iniciar_html = '<div class="iniciar-grid">' + "\n".join(iniciar_items) + '</div>'
+
+    # ── Build cronograma HTML ──
+    crono_days = [
+        ("Seg", 0), ("Ter", 1), ("Qua", 2), ("Qui", 3),
+        ("Sex", 4), ("Sáb", 5), ("Dom", 6),
+    ]
+    crono_rows = []
+    for label, wd in crono_days:
+        is_today = (wd == today.weekday())
+        cls = "crono-day today" if is_today else "crono-day"
+        discs = CRONOGRAMA.get(wd, [])
+        pills = []
+        for d in discs:
+            cfg, cbg = materia_color(d)
+            pills.append(f'<span class="crono-pill" style="background:{cbg};color:{cfg}">{escape(d)}</span>')
+        crono_rows.append(
+            f'<div class="{cls}">'
+            f'<div class="crono-label">{label}</div>'
+            f'<div class="crono-discs">{" ".join(pills)}</div>'
+            f'</div>'
+        )
+    crono_html = "\n".join(crono_rows)
 
     disc_hoje_str = ", ".join(disc_hoje_unique) if disc_hoje_unique else "—"
 
@@ -430,11 +464,12 @@ body {{
   display: flex; flex-direction: column; gap: 8px;
 }}
 .iniciar-card {{
+  display: block; text-decoration: none; color: var(--text-primary);
   background: rgba(255,255,255,0.04);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
   padding: 14px 18px;
-  transition: all var(--transition);
+  transition: all var(--transition); cursor: pointer;
 }}
 .iniciar-card:hover {{
   background: rgba(255,255,255,0.07);
@@ -442,14 +477,44 @@ body {{
   border-color: rgba(82,156,202,0.25);
 }}
 .iniciar-card-header {{
-  display: flex; align-items: center; gap: 8px; margin-bottom: 6px;
+  display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;
 }}
 .iniciar-topic {{ font-size: 14px; font-weight: 600; }}
+.iniciar-arrow {{
+  font-size: 16px; color: var(--text-tertiary); transition: all var(--transition);
+}}
+.iniciar-card:hover .iniciar-arrow {{ color: var(--accent-blue); transform: translateX(4px); }}
 .iniciar-card-meta {{
   display: flex; align-items: center; gap: 8px;
 }}
 .iniciar-assunto {{
   font-size: 11.5px; color: var(--text-tertiary);
+}}
+
+/* ── Cronograma ── */
+.crono-grid {{
+  display: flex; flex-direction: column; gap: 6px;
+}}
+.crono-day {{
+  display: flex; align-items: center; gap: 14px;
+  padding: 10px 16px;
+  background: var(--bg-card); border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md); transition: all var(--transition);
+}}
+.crono-day:hover {{ background: var(--bg-card-hover); }}
+.crono-day.today {{
+  background: rgba(82,156,202,0.06);
+  border-color: rgba(82,156,202,0.2);
+}}
+.crono-label {{
+  font-size: 13px; font-weight: 700; min-width: 36px;
+  color: var(--text-secondary);
+}}
+.crono-day.today .crono-label {{ color: var(--accent-blue); }}
+.crono-discs {{ display: flex; flex-wrap: wrap; gap: 6px; }}
+.crono-pill {{
+  padding: 2px 10px; border-radius: 999px;
+  font-size: 11px; font-weight: 500;
 }}
 
 /* ── Stats Grid ── */
@@ -690,6 +755,15 @@ body {{
   <section class="section">
     <div class="section-title"><span>🕐</span> Últimos Estudados</div>
     {rec_html}
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section">
+    <div class="section-title"><span>🗓️</span> Cronograma Semanal</div>
+    <div class="crono-grid">
+{crono_html}
+    </div>
   </section>
 
   <div class="divider"></div>
