@@ -114,31 +114,31 @@ def generate_buttons(prompts: dict, disciplina: str, assunto: str, topico: str, 
     nb_button = """```button
 name 🤖 Gerar NotebookLM (Completo)
 type command
-action Execute: NotebookLM Generate
+action Shell commands: Execute: NotebookLM Generate
 ```
 
 ```button
 name 📝 Só Questionário GenQuest
 type command
-action Execute: NotebookLM GenQuest
+action Shell commands: Execute: NotebookLM GenQuest
 ```
 
 ```button
 name 🧠 Só Questionário Expert
 type command
-action Execute: NotebookLM GenQuestExpert
+action Shell commands: Execute: NotebookLM GenQuestExpert
 ```
 
 ```button
 name 🎬 Só Vídeo GenVid
 type command
-action Execute: NotebookLM GenVid
+action Shell commands: Execute: NotebookLM GenVid
 ```
 
 ```button
 name 🎥 Só Vídeo Expert
 type command
-action Execute: NotebookLM GenVidExpert
+action Shell commands: Execute: NotebookLM GenVidExpert
 ```"""
 
     buttons = []
