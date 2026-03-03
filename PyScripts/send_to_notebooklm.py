@@ -103,6 +103,10 @@ def send_to_notebooklm(file_path):
     
     # flag especial para ignorar as pesquisas do DeepSearch e focar apenas no Flashcards
     test_cards_only = "--test-cards" in sys.argv
+    
+    prompt_genvid = extract_prompt_from_file(file_path, 'GenVid')
+    prompt_genvid_expert = extract_prompt_from_file(file_path, 'GenVidExpert')
+    prompt_genvid_pers = extract_prompt_from_file(file_path, 'GenVidPersonalization')
 
     if not is_port_open(9222):
         print("⚠️ Chrome não está rodando na porta 9222.")
@@ -442,6 +446,123 @@ def send_to_notebooklm(file_path):
                 do_flashcards(prompt_genquest_expert, "Cartões Didáticos - GenQuestExpert")
                 
             print("✨ Sucesso Extremo com Cartões Didáticos!")
+            
+            # --- Etapa: Resumo em Vídeo ---
+            def do_video(prompt_video, prompt_pers, step_name):
+                print(f"➡️ [{step_name}] Procurando botão de 'Resumo em Vídeo'...")
+                page.evaluate("""() => {
+                    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                    let node;
+                    while(node = walker.nextNode()) {
+                        let txt = node.textContent.trim().toLowerCase();
+                        if(txt === 'resumo em vídeo' || txt === 'video overview' || txt.includes('resumo em vídeo')) {
+                            let container = node.parentElement;
+                            while(container && container.tagName !== 'BODY') {
+                                const icons = container.querySelectorAll('.google-symbols, md-icon');
+                                for(let icon of icons) {
+                                    if(icon.textContent.includes('video') || icon.getAttribute('aria-label')?.includes('video') || icon.textContent.includes('movie')) {
+                                        let btn = icon.closest('button, md-icon-button, [role="button"]') || icon;
+                                        btn.click();
+                                        return true;
+                                    }
+                                }
+                                container = container.parentElement;
+                            }
+                        }
+                    }
+                    return false;
+                }""")
+                page.wait_for_timeout(2000)
+                
+                print(f"➡️ [{step_name}] Selecionando 'Personalizado'...")
+                page.evaluate("""() => {
+                    const allButtons = Array.from(document.querySelectorAll('button, div[role="button"], md-radio, label, div.card, div'));
+                    for(let el of allButtons) {
+                        let t = (el.textContent || '').trim().toLowerCase();
+                        if(t === 'personalizado' || t === 'custom') { 
+                            el.click(); 
+                            return true;
+                        }
+                    }
+                    return false;
+                }""")
+                page.wait_for_timeout(1000)
+                
+                print(f"➡️ [{step_name}] Colando prompts de vídeo...")
+                page.evaluate("""(data) => {
+                    const textareas = Array.from(document.querySelectorAll('textarea')).filter(ta => !ta.disabled && ta.getBoundingClientRect().height > 0);
+                    
+                    let taPers = null;
+                    let taVideo = null;
+                    
+                    for (let ta of textareas) {
+                        let parentText = (ta.parentElement?.parentElement?.parentElement?.textContent || '').toLowerCase();
+                        let placeholder = (ta.getAttribute('placeholder') || '').toLowerCase();
+                        let ariaLabel = (ta.getAttribute('aria-label') || '').toLowerCase();
+                        
+                        let combined = parentText + " " + placeholder + " " + ariaLabel;
+                        
+                        if (combined.includes('estilo visual') || combined.includes('visual style')) {
+                             taPers = ta;
+                        } else if (combined.includes('apresentadores') || combined.includes('concentrar') || combined.includes('focus') || combined.includes('presenters') || combined.includes('aspectos')) {
+                             taVideo = ta;
+                        }
+                    }
+                    
+                    if(taPers) {
+                        taPers.focus();
+                        taPers.value = '';
+                        taPers.value = data.pers;
+                        taPers.dispatchEvent(new Event('input', { bubbles: true }));
+                        taPers.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                    if(taVideo) {
+                        taVideo.focus();
+                        taVideo.value = '';
+                        taVideo.value = data.video;
+                        taVideo.dispatchEvent(new Event('input', { bubbles: true }));
+                        taVideo.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                    
+                    if (!taPers && !taVideo && textareas.length >= 2) {
+                        textareas[0].focus();
+                        textareas[0].value = '';
+                        textareas[0].value = data.pers;
+                        textareas[0].dispatchEvent(new Event('input', { bubbles: true }));
+                        textareas[0].dispatchEvent(new Event('change', { bubbles: true }));
+                        
+                        textareas[1].focus();
+                        textareas[1].value = '';
+                        textareas[1].value = data.video;
+                        textareas[1].dispatchEvent(new Event('input', { bubbles: true }));
+                        textareas[1].dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                }""", {"pers": prompt_pers, "video": prompt_video})
+                
+                page.wait_for_timeout(1000)
+                
+                print(f"➡️ [{step_name}] Clicando em Gerar/Criar...")
+                page.evaluate("""() => {
+                    const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button'));
+                    for(let b of btns) {
+                        let txt = (b.textContent || '').trim().toLowerCase();
+                        if(txt === 'gerar' || txt === 'generate' || txt === 'salvar' || txt === 'apply' || txt === 'criar' || txt === 'create') {
+                            if (!b.disabled && !b.hasAttribute('disabled')) {
+                                b.click();
+                                return true;
+                            }
+                        }
+                    }
+                }""")
+                print(f"⏳ [{step_name}] Aguardando 10s após gerar...")
+                page.wait_for_timeout(10000)
+
+            if prompt_genvid and prompt_genvid_pers:
+                do_video(prompt_genvid, prompt_genvid_pers, "Vídeo - GenVid")
+            if prompt_genvid_expert and prompt_genvid_pers:
+                do_video(prompt_genvid_expert, prompt_genvid_pers, "Vídeo - GenVidExpert")
+
+            print("✨ Sucesso Extremo com Vídeos!")
             
         except Exception as e:
             print(f"❌ Automação falhou. Erro capturado:\n{e}")
