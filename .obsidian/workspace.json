@@ -35,36 +35,9 @@
               "icon": "lucide-table",
               "title": "Revisao Espacada"
             }
-          },
-          {
-            "id": "358543b9f55b81bb",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "DailyLearning/RunBook.base",
-                "viewName": "Revisão Espaçada"
-              },
-              "pinned": true,
-              "icon": "lucide-table",
-              "title": "RunBook"
-            }
-          },
-          {
-            "id": "b98087bdaf10f701",
-            "type": "leaf",
-            "state": {
-              "type": "html-view",
-              "state": {
-                "file": "Dashboard.html"
-              },
-              "icon": "code-glyph",
-              "title": "Dashboard"
-            }
           }
         ],
-        "currentTab": 3
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -255,11 +228,13 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "b98087bdaf10f701",
+  "active": "b319895822a7e61c",
   "lastOpenFiles": [
+    "DailyLearning/RunBook.base",
     "DailyLearning/Revisao Espacada.base",
     "Dashboard.html",
-    "DailyLearning/RunBook.base",
+    "DailyLearning/Disciplinas/6. História/2. História Antiga/2. Mundo Grego-.md",
+    "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/2. Separação de misturas-.md",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/3. Coesão Textual.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/3. Divisibilidade e Fatoração.md",
     "DailyLearning/Allshit.md",
@@ -286,8 +261,6 @@
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/3. Notação Científica e Algarismos Significativos.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/5. Análise Dimensional.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/10. Metodologia Científica na Física.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/9. Linguagem Gráfica na Física.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/8. Relações Matemáticas e Proporcionalidade.md",
     "temp",
     "DailyLearning/Prompts",
     "DailyLearning/Disciplinas/13. Literatura/9. Literatura Contemporânea Brasileira",

@@ -52,6 +52,8 @@ views:
       - primeiro_contato
       - NotebookLM
     sort:
+      - property: formula.assunto
+        direction: ASC
       - property: primeiro_contato
         direction: ASC
       - property: formula.iniciado_em
