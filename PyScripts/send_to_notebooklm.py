@@ -83,41 +83,67 @@ def send_to_notebooklm(file_path):
             page.wait_for_load_state("networkidle")
             page.wait_for_timeout(3000)
             
-            print("➡️ Clicando em 'Criar/Novo notebook'...")
-            # Em Material Design Web 3, os botões são <md-elevated-button> ou <button> com text-content oculto
-            # O get_by_role('button') interage melhor com shadow DOMs que o text=
-            btn_novo = page.get_by_role("button", name="Novo bloco de notas", exact=False)
-            if not btn_novo.is_visible():
-                btn_novo = page.get_by_role("button", name="New notebook", exact=False)
-            if not btn_novo.is_visible():
-                # Tenta localizar pela div de classe de container se as arias falharem
-                btn_novo = page.locator("md-elevated-button").first
-                
-            btn_novo.wait_for(state="visible", timeout=10000)
-            btn_novo.click()
+            print("➡️ Procurando botão de 'Criar/Novo notebook' via JS Injection...")
             
+            # Injeta JS para achar qualquer botão ou div clicável que contenha "Novo" ou "New" e clica
+            js_click_new = """() => {
+                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                let node;
+                while(node = walker.nextNode()) {
+                    let txt = node.textContent.toLowerCase();
+                    if(txt.includes('novo bloco') || txt.includes('new notebook') || txt.includes('create')) {
+                        let parent = node.parentElement;
+                        // Sobe na árvore até achar algo clicável (button, md-elevated-button, div com role=button)
+                        while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON') && parent.getAttribute('role') !== 'button') {
+                            if(parent.tagName === 'BODY') break;
+                            parent = parent.parentElement;
+                        }
+                        if(parent && parent.tagName !== 'BODY') {
+                            parent.click();
+                            return true;
+                        }
+                    }
+                }
+                // Fallback: clica na primeira coisa que parece um botão principal
+                const btn = document.querySelector('md-elevated-button, button.mat-mdc-unelevated-button');
+                if(btn) { btn.click(); return true; }
+                return false;
+            }"""
+            
+            clicked = page.evaluate(js_click_new)
+            if not clicked:
+                print("⚠️ Aviso: Botão Novo Notebook não encontrado pelo JS, tentando click fallback.")
+                page.mouse.click(200, 200) # Fallback bobo
+                
             page.wait_for_timeout(2000)
             
-            print("➡️ Abrindo opção de colar texto (Texto Copiado) ...")
-            # Procura por qualquer elemento que tenha Copy/Paste no texto ou aria
-            btn_texto = page.get_by_text("Texto copiado", exact=False)
-            if not btn_texto.is_visible():
-                btn_texto = page.get_by_text("Copied text", exact=False)
-            if not btn_texto.is_visible():
-                btn_texto = page.locator("text=/texto/i").nth(1) # fallback
-                
-            btn_texto.wait_for(state="visible", timeout=5000)
-            btn_texto.click()
+            print("➡️ Procurando opção 'Texto Copiado'...")
+            js_click_paste = """() => {
+                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                let node;
+                while(node = walker.nextNode()) {
+                    let txt = node.textContent.toLowerCase();
+                    if(txt.includes('texto copiado') || txt.includes('copied text') || txt.includes('colar texto')) {
+                        let parent = node.parentElement;
+                        while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON') && parent.getAttribute('role') !== 'button' && parent.tagName !== 'DIV') {
+                            if(parent.tagName === 'BODY') break;
+                            parent = parent.parentElement;
+                        }
+                        if(parent && parent.tagName !== 'BODY') { parent.click(); return true; }
+                    }
+                }
+                return false;
+            }"""
+            page.evaluate(js_click_paste)
             
             page.wait_for_timeout(1000)
             print("➡️ Digitando título do tópico e colando o conteúdo...")
             
-            # Localizar textarea principal ou input de texto multiline
+            # Título e texto preenchidos via Playwright
             textarea = page.locator("textarea").first
             textarea.wait_for(state="visible", timeout=3000)
             textarea.fill(content)
             
-            # Título: geralmente é o primeiro input text
             inputs = page.locator("input[type='text']").all()
             for inp in inputs:
                 if inp.is_visible():
@@ -127,22 +153,30 @@ def send_to_notebooklm(file_path):
             page.wait_for_timeout(500)
             
             print("➡️ Finalizando Inserção no Notebook...")
-            btn_inserir = page.get_by_role("button", name="Inserir", exact=False)
-            if not btn_inserir.is_visible():
-                btn_inserir = page.get_by_role("button", name="Insert", exact=False)
-            if not btn_inserir.is_visible():
-                btn_inserir = page.locator("text=/inserir|insert/i").first
-                
-            btn_inserir.wait_for(state="visible", timeout=3000)
-            btn_inserir.click()
+            js_click_insert = """() => {
+                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                let node;
+                while(node = walker.nextNode()) {
+                    let txt = node.textContent.toLowerCase().trim();
+                    if(txt === 'inserir' || txt === 'insert') {
+                        let parent = node.parentElement;
+                        while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON')) {
+                            if(parent.tagName === 'BODY') break;
+                            parent = parent.parentElement;
+                        }
+                        if(parent && parent.tagName !== 'BODY') { parent.click(); return true; }
+                    }
+                }
+                return false;
+            }"""
+            page.evaluate(js_click_insert)
             
             print("✨ Sucesso! O NotebookLM está carregando as fontes dessa nota.")
-            # Espera um tempinho para ver o loading começar
             page.wait_for_timeout(5000)
             
         except Exception as e:
             print(f"❌ Automação falhou. A interface do Google pode ter mudado.")
-            print(f"    Erro capturado: {e}")
+            print(f"   Erro capturado: {e}")
             
         finally:
             print("🏁 Fechando script (A aba continuará aberta no seu Chrome para você usar o NotebookLM).")
