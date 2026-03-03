@@ -12,8 +12,37 @@ Uso:
 """
 
 import sys
+import time
+import socket
+import subprocess
 from pathlib import Path
 from playwright.sync_api import sync_playwright
+
+def is_port_open(port):
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        return s.connect_ex(('localhost', port)) == 0
+
+def start_chrome():
+    print("🚀 Iniciando o Google Chrome com modo de depuração ativado...")
+    try:
+        # Abre o Chrome do usuário passando a porta de debug e usando o perfil dele
+        subprocess.Popen([
+            "google-chrome-stable",
+            "--remote-debugging-port=9222"
+        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        
+        # Aguarda até o Chrome abrir a porta
+        sucesso = False
+        for _ in range(15):
+            if is_port_open(9222):
+                sucesso = True
+                break
+            time.sleep(0.5)
+            
+        return sucesso
+    except FileNotFoundError:
+        print("❌ 'google-chrome-stable' não encontrado no sistema!")
+        return False
 
 def send_to_notebooklm(file_path):
     path = Path(file_path)
@@ -24,15 +53,20 @@ def send_to_notebooklm(file_path):
     content = path.read_text(encoding="utf-8")
     title = path.stem
 
-    print("🚀 Conectando ao Chrome na porta 9222...")
+    if not is_port_open(9222):
+        print("⚠️ Chrome não está rodando na porta 9222.")
+        if not start_chrome():
+            print("❌ Falha crítica: Não foi possível iniciar e conectar ao Chrome.")
+            print("Certifique-se de que o Google Chrome está totalmente fechado antes de rodar o script.")
+            sys.exit(1)
+            
+    print("� Conectando ao Chrome na porta 9222...")
     with sync_playwright() as p:
         try:
             browser = p.chromium.connect_over_cdp("http://localhost:9222")
         except Exception as e:
-            print("❌ Falha ao conectar ao Chrome!")
-            print("Certifique-se de que fechou todo o Chrome e abriu novamente pelo terminal com:")
-            print("google-chrome-stable --remote-debugging-port=9222")
-            print(f"Detalhe do erro: {e}")
+            print("❌ Falha ao conectar. O Chrome deve estar fechado antes para que possamos injetar a flag.")
+            print(f"Detalhe: {e}")
             sys.exit(1)
             
         print("✅ Conectado! Abrindo NotebookLM...")
