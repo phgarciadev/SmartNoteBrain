@@ -117,73 +117,78 @@ def send_to_notebooklm(file_path):
             context = browser.contexts[0]
             page = context.new_page()
             
-            page.goto("https://notebooklm.google.com/")
-            page.wait_for_timeout(4000)
-            
-            print("➡️ Procurando botão de 'Criar/Novo notebook'...")
-            js_click_new = """() => {
-                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-                let node;
-                while(node = walker.nextNode()) {
-                    let txt = node.textContent.toLowerCase();
-                    if(txt.includes('novo bloco') || txt.includes('new notebook') || txt.includes('create')) {
-                        let parent = node.parentElement;
-                        while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON') && parent.getAttribute('role') !== 'button') {
-                            if(parent.tagName === 'BODY') break;
-                            parent = parent.parentElement;
-                        }
-                        if(parent && parent.tagName !== 'BODY') { parent.click(); return true; }
-                    }
-                }
-                const btn = document.querySelector('md-elevated-button, button.mat-mdc-unelevated-button');
-                if(btn) { btn.click(); return true; }
-                return false;
-            }"""
-            page.evaluate(js_click_new)
-            
-            # Modal de fontes abre...
-            page.wait_for_timeout(3000)
-            print("➡️ Pressionando 'Escape' para fechar a abinha inicial de fontes...")
-            page.keyboard.press("Escape")
-            page.wait_for_timeout(1000)
-            
-            print(f"➡️ Renomeando notebook para '{title}'...")
-            
-            # Tenta um "triple click" no título visível para focar e selecionar
-            js_find_title = """() => {
-                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-                let node;
-                while(node = walker.nextNode()) {
-                    let txt = node.textContent.trim().toLowerCase();
-                    if(txt === 'untitled notebook' || txt === 'bloco de notas sem título' || txt === 'notebook sem título') {
-                        let parent = node.parentElement;
-                        if(parent) {
-                            const rect = parent.getBoundingClientRect();
-                            return {x: rect.x + rect.width/2, y: rect.y + rect.height/2};
-                        }
-                    }
-                }
-                return null;
-            }"""
-            box = page.evaluate(js_find_title)
-            if box:
-                # Triple click para varrer tudo e selecionar o texto
-                page.mouse.click(box['x'], box['y'], click_count=3)
-                page.wait_for_timeout(500)
-                
-                # Digita no teclado naturalmente como um usuário (Angular capta isso)
-                page.keyboard.type(title, delay=20)
-                page.wait_for_timeout(500)
-                
-                # Tira o foco clicando no vazio
-                page.mouse.click(10, 10)
-                page.wait_for_timeout(1000)
+            if test_cards_only:
+                print("➡️ Modo --test-cards: Indo direto para o notebook hardcoded...")
+                page.goto("https://notebooklm.google.com/notebook/a7970a7f-e08e-47bb-b725-1d4d119ecebb")
+                page.wait_for_timeout(5000)
             else:
-                 print("⚠️ Untitled Notebook não encontrado para renomear.")
-            
-            # Escape de precaução caso o modal inicial esteja teimoso
-            page.keyboard.press("Escape")
-            page.wait_for_timeout(500)
+                page.goto("https://notebooklm.google.com/")
+                page.wait_for_timeout(4000)
+                
+                print("➡️ Procurando botão de 'Criar/Novo notebook'...")
+                js_click_new = """() => {
+                    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                    let node;
+                    while(node = walker.nextNode()) {
+                        let txt = node.textContent.toLowerCase();
+                        if(txt.includes('novo bloco') || txt.includes('new notebook') || txt.includes('create')) {
+                            let parent = node.parentElement;
+                            while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON') && parent.getAttribute('role') !== 'button') {
+                                if(parent.tagName === 'BODY') break;
+                                parent = parent.parentElement;
+                            }
+                            if(parent && parent.tagName !== 'BODY') { parent.click(); return true; }
+                        }
+                    }
+                    const btn = document.querySelector('md-elevated-button, button.mat-mdc-unelevated-button');
+                    if(btn) { btn.click(); return true; }
+                    return false;
+                }"""
+                page.evaluate(js_click_new)
+                
+                # Modal de fontes abre...
+                page.wait_for_timeout(3000)
+                print("➡️ Pressionando 'Escape' para fechar a abinha inicial de fontes...")
+                page.keyboard.press("Escape")
+                page.wait_for_timeout(1000)
+                
+                print(f"➡️ Renomeando notebook para '{title}'...")
+                
+                # Tenta um "triple click" no título visível para focar e selecionar
+                js_find_title = """() => {
+                    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                    let node;
+                    while(node = walker.nextNode()) {
+                        let txt = node.textContent.trim().toLowerCase();
+                        if(txt === 'untitled notebook' || txt === 'bloco de notas sem título' || txt === 'notebook sem título') {
+                            let parent = node.parentElement;
+                            if(parent) {
+                                const rect = parent.getBoundingClientRect();
+                                return {x: rect.x + rect.width/2, y: rect.y + rect.height/2};
+                            }
+                        }
+                    }
+                    return null;
+                }"""
+                box = page.evaluate(js_find_title)
+                if box:
+                    # Triple click para varrer tudo e selecionar o texto
+                    page.mouse.click(box['x'], box['y'], click_count=3)
+                    page.wait_for_timeout(500)
+                    
+                    # Digita no teclado naturalmente como um usuário (Angular capta isso)
+                    page.keyboard.type(title, delay=20)
+                    page.wait_for_timeout(500)
+                    
+                    # Tira o foco clicando no vazio
+                    page.mouse.click(10, 10)
+                    page.wait_for_timeout(1000)
+                else:
+                     print("⚠️ Untitled Notebook não encontrado para renomear.")
+                
+                # Escape de precaução caso o modal inicial esteja teimoso
+                page.keyboard.press("Escape")
+                page.wait_for_timeout(500)
             
             def do_search_and_import(prompt_text, step_name, wait_excluir=False, use_deep_research=False):
                 print(f"➡️ [{step_name}] Clicando no botão de Adicionar Fonte...")
