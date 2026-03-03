@@ -25,10 +25,15 @@ def is_port_open(port):
 def start_chrome():
     print("🚀 Iniciando o Google Chrome com modo de depuração ativado...")
     try:
-        # Abre o Chrome do usuário passando a porta de debug e usando o perfil dele
+        # Chrome bloqueia porta de depuração no perfil padrão por segurança.
+        # Precisamos passar uma pasta de perfil dedicada para automação.
+        debug_dir = Path.home() / ".config" / "google-chrome-debug"
+        debug_dir.mkdir(parents=True, exist_ok=True)
+        
         subprocess.Popen([
             "google-chrome-stable",
-            "--remote-debugging-port=9222"
+            "--remote-debugging-port=9222",
+            f"--user-data-dir={debug_dir}"
         ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
         # Aguarda até o Chrome abrir a porta
