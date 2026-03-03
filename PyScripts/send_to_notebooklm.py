@@ -82,6 +82,7 @@ def extract_prompt_from_file(file_path, prompt_name):
                 
     return ""
 
+def send_to_notebooklm(file_path):
     import re
     path = Path(file_path)
     if not path.exists():
