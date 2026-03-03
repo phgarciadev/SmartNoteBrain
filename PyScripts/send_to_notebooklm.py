@@ -179,7 +179,7 @@ def send_to_notebooklm(file_path):
             page.keyboard.press("Escape")
             page.wait_for_timeout(500)
             
-            def do_search_and_import(prompt_text, step_name):
+            def do_search_and_import(prompt_text, step_name, wait_excluir=False):
                 print(f"➡️ [{step_name}] Clicando no botão de Adicionar Fonte...")
                 
                 # Clica no botão (+) ou "Adicionar fontes" 
@@ -236,6 +236,31 @@ def send_to_notebooklm(file_path):
                     });
                 }""")
                 
+                if wait_excluir:
+                    print(f"⏳ [{step_name}] Verificando pesquisa anterior (Excluir)...")
+                    page.evaluate("""() => {
+                        return new Promise((resolve) => {
+                            let attempts = 0;
+                            let check = setInterval(() => {
+                                attempts++;
+                                const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button'));
+                                for(let b of btns) {
+                                    let txt = (b.textContent || '').toLowerCase().trim();
+                                    if(txt === 'excluir' || txt === 'delete') {
+                                        b.click();
+                                        clearInterval(check);
+                                        resolve(true);
+                                        return;
+                                    }
+                                }
+                                if(attempts >= 5) {
+                                    clearInterval(check);
+                                    resolve(false);
+                                }
+                            }, 1000);
+                        });
+                    }""")
+                
                 print(f"➡️ [{step_name}] Preenchendo a caixa de pesquisa...")
                 page.evaluate("""(text) => {
                     const inputs = document.querySelectorAll('input[type="text"], textarea');
@@ -272,7 +297,7 @@ def send_to_notebooklm(file_path):
                 page.wait_for_timeout(15000) 
 
             do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
-            do_search_and_import(prompt_deepresearch, "DeepResearch (Fonte 2)")
+            do_search_and_import(prompt_deepresearch, "DeepResearch (Fonte 2)", wait_excluir=True)
             print("✨ Sucesso Extremo!")
             
         except Exception as e:
