@@ -71,17 +71,21 @@ def find_next_topics(pages: list[dict], today_weekday: int) -> list[dict]:
         # Encontrar o assunto com progresso mais recente (último iniciado)
         # e pegar o próximo tópico não-iniciado nesse assunto
         best_candidate = None
-        best_priority = (-1, "")  # (last_ini_idx, assunto) — para priorizar progresso
+        best_priority = (-1, "")  # (has_started, max_date) — para priorizar progresso recente
 
         for assunto, topics in sorted(tree[disc].items()):
             last_ini_idx = -1
+            max_date = ""
             for i, t in enumerate(topics):
                 if t["iniciado"]:
                     last_ini_idx = i
+                    if t.get("primeiro_contato"):
+                        max_date = max(max_date, t["primeiro_contato"])
+                        
             next_idx = last_ini_idx + 1
             if next_idx < len(topics) and not topics[next_idx]["iniciado"]:
-                # Priorizar assuntos onde já há progresso
-                priority = (1 if last_ini_idx >= 0 else 0, assunto)
+                # Priorizar assuntos onde já há progresso, ordenando pelas datas mais recentes
+                priority = (1 if last_ini_idx >= 0 else 0, max_date)
                 if best_candidate is None or priority > best_priority:
                     best_candidate = topics[next_idx]
                     best_priority = priority

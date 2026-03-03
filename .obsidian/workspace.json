@@ -50,9 +50,21 @@
               "icon": "lucide-table",
               "title": "RunBook"
             }
+          },
+          {
+            "id": "b98087bdaf10f701",
+            "type": "leaf",
+            "state": {
+              "type": "html-view",
+              "state": {
+                "file": "Dashboard.html"
+              },
+              "icon": "code-glyph",
+              "title": "Dashboard"
+            }
           }
         ],
-        "currentTab": 2
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -243,12 +255,12 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "358543b9f55b81bb",
+  "active": "b98087bdaf10f701",
   "lastOpenFiles": [
-    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/3. Coesão Textual.md",
     "DailyLearning/Revisao Espacada.base",
     "Dashboard.html",
     "DailyLearning/RunBook.base",
+    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/3. Coesão Textual.md",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/3. Divisibilidade e Fatoração.md",
     "DailyLearning/Allshit.md",
     "DailyLearning/Cronograma de Estudos.md",
