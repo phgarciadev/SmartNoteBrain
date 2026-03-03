@@ -285,14 +285,13 @@ def build_html(pages: list[dict]) -> str:
         mpct = round(s["iniciado"] / s["total"] * 100) if s["total"] else 0
         color_fg = ACCENT_COLORS[i % len(ACCENT_COLORS)][0]
         disc_rows.append(
-            f'<div class="discipline-row">'
-            f'<div class="discipline-info">'
-            f'<span class="discipline-name">{escape(name)}</span>'
-            f'<span class="discipline-stats">{s["iniciado"]}/{s["total"]} · {mpct}%</span>'
+            f'<div class="disc-row">'
+            f'<span class="disc-name">{escape(name)}</span>'
+            f'<div class="disc-bar-track">'
+            f'<div class="disc-bar-fill" style="width:{mpct}%;background:{color_fg}"></div>'
             f'</div>'
-            f'<div class="discipline-bar-track">'
-            f'<div class="discipline-bar-fill" style="width:{mpct}%;background:{color_fg}"></div>'
-            f'</div></div>'
+            f'<span class="disc-pct">{s["iniciado"]}/{s["total"]}</span>'
+            f'</div>'
         )
     disc_html = "\n".join(disc_rows)
 
@@ -328,14 +327,14 @@ def build_html(pages: list[dict]) -> str:
             link = obs_link(t["file"])
             iniciar_items.append(
                 f'<a class="iniciar-card" href="{link}">'
-                f'<div class="iniciar-card-header">'
+                f'<div class="iniciar-left">'
                 f'<span class="iniciar-topic">{escape(t["name"])}</span>'
-                f'<span class="iniciar-arrow">→</span>'
-                f'</div>'
                 f'<div class="iniciar-card-meta">'
                 f'<span class="materia-tag" style="background:{color_bg};color:{color_fg}">{escape(t["materia"])}</span>'
                 f'<span class="iniciar-assunto">{escape(t["assunto"])}</span>'
                 f'</div>'
+                f'</div>'
+                f'<span class="iniciar-arrow">→</span>'
                 f'</a>'
             )
         iniciar_html = '<div class="iniciar-grid">' + "\n".join(iniciar_items) + '</div>'
@@ -378,7 +377,6 @@ def build_html(pages: list[dict]) -> str:
 
 :root {{
   --bg-primary: #191919;
-  --bg-secondary: #202020;
   --bg-card: rgba(255,255,255,0.03);
   --bg-card-hover: rgba(255,255,255,0.055);
   --border-subtle: rgba(255,255,255,0.06);
@@ -414,164 +412,135 @@ body {{
 ::-webkit-scrollbar-track {{ background: transparent; }}
 ::-webkit-scrollbar-thumb {{ background: rgba(255,255,255,0.1); border-radius: 3px; }}
 
+/* ── Dashboard Shell ── */
 .dashboard {{
-  max-width: 960px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 40px 32px 60px;
+  padding: 32px 28px 48px;
 }}
 
 /* ── Header ── */
-.dash-header {{ margin-bottom: 40px; }}
+.dash-header {{
+  margin-bottom: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}}
+.header-left {{}}
 .dash-header .emoji-title {{
-  font-size: 32px; font-weight: 700; letter-spacing: -0.5px;
-  display: flex; align-items: center; gap: 12px;
+  font-size: 28px; font-weight: 700; letter-spacing: -0.5px;
 }}
 .dash-header .subtitle {{
-  color: var(--text-secondary); font-size: 14px; margin-top: 6px;
+  color: var(--text-secondary); font-size: 13px; margin-top: 4px;
 }}
 .dash-header .date-badge {{
   display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 14px; padding: 6px 14px;
+  padding: 6px 14px;
   background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: 999px; font-size: 13px; color: var(--text-secondary); font-weight: 500;
+  border-radius: 999px; font-size: 12px; color: var(--text-secondary); font-weight: 500;
 }}
 
-.divider {{ height: 1px; background: var(--border-subtle); margin: 32px 0; }}
-
-/* ── Section ── */
-.section {{ margin-bottom: 36px; }}
-.section-title {{
-  font-size: 14px; font-weight: 600; color: var(--text-secondary);
-  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px;
-  display: flex; align-items: center; gap: 8px;
-}}
-
-/* ── Iniciar Hoje (hero) ── */
-.iniciar-section {{
-  background: linear-gradient(135deg, rgba(82,156,202,0.08) 0%, rgba(157,109,215,0.08) 100%);
-  border: 1px solid rgba(82,156,202,0.15);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-bottom: 36px;
-}}
-.iniciar-section .section-title {{
-  color: var(--accent-blue); margin-bottom: 6px;
-}}
-.iniciar-subtitle {{
-  font-size: 12px; color: var(--text-tertiary); margin-bottom: 16px;
-}}
-.iniciar-grid {{
-  display: flex; flex-direction: column; gap: 8px;
-}}
-.iniciar-card {{
-  display: block; text-decoration: none; color: var(--text-primary);
-  background: rgba(255,255,255,0.04);
+/* ── Card Base ── */
+.card {{
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: all var(--transition);
+}}
+.card:hover {{
+  background: var(--bg-card-hover);
+}}
+.card-title {{
+  font-size: 12px; font-weight: 600; color: var(--text-tertiary);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 6px;
+}}
+
+/* ── Main Grid ── */
+.grid-main {{
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}}
+.grid-full {{ grid-column: 1 / -1; }}
+.grid-left {{ grid-column: 1 / 2; }}
+.grid-right {{ grid-column: 2 / 3; }}
+
+/* ── Hero: Tópicos a Iniciar ── */
+.hero-card {{
+  background: linear-gradient(135deg, rgba(82,156,202,0.06) 0%, rgba(157,109,215,0.06) 100%);
+  border-color: rgba(82,156,202,0.12);
+}}
+.hero-card .card-title {{ color: var(--accent-blue); }}
+.hero-subtitle {{
+  font-size: 11px; color: var(--text-tertiary); margin: -8px 0 14px; font-weight: 400;
+}}
+.iniciar-grid {{ display: flex; flex-direction: column; gap: 6px; }}
+.iniciar-card {{
+  display: flex; align-items: center; justify-content: space-between;
+  text-decoration: none; color: var(--text-primary);
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
   border-radius: var(--radius-md);
-  padding: 14px 18px;
   transition: all var(--transition); cursor: pointer;
 }}
 .iniciar-card:hover {{
-  background: rgba(255,255,255,0.07);
-  transform: translateX(4px);
-  border-color: rgba(82,156,202,0.25);
-}}
-.iniciar-card-header {{
-  display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;
-}}
-.iniciar-topic {{ font-size: 14px; font-weight: 600; }}
-.iniciar-arrow {{
-  font-size: 16px; color: var(--text-tertiary); transition: all var(--transition);
-}}
-.iniciar-card:hover .iniciar-arrow {{ color: var(--accent-blue); transform: translateX(4px); }}
-.iniciar-card-meta {{
-  display: flex; align-items: center; gap: 8px;
-}}
-.iniciar-assunto {{
-  font-size: 11.5px; color: var(--text-tertiary);
-}}
-
-/* ── Cronograma ── */
-.crono-grid {{
-  display: flex; flex-direction: column; gap: 6px;
-}}
-.crono-day {{
-  display: flex; align-items: center; gap: 14px;
-  padding: 10px 16px;
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md); transition: all var(--transition);
-}}
-.crono-day:hover {{ background: var(--bg-card-hover); }}
-.crono-day.today {{
-  background: rgba(82,156,202,0.06);
+  background: rgba(255,255,255,0.06);
   border-color: rgba(82,156,202,0.2);
+  transform: translateX(3px);
 }}
-.crono-label {{
-  font-size: 13px; font-weight: 700; min-width: 36px;
-  color: var(--text-secondary);
+.iniciar-left {{ display: flex; flex-direction: column; gap: 3px; }}
+.iniciar-topic {{ font-size: 13px; font-weight: 600; }}
+.iniciar-card-meta {{ display: flex; align-items: center; gap: 6px; }}
+.iniciar-assunto {{ font-size: 10.5px; color: var(--text-tertiary); }}
+.iniciar-arrow {{
+  font-size: 14px; color: var(--text-tertiary); transition: all var(--transition); flex-shrink: 0;
 }}
-.crono-day.today .crono-label {{ color: var(--accent-blue); }}
-.crono-discs {{ display: flex; flex-wrap: wrap; gap: 6px; }}
-.crono-pill {{
-  padding: 2px 10px; border-radius: 999px;
-  font-size: 11px; font-weight: 500;
-}}
+.iniciar-card:hover .iniciar-arrow {{ color: var(--accent-blue); transform: translateX(3px); }}
 
-/* ── Stats Grid ── */
-.stats-grid {{
+/* ── Stats Mini ── */
+.stats-row {{
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }}
-.stat-card {{
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg); padding: 20px 18px;
-  transition: all var(--transition); position: relative; overflow: hidden;
+.stat-mini {{
+  text-align: center;
+  padding: 14px 8px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius-md);
 }}
-.stat-card::before {{
-  content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 3px; opacity: 0; transition: opacity var(--transition);
+.stat-mini .val {{
+  font-size: 22px; font-weight: 700; letter-spacing: -1px; line-height: 1;
 }}
-.stat-card:hover {{
-  background: var(--bg-card-hover); box-shadow: var(--shadow-hover);
-  transform: translateY(-2px);
+.stat-mini .lbl {{
+  font-size: 10px; color: var(--text-tertiary); margin-top: 4px;
+  text-transform: uppercase; letter-spacing: 0.3px; font-weight: 500;
 }}
-.stat-card:hover::before {{ opacity: 1; }}
-.stat-card:nth-child(1)::before {{ background: var(--gradient-main); }}
-.stat-card:nth-child(2)::before {{ background: var(--gradient-green); }}
-.stat-card:nth-child(3)::before {{ background: var(--accent-blue); }}
-.stat-card:nth-child(4)::before {{ background: var(--accent-purple); }}
-.stat-card:nth-child(5)::before {{ background: var(--accent-green); }}
-.stat-card:nth-child(6)::before {{ background: var(--accent-orange); }}
-
-.stat-card .stat-value {{ font-size: 28px; font-weight: 700; letter-spacing: -1px; line-height: 1; }}
-.stat-card .stat-label {{
-  font-size: 12px; color: var(--text-tertiary); margin-top: 6px;
-  font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px;
-}}
-.stat-card.accent-blue .stat-value {{ color: var(--accent-blue); }}
-.stat-card.accent-purple .stat-value {{ color: var(--accent-purple); }}
-.stat-card.accent-green .stat-value {{ color: var(--accent-green); }}
-.stat-card.accent-orange .stat-value {{ color: var(--accent-orange); }}
-.stat-card.accent-red .stat-value {{ color: var(--accent-red); }}
-.stat-card.accent-yellow .stat-value {{ color: var(--accent-yellow); }}
+.c-blue {{ color: var(--accent-blue); }}
+.c-green {{ color: var(--accent-green); }}
+.c-purple {{ color: var(--accent-purple); }}
+.c-orange {{ color: var(--accent-orange); }}
+.c-yellow {{ color: var(--accent-yellow); }}
 
 /* ── Progress ── */
-.progress-section {{
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg); padding: 24px; margin-bottom: 36px;
-}}
+.progress-block {{ margin-top: 4px; }}
 .progress-header {{
-  display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
 }}
-.progress-header .title {{ font-size: 15px; font-weight: 600; }}
+.progress-header .title {{ font-size: 13px; font-weight: 600; }}
 .progress-header .pct {{
-  font-size: 24px; font-weight: 700;
+  font-size: 20px; font-weight: 700;
   background: var(--gradient-green);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }}
 .progress-bar-track {{
-  width: 100%; height: 10px; background: rgba(255,255,255,0.06);
+  width: 100%; height: 8px; background: rgba(255,255,255,0.06);
   border-radius: 999px; overflow: hidden;
 }}
 .progress-bar-fill {{
@@ -579,115 +548,132 @@ body {{
 }}
 .progress-details {{
   display: flex; justify-content: space-between;
-  margin-top: 10px; font-size: 12px; color: var(--text-tertiary);
+  margin-top: 8px; font-size: 11px; color: var(--text-tertiary);
 }}
 
 /* ── Table ── */
 .notion-table {{
   width: 100%; border-collapse: separate; border-spacing: 0;
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg); overflow: hidden;
+  overflow: hidden;
 }}
 .notion-table thead th {{
-  text-align: left; padding: 12px 16px; font-size: 12px; font-weight: 600;
+  text-align: left; padding: 8px 12px; font-size: 10.5px; font-weight: 600;
   color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.4px;
-  border-bottom: 1px solid var(--border-subtle); background: rgba(255,255,255,0.015);
+  border-bottom: 1px solid var(--border-subtle);
 }}
 .notion-table tbody tr {{ transition: background var(--transition); }}
-.notion-table tbody tr:hover {{ background: var(--bg-card-hover); }}
+.notion-table tbody tr:hover {{ background: rgba(255,255,255,0.03); }}
 .notion-table tbody td {{
-  padding: 11px 16px; font-size: 13.5px;
-  border-bottom: 1px solid var(--border-subtle); color: var(--text-primary);
+  padding: 8px 12px; font-size: 12.5px;
+  border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--text-primary);
 }}
 .notion-table tbody tr:last-child td {{ border-bottom: none; }}
-.notion-table .topic-name {{ font-weight: 500; }}
-.notion-table .materia-tag {{
-  display: inline-block; padding: 2px 10px; border-radius: 999px;
-  font-size: 11.5px; font-weight: 500;
+.topic-name {{ font-weight: 500; }}
+.materia-tag {{
+  display: inline-block; padding: 1px 8px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 500;
 }}
-.notion-table .rev-badge {{
+.rev-badge {{
   display: inline-flex; align-items: center; gap: 3px;
-  padding: 2px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 600;
+  padding: 1px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 600;
 }}
 .rev-0 {{ background: rgba(212,76,71,0.12); color: var(--accent-red); }}
 .rev-1 {{ background: rgba(203,123,62,0.12); color: var(--accent-orange); }}
 .rev-2 {{ background: rgba(198,168,56,0.12); color: var(--accent-yellow); }}
 .rev-3 {{ background: rgba(77,171,154,0.12); color: var(--accent-green); }}
 .rev-4 {{ background: rgba(82,156,202,0.12); color: var(--accent-blue); }}
-
 .table-footer {{
-  padding: 10px 16px; font-size: 12px; color: var(--text-tertiary);
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-top: none; border-radius: 0 0 var(--radius-lg) var(--radius-lg); text-align: center;
+  padding: 8px 12px; font-size: 11px; color: var(--text-tertiary); text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.03);
 }}
 
 /* ── Discipline Bars ── */
-.discipline-list {{ display: flex; flex-direction: column; gap: 10px; }}
-.discipline-row {{
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md); padding: 14px 18px;
+.disc-list {{ display: flex; flex-direction: column; gap: 8px; }}
+.disc-row {{
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 0;
+}}
+.disc-name {{ font-size: 12.5px; font-weight: 500; min-width: 120px; }}
+.disc-bar-track {{
+  flex: 1; height: 6px; background: rgba(255,255,255,0.06);
+  border-radius: 999px; overflow: hidden;
+}}
+.disc-bar-fill {{ height: 100%; border-radius: 999px; }}
+.disc-pct {{
+  font-size: 11px; color: var(--text-tertiary); min-width: 36px; text-align: right;
+}}
+
+/* ── Cronograma ── */
+.crono-grid {{ display: flex; flex-direction: column; gap: 5px; }}
+.crono-day {{
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
   transition: all var(--transition);
 }}
-.discipline-row:hover {{ background: var(--bg-card-hover); transform: translateX(4px); }}
-.discipline-info {{
-  display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+.crono-day:hover {{ background: rgba(255,255,255,0.03); }}
+.crono-day.today {{
+  background: rgba(82,156,202,0.06);
+  border-radius: var(--radius-md);
 }}
-.discipline-name {{ font-size: 14px; font-weight: 500; }}
-.discipline-stats {{ font-size: 12px; color: var(--text-tertiary); }}
-.discipline-bar-track {{
-  height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden;
+.crono-label {{
+  font-size: 11px; font-weight: 700; min-width: 30px;
+  color: var(--text-tertiary);
 }}
-.discipline-bar-fill {{ height: 100%; border-radius: 999px; }}
+.crono-day.today .crono-label {{ color: var(--accent-blue); }}
+.crono-discs {{ display: flex; flex-wrap: wrap; gap: 4px; }}
+.crono-pill {{
+  padding: 1px 8px; border-radius: 999px;
+  font-size: 10px; font-weight: 500;
+}}
 
 /* ── Checks ── */
 .check-on {{ color: var(--accent-green); }}
 .check-off {{ color: var(--text-tertiary); opacity: 0.4; }}
 
 /* ── Quick Links ── */
-.quick-links {{
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;
+.qlinks {{ display: flex; flex-direction: column; gap: 8px; }}
+.qlink {{
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary);
+  font-size: 13px; font-weight: 500; transition: all var(--transition); cursor: pointer;
 }}
-.quick-link {{
-  display: flex; align-items: center; gap: 10px; padding: 16px 18px;
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg); text-decoration: none; color: var(--text-primary);
-  font-size: 14px; font-weight: 500; transition: all var(--transition); cursor: pointer;
+.qlink:hover {{
+  background: rgba(255,255,255,0.05); transform: translateX(3px);
 }}
-.quick-link:hover {{
-  background: var(--bg-card-hover); box-shadow: var(--shadow-hover); transform: translateY(-2px);
+.qlink-icon {{
+  width: 30px; height: 30px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0;
 }}
-.quick-link .link-icon {{
-  width: 36px; height: 36px; border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
-}}
-.quick-link:nth-child(1) .link-icon {{ background: rgba(82,156,202,0.15); }}
-.quick-link:nth-child(2) .link-icon {{ background: rgba(77,171,154,0.15); }}
-.quick-link:nth-child(3) .link-icon {{ background: rgba(157,109,215,0.15); }}
 
 /* ── Alert Badge ── */
 .alert-count {{
   display: inline-flex; align-items: center; justify-content: center;
-  min-width: 22px; height: 22px; padding: 0 7px;
-  border-radius: 999px; font-size: 12px; font-weight: 700; margin-left: 8px;
+  min-width: 18px; height: 18px; padding: 0 5px;
+  border-radius: 999px; font-size: 10px; font-weight: 700; margin-left: 6px;
 }}
 .alert-count.warn {{ background: rgba(212,76,71,0.15); color: var(--accent-red); }}
 .alert-count.ok   {{ background: rgba(77,171,154,0.15); color: var(--accent-green); }}
 
 /* ── Empty State ── */
 .empty-state {{
-  text-align: center; padding: 32px; color: var(--text-secondary); font-size: 14px;
+  text-align: center; padding: 20px; color: var(--text-secondary); font-size: 13px;
 }}
-.empty-state .emoji {{ font-size: 32px; margin-bottom: 8px; display: block; }}
+.empty-state .emoji {{ font-size: 24px; margin-bottom: 6px; display: block; }}
 
 /* ── Footer ── */
 .dash-footer {{
-  text-align: center; padding: 20px 0 0; font-size: 11px; color: var(--text-tertiary);
+  text-align: center; padding: 24px 0 0; font-size: 10px; color: var(--text-tertiary);
 }}
 
-@media (max-width: 600px) {{
-  .dashboard {{ padding: 24px 16px 40px; }}
-  .stats-grid {{ grid-template-columns: repeat(2, 1fr); }}
-  .dash-header .emoji-title {{ font-size: 24px; }}
+/* ── Responsive ── */
+@media (max-width: 700px) {{
+  .grid-main {{ grid-template-columns: 1fr; }}
+  .grid-left, .grid-right {{ grid-column: 1 / -1; }}
+  .dashboard {{ padding: 20px 14px 36px; }}
+  .dash-header .emoji-title {{ font-size: 22px; }}
+  .stats-row {{ grid-template-columns: repeat(2, 1fr); }}
 }}
 </style>
 </head>
@@ -695,93 +681,109 @@ body {{
 
 <div class="dashboard">
 
+  <!-- HEADER -->
   <header class="dash-header">
-    <div class="emoji-title">📚 SmartNote Dashboard</div>
-    <div class="subtitle">Painel de controle do seu estudo</div>
+    <div class="header-left">
+      <div class="emoji-title">📚 SmartNote Dashboard</div>
+      <div class="subtitle">Painel de controle do seu estudo</div>
+    </div>
     <div class="date-badge">
-      <span>📅</span>
-      <span>{today_str} — {weekday_str}</span>
+      <span>📅</span> {today_str} — {weekday_str}
     </div>
   </header>
 
-  <div class="iniciar-section">
-    <div class="section-title"><span>🎯</span> Tópicos a Iniciar Hoje</div>
-    <div class="iniciar-subtitle">Disciplinas de hoje: {disc_hoje_str} · {len(next_topics)} tópico(s) sugerido(s)</div>
-    {iniciar_html}
-  </div>
+  <!-- MAIN GRID -->
+  <div class="grid-main">
 
-  <section class="section">
-    <div class="section-title"><span>📊</span> Estatísticas</div>
-    <div class="stats-grid">
-{stats_html}
+    <!-- ═══ ROW 1: Hero + Stats ═══ -->
+
+    <!-- Tópicos a Iniciar (left) -->
+    <div class="card hero-card grid-left">
+      <div class="card-title"><span>🎯</span> Tópicos a Iniciar Hoje</div>
+      <div class="hero-subtitle">Disciplinas: {disc_hoje_str}</div>
+      {iniciar_html}
     </div>
-  </section>
 
-  <div class="progress-section">
-    <div class="progress-header">
-      <span class="title">🏆 Progresso Geral</span>
-      <span class="pct">{pct}%</span>
+    <!-- Stats + Progress (right) -->
+    <div class="card grid-right" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div class="card-title"><span>📊</span> Estatísticas</div>
+        <div class="stats-row">
+          <div class="stat-mini"><div class="val">{total}</div><div class="lbl">Total</div></div>
+          <div class="stat-mini"><div class="val c-green">{n_ini}</div><div class="lbl">Estudados</div></div>
+          <div class="stat-mini"><div class="val c-blue">{r1}</div><div class="lbl">R1</div></div>
+          <div class="stat-mini"><div class="val c-purple">{r2}</div><div class="lbl">R2</div></div>
+          <div class="stat-mini"><div class="val c-orange">{r3}</div><div class="lbl">R3</div></div>
+          <div class="stat-mini"><div class="val c-yellow">{r4}</div><div class="lbl">R4</div></div>
+        </div>
+      </div>
+      <div class="progress-block">
+        <div class="progress-header">
+          <span class="title">🏆 Progresso</span>
+          <span class="pct">{pct}%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width:{pct}%"></div>
+        </div>
+        <div class="progress-details">
+          <span>{n_ini}/{total} tópicos</span>
+          <span>{total - n_ini} restantes</span>
+        </div>
+      </div>
     </div>
-    <div class="progress-bar-track">
-      <div class="progress-bar-fill" style="width:{pct}%"></div>
+
+    <!-- ═══ ROW 2: Revisões + Cronograma ═══ -->
+
+    <!-- Revisões Pendentes (left, wider) -->
+    <div class="card grid-left">
+      <div class="card-title">
+        <span>🔥</span> Revisões Pendentes
+        <span class="alert-count {pend_count_cls}">{len(pendentes)}</span>
+      </div>
+      {pend_html}
     </div>
-    <div class="progress-details">
-      <span>{n_ini} de {total} tópicos</span>
-      <span>{total - n_ini} restantes</span>
-    </div>
-  </div>
 
-  <div class="divider"></div>
-
-  <section class="section">
-    <div class="section-title">
-      <span>🔥</span> Revisões Pendentes
-      <span class="alert-count {pend_count_cls}">{len(pendentes)}</span>
-    </div>
-    {pend_html}
-  </section>
-
-  <div class="divider"></div>
-
-  <section class="section">
-    <div class="section-title"><span>📚</span> Progresso por Disciplina</div>
-    <div class="discipline-list">
-{disc_html}
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <section class="section">
-    <div class="section-title"><span>🕐</span> Últimos Estudados</div>
-    {rec_html}
-  </section>
-
-  <div class="divider"></div>
-
-  <section class="section">
-    <div class="section-title"><span>🗓️</span> Cronograma Semanal</div>
-    <div class="crono-grid">
+    <!-- Cronograma (right) -->
+    <div class="card grid-right">
+      <div class="card-title"><span>🗓️</span> Cronograma Semanal</div>
+      <div class="crono-grid">
 {crono_html}
+      </div>
     </div>
-  </section>
 
-  <div class="divider"></div>
+    <!-- ═══ ROW 3: Disciplinas + Recentes ═══ -->
 
-  <section class="section">
-    <div class="section-title"><span>🚀</span> Acesso Rápido</div>
-    <div class="quick-links">
-      <a class="quick-link" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FRunBook">
-        <div class="link-icon">📋</div><span>RunBook</span>
-      </a>
-      <a class="quick-link" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FRevisao%20Espacada">
-        <div class="link-icon">🔄</div><span>Revisão Espaçada</span>
-      </a>
-      <a class="quick-link" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FDisciplinas">
-        <div class="link-icon">📂</div><span>Disciplinas</span>
-      </a>
+    <!-- Progresso por Disciplina (left) -->
+    <div class="card grid-left">
+      <div class="card-title"><span>📚</span> Progresso por Disciplina</div>
+      <div class="disc-list">
+{disc_html}
+      </div>
     </div>
-  </section>
+
+    <!-- Últimos Estudados + Quick Links (right) -->
+    <div class="grid-right" style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="card-title"><span>🕐</span> Últimos Estudados</div>
+        {rec_html}
+      </div>
+      <div class="card">
+        <div class="card-title"><span>🚀</span> Acesso Rápido</div>
+        <div class="qlinks">
+          <a class="qlink" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FRunBook">
+            <div class="qlink-icon" style="background:rgba(82,156,202,0.12)">📋</div>RunBook
+          </a>
+          <a class="qlink" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FRevisao%20Espacada">
+            <div class="qlink-icon" style="background:rgba(77,171,154,0.12)">🔄</div>Revisão Espaçada
+          </a>
+          <a class="qlink" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FDisciplinas">
+            <div class="qlink-icon" style="background:rgba(157,109,215,0.12)">📂</div>Disciplinas
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
   <div class="dash-footer">
     Gerado em {today.isoformat()} · SmartNoteBrain

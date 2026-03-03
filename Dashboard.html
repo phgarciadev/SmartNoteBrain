@@ -11,7 +11,6 @@
 
 :root {
   --bg-primary: #191919;
-  --bg-secondary: #202020;
   --bg-card: rgba(255,255,255,0.03);
   --bg-card-hover: rgba(255,255,255,0.055);
   --border-subtle: rgba(255,255,255,0.06);
@@ -47,164 +46,135 @@ body {
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 3px; }
 
+/* ── Dashboard Shell ── */
 .dashboard {
-  max-width: 960px;
+  max-width: 1100px;
   margin: 0 auto;
-  padding: 40px 32px 60px;
+  padding: 32px 28px 48px;
 }
 
 /* ── Header ── */
-.dash-header { margin-bottom: 40px; }
+.dash-header {
+  margin-bottom: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.header-left {}
 .dash-header .emoji-title {
-  font-size: 32px; font-weight: 700; letter-spacing: -0.5px;
-  display: flex; align-items: center; gap: 12px;
+  font-size: 28px; font-weight: 700; letter-spacing: -0.5px;
 }
 .dash-header .subtitle {
-  color: var(--text-secondary); font-size: 14px; margin-top: 6px;
+  color: var(--text-secondary); font-size: 13px; margin-top: 4px;
 }
 .dash-header .date-badge {
   display: inline-flex; align-items: center; gap: 6px;
-  margin-top: 14px; padding: 6px 14px;
+  padding: 6px 14px;
   background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: 999px; font-size: 13px; color: var(--text-secondary); font-weight: 500;
+  border-radius: 999px; font-size: 12px; color: var(--text-secondary); font-weight: 500;
 }
 
-.divider { height: 1px; background: var(--border-subtle); margin: 32px 0; }
-
-/* ── Section ── */
-.section { margin-bottom: 36px; }
-.section-title {
-  font-size: 14px; font-weight: 600; color: var(--text-secondary);
-  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 16px;
-  display: flex; align-items: center; gap: 8px;
-}
-
-/* ── Iniciar Hoje (hero) ── */
-.iniciar-section {
-  background: linear-gradient(135deg, rgba(82,156,202,0.08) 0%, rgba(157,109,215,0.08) 100%);
-  border: 1px solid rgba(82,156,202,0.15);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-bottom: 36px;
-}
-.iniciar-section .section-title {
-  color: var(--accent-blue); margin-bottom: 6px;
-}
-.iniciar-subtitle {
-  font-size: 12px; color: var(--text-tertiary); margin-bottom: 16px;
-}
-.iniciar-grid {
-  display: flex; flex-direction: column; gap: 8px;
-}
-.iniciar-card {
-  display: block; text-decoration: none; color: var(--text-primary);
-  background: rgba(255,255,255,0.04);
+/* ── Card Base ── */
+.card {
+  background: var(--bg-card);
   border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 20px;
+  transition: all var(--transition);
+}
+.card:hover {
+  background: var(--bg-card-hover);
+}
+.card-title {
+  font-size: 12px; font-weight: 600; color: var(--text-tertiary);
+  text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 14px;
+  display: flex; align-items: center; gap: 6px;
+}
+
+/* ── Main Grid ── */
+.grid-main {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.grid-full { grid-column: 1 / -1; }
+.grid-left { grid-column: 1 / 2; }
+.grid-right { grid-column: 2 / 3; }
+
+/* ── Hero: Tópicos a Iniciar ── */
+.hero-card {
+  background: linear-gradient(135deg, rgba(82,156,202,0.06) 0%, rgba(157,109,215,0.06) 100%);
+  border-color: rgba(82,156,202,0.12);
+}
+.hero-card .card-title { color: var(--accent-blue); }
+.hero-subtitle {
+  font-size: 11px; color: var(--text-tertiary); margin: -8px 0 14px; font-weight: 400;
+}
+.iniciar-grid { display: flex; flex-direction: column; gap: 6px; }
+.iniciar-card {
+  display: flex; align-items: center; justify-content: space-between;
+  text-decoration: none; color: var(--text-primary);
+  padding: 10px 14px;
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.04);
   border-radius: var(--radius-md);
-  padding: 14px 18px;
   transition: all var(--transition); cursor: pointer;
 }
 .iniciar-card:hover {
-  background: rgba(255,255,255,0.07);
-  transform: translateX(4px);
-  border-color: rgba(82,156,202,0.25);
-}
-.iniciar-card-header {
-  display: flex; align-items: center; justify-content: space-between; margin-bottom: 6px;
-}
-.iniciar-topic { font-size: 14px; font-weight: 600; }
-.iniciar-arrow {
-  font-size: 16px; color: var(--text-tertiary); transition: all var(--transition);
-}
-.iniciar-card:hover .iniciar-arrow { color: var(--accent-blue); transform: translateX(4px); }
-.iniciar-card-meta {
-  display: flex; align-items: center; gap: 8px;
-}
-.iniciar-assunto {
-  font-size: 11.5px; color: var(--text-tertiary);
-}
-
-/* ── Cronograma ── */
-.crono-grid {
-  display: flex; flex-direction: column; gap: 6px;
-}
-.crono-day {
-  display: flex; align-items: center; gap: 14px;
-  padding: 10px 16px;
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md); transition: all var(--transition);
-}
-.crono-day:hover { background: var(--bg-card-hover); }
-.crono-day.today {
-  background: rgba(82,156,202,0.06);
+  background: rgba(255,255,255,0.06);
   border-color: rgba(82,156,202,0.2);
+  transform: translateX(3px);
 }
-.crono-label {
-  font-size: 13px; font-weight: 700; min-width: 36px;
-  color: var(--text-secondary);
+.iniciar-left { display: flex; flex-direction: column; gap: 3px; }
+.iniciar-topic { font-size: 13px; font-weight: 600; }
+.iniciar-card-meta { display: flex; align-items: center; gap: 6px; }
+.iniciar-assunto { font-size: 10.5px; color: var(--text-tertiary); }
+.iniciar-arrow {
+  font-size: 14px; color: var(--text-tertiary); transition: all var(--transition); flex-shrink: 0;
 }
-.crono-day.today .crono-label { color: var(--accent-blue); }
-.crono-discs { display: flex; flex-wrap: wrap; gap: 6px; }
-.crono-pill {
-  padding: 2px 10px; border-radius: 999px;
-  font-size: 11px; font-weight: 500;
-}
+.iniciar-card:hover .iniciar-arrow { color: var(--accent-blue); transform: translateX(3px); }
 
-/* ── Stats Grid ── */
-.stats-grid {
+/* ── Stats Mini ── */
+.stats-row {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
 }
-.stat-card {
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg); padding: 20px 18px;
-  transition: all var(--transition); position: relative; overflow: hidden;
+.stat-mini {
+  text-align: center;
+  padding: 14px 8px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius-md);
 }
-.stat-card::before {
-  content: ''; position: absolute; top: 0; left: 0; right: 0;
-  height: 3px; opacity: 0; transition: opacity var(--transition);
+.stat-mini .val {
+  font-size: 22px; font-weight: 700; letter-spacing: -1px; line-height: 1;
 }
-.stat-card:hover {
-  background: var(--bg-card-hover); box-shadow: var(--shadow-hover);
-  transform: translateY(-2px);
+.stat-mini .lbl {
+  font-size: 10px; color: var(--text-tertiary); margin-top: 4px;
+  text-transform: uppercase; letter-spacing: 0.3px; font-weight: 500;
 }
-.stat-card:hover::before { opacity: 1; }
-.stat-card:nth-child(1)::before { background: var(--gradient-main); }
-.stat-card:nth-child(2)::before { background: var(--gradient-green); }
-.stat-card:nth-child(3)::before { background: var(--accent-blue); }
-.stat-card:nth-child(4)::before { background: var(--accent-purple); }
-.stat-card:nth-child(5)::before { background: var(--accent-green); }
-.stat-card:nth-child(6)::before { background: var(--accent-orange); }
-
-.stat-card .stat-value { font-size: 28px; font-weight: 700; letter-spacing: -1px; line-height: 1; }
-.stat-card .stat-label {
-  font-size: 12px; color: var(--text-tertiary); margin-top: 6px;
-  font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px;
-}
-.stat-card.accent-blue .stat-value { color: var(--accent-blue); }
-.stat-card.accent-purple .stat-value { color: var(--accent-purple); }
-.stat-card.accent-green .stat-value { color: var(--accent-green); }
-.stat-card.accent-orange .stat-value { color: var(--accent-orange); }
-.stat-card.accent-red .stat-value { color: var(--accent-red); }
-.stat-card.accent-yellow .stat-value { color: var(--accent-yellow); }
+.c-blue { color: var(--accent-blue); }
+.c-green { color: var(--accent-green); }
+.c-purple { color: var(--accent-purple); }
+.c-orange { color: var(--accent-orange); }
+.c-yellow { color: var(--accent-yellow); }
 
 /* ── Progress ── */
-.progress-section {
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg); padding: 24px; margin-bottom: 36px;
-}
+.progress-block { margin-top: 4px; }
 .progress-header {
-  display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px;
+  display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;
 }
-.progress-header .title { font-size: 15px; font-weight: 600; }
+.progress-header .title { font-size: 13px; font-weight: 600; }
 .progress-header .pct {
-  font-size: 24px; font-weight: 700;
+  font-size: 20px; font-weight: 700;
   background: var(--gradient-green);
   -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
 }
 .progress-bar-track {
-  width: 100%; height: 10px; background: rgba(255,255,255,0.06);
+  width: 100%; height: 8px; background: rgba(255,255,255,0.06);
   border-radius: 999px; overflow: hidden;
 }
 .progress-bar-fill {
@@ -212,115 +182,132 @@ body {
 }
 .progress-details {
   display: flex; justify-content: space-between;
-  margin-top: 10px; font-size: 12px; color: var(--text-tertiary);
+  margin-top: 8px; font-size: 11px; color: var(--text-tertiary);
 }
 
 /* ── Table ── */
 .notion-table {
   width: 100%; border-collapse: separate; border-spacing: 0;
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg); overflow: hidden;
+  overflow: hidden;
 }
 .notion-table thead th {
-  text-align: left; padding: 12px 16px; font-size: 12px; font-weight: 600;
+  text-align: left; padding: 8px 12px; font-size: 10.5px; font-weight: 600;
   color: var(--text-tertiary); text-transform: uppercase; letter-spacing: 0.4px;
-  border-bottom: 1px solid var(--border-subtle); background: rgba(255,255,255,0.015);
+  border-bottom: 1px solid var(--border-subtle);
 }
 .notion-table tbody tr { transition: background var(--transition); }
-.notion-table tbody tr:hover { background: var(--bg-card-hover); }
+.notion-table tbody tr:hover { background: rgba(255,255,255,0.03); }
 .notion-table tbody td {
-  padding: 11px 16px; font-size: 13.5px;
-  border-bottom: 1px solid var(--border-subtle); color: var(--text-primary);
+  padding: 8px 12px; font-size: 12.5px;
+  border-bottom: 1px solid rgba(255,255,255,0.03); color: var(--text-primary);
 }
 .notion-table tbody tr:last-child td { border-bottom: none; }
-.notion-table .topic-name { font-weight: 500; }
-.notion-table .materia-tag {
-  display: inline-block; padding: 2px 10px; border-radius: 999px;
-  font-size: 11.5px; font-weight: 500;
+.topic-name { font-weight: 500; }
+.materia-tag {
+  display: inline-block; padding: 1px 8px; border-radius: 999px;
+  font-size: 10.5px; font-weight: 500;
 }
-.notion-table .rev-badge {
+.rev-badge {
   display: inline-flex; align-items: center; gap: 3px;
-  padding: 2px 10px; border-radius: 999px; font-size: 11.5px; font-weight: 600;
+  padding: 1px 8px; border-radius: 999px; font-size: 10.5px; font-weight: 600;
 }
 .rev-0 { background: rgba(212,76,71,0.12); color: var(--accent-red); }
 .rev-1 { background: rgba(203,123,62,0.12); color: var(--accent-orange); }
 .rev-2 { background: rgba(198,168,56,0.12); color: var(--accent-yellow); }
 .rev-3 { background: rgba(77,171,154,0.12); color: var(--accent-green); }
 .rev-4 { background: rgba(82,156,202,0.12); color: var(--accent-blue); }
-
 .table-footer {
-  padding: 10px 16px; font-size: 12px; color: var(--text-tertiary);
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-top: none; border-radius: 0 0 var(--radius-lg) var(--radius-lg); text-align: center;
+  padding: 8px 12px; font-size: 11px; color: var(--text-tertiary); text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.03);
 }
 
 /* ── Discipline Bars ── */
-.discipline-list { display: flex; flex-direction: column; gap: 10px; }
-.discipline-row {
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md); padding: 14px 18px;
+.disc-list { display: flex; flex-direction: column; gap: 8px; }
+.disc-row {
+  display: flex; align-items: center; gap: 12px;
+  padding: 8px 0;
+}
+.disc-name { font-size: 12.5px; font-weight: 500; min-width: 120px; }
+.disc-bar-track {
+  flex: 1; height: 6px; background: rgba(255,255,255,0.06);
+  border-radius: 999px; overflow: hidden;
+}
+.disc-bar-fill { height: 100%; border-radius: 999px; }
+.disc-pct {
+  font-size: 11px; color: var(--text-tertiary); min-width: 36px; text-align: right;
+}
+
+/* ── Cronograma ── */
+.crono-grid { display: flex; flex-direction: column; gap: 5px; }
+.crono-day {
+  display: flex; align-items: center; gap: 10px;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
   transition: all var(--transition);
 }
-.discipline-row:hover { background: var(--bg-card-hover); transform: translateX(4px); }
-.discipline-info {
-  display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;
+.crono-day:hover { background: rgba(255,255,255,0.03); }
+.crono-day.today {
+  background: rgba(82,156,202,0.06);
+  border-radius: var(--radius-md);
 }
-.discipline-name { font-size: 14px; font-weight: 500; }
-.discipline-stats { font-size: 12px; color: var(--text-tertiary); }
-.discipline-bar-track {
-  height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden;
+.crono-label {
+  font-size: 11px; font-weight: 700; min-width: 30px;
+  color: var(--text-tertiary);
 }
-.discipline-bar-fill { height: 100%; border-radius: 999px; }
+.crono-day.today .crono-label { color: var(--accent-blue); }
+.crono-discs { display: flex; flex-wrap: wrap; gap: 4px; }
+.crono-pill {
+  padding: 1px 8px; border-radius: 999px;
+  font-size: 10px; font-weight: 500;
+}
 
 /* ── Checks ── */
 .check-on { color: var(--accent-green); }
 .check-off { color: var(--text-tertiary); opacity: 0.4; }
 
 /* ── Quick Links ── */
-.quick-links {
-  display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 12px;
+.qlinks { display: flex; flex-direction: column; gap: 8px; }
+.qlink {
+  display: flex; align-items: center; gap: 10px; padding: 10px 14px;
+  background: rgba(255,255,255,0.02); border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius-md); text-decoration: none; color: var(--text-primary);
+  font-size: 13px; font-weight: 500; transition: all var(--transition); cursor: pointer;
 }
-.quick-link {
-  display: flex; align-items: center; gap: 10px; padding: 16px 18px;
-  background: var(--bg-card); border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg); text-decoration: none; color: var(--text-primary);
-  font-size: 14px; font-weight: 500; transition: all var(--transition); cursor: pointer;
+.qlink:hover {
+  background: rgba(255,255,255,0.05); transform: translateX(3px);
 }
-.quick-link:hover {
-  background: var(--bg-card-hover); box-shadow: var(--shadow-hover); transform: translateY(-2px);
+.qlink-icon {
+  width: 30px; height: 30px; border-radius: var(--radius-sm);
+  display: flex; align-items: center; justify-content: center; font-size: 15px; flex-shrink: 0;
 }
-.quick-link .link-icon {
-  width: 36px; height: 36px; border-radius: var(--radius-sm);
-  display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
-}
-.quick-link:nth-child(1) .link-icon { background: rgba(82,156,202,0.15); }
-.quick-link:nth-child(2) .link-icon { background: rgba(77,171,154,0.15); }
-.quick-link:nth-child(3) .link-icon { background: rgba(157,109,215,0.15); }
 
 /* ── Alert Badge ── */
 .alert-count {
   display: inline-flex; align-items: center; justify-content: center;
-  min-width: 22px; height: 22px; padding: 0 7px;
-  border-radius: 999px; font-size: 12px; font-weight: 700; margin-left: 8px;
+  min-width: 18px; height: 18px; padding: 0 5px;
+  border-radius: 999px; font-size: 10px; font-weight: 700; margin-left: 6px;
 }
 .alert-count.warn { background: rgba(212,76,71,0.15); color: var(--accent-red); }
 .alert-count.ok   { background: rgba(77,171,154,0.15); color: var(--accent-green); }
 
 /* ── Empty State ── */
 .empty-state {
-  text-align: center; padding: 32px; color: var(--text-secondary); font-size: 14px;
+  text-align: center; padding: 20px; color: var(--text-secondary); font-size: 13px;
 }
-.empty-state .emoji { font-size: 32px; margin-bottom: 8px; display: block; }
+.empty-state .emoji { font-size: 24px; margin-bottom: 6px; display: block; }
 
 /* ── Footer ── */
 .dash-footer {
-  text-align: center; padding: 20px 0 0; font-size: 11px; color: var(--text-tertiary);
+  text-align: center; padding: 24px 0 0; font-size: 10px; color: var(--text-tertiary);
 }
 
-@media (max-width: 600px) {
-  .dashboard { padding: 24px 16px 40px; }
-  .stats-grid { grid-template-columns: repeat(2, 1fr); }
-  .dash-header .emoji-title { font-size: 24px; }
+/* ── Responsive ── */
+@media (max-width: 700px) {
+  .grid-main { grid-template-columns: 1fr; }
+  .grid-left, .grid-right { grid-column: 1 / -1; }
+  .dashboard { padding: 20px 14px 36px; }
+  .dash-header .emoji-title { font-size: 22px; }
+  .stats-row { grid-template-columns: repeat(2, 1fr); }
 }
 </style>
 </head>
@@ -328,100 +315,75 @@ body {
 
 <div class="dashboard">
 
+  <!-- HEADER -->
   <header class="dash-header">
-    <div class="emoji-title">📚 SmartNote Dashboard</div>
-    <div class="subtitle">Painel de controle do seu estudo</div>
+    <div class="header-left">
+      <div class="emoji-title">📚 SmartNote Dashboard</div>
+      <div class="subtitle">Painel de controle do seu estudo</div>
+    </div>
     <div class="date-badge">
-      <span>📅</span>
-      <span>02 de Março de 2026 — Segunda-feira</span>
+      <span>📅</span> 02 de Março de 2026 — Segunda-feira
     </div>
   </header>
 
-  <div class="iniciar-section">
-    <div class="section-title"><span>🎯</span> Tópicos a Iniciar Hoje</div>
-    <div class="iniciar-subtitle">Disciplinas de hoje: Matemática, Língua Portuguesa, Física, Literatura · 4 tópico(s) sugerido(s)</div>
-    <div class="iniciar-grid"><a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/2.%20Matem%C3%A1tica/1.%20Aritm%C3%A9tica%20e%20Conjuntos%20Num%C3%A9ricos/4.%20M%C3%A1ximo%20Divisor%20Comum%20%28MDC%29%20e%20M%C3%ADnimo%20M%C3%BAltiplo%20Comum%20%28MMC%29"><div class="iniciar-card-header"><span class="iniciar-topic">Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC)</span><span class="iniciar-arrow">→</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span><span class="iniciar-assunto">Aritmética e Conjuntos Numéricos</span></div></a>
-<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/1.%20L%C3%ADngua%20Portuguesa/1.%20Leitura%20e%20Interpreta%C3%A7%C3%A3o%20de%20Texto/4.%20Coer%C3%AAncia%20Textual"><div class="iniciar-card-header"><span class="iniciar-topic">Coerência Textual</span><span class="iniciar-arrow">→</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(200,91,142,0.12);color:#C85B8E">Língua Portuguesa</span><span class="iniciar-assunto">Leitura e Interpretação de Texto</span></div></a>
-<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/4.%20F%C3%ADsica/1.%20Fundamentos%20da%20F%C3%ADsica/5.%20An%C3%A1lise%20Dimensional"><div class="iniciar-card-header"><span class="iniciar-topic">Análise Dimensional</span><span class="iniciar-arrow">→</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span><span class="iniciar-assunto">Fundamentos da Física</span></div></a>
-<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/13.%20Literatura/1.%20Teoria%20Liter%C3%A1ria%20e%20G%C3%AAneros/3.%20Versifica%C3%A7%C3%A3o%20e%20Po%C3%A9tica"><div class="iniciar-card-header"><span class="iniciar-topic">Versificação e Poética</span><span class="iniciar-arrow">→</span></div><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(198,168,56,0.12);color:#C6A838">Literatura</span><span class="iniciar-assunto">Teoria Literária e Gêneros</span></div></a></div>
-  </div>
+  <!-- MAIN GRID -->
+  <div class="grid-main">
 
-  <section class="section">
-    <div class="section-title"><span>📊</span> Estatísticas</div>
-    <div class="stats-grid">
-    <div class="stat-card "><div class="stat-value">846</div><div class="stat-label">Total Tópicos</div></div>
-    <div class="stat-card accent-green"><div class="stat-value">20</div><div class="stat-label">Estudados</div></div>
-    <div class="stat-card accent-blue"><div class="stat-value">16</div><div class="stat-label">Revisão R1</div></div>
-    <div class="stat-card accent-purple"><div class="stat-value">0</div><div class="stat-label">Revisão R2</div></div>
-    <div class="stat-card accent-orange"><div class="stat-value">0</div><div class="stat-label">Revisão R3</div></div>
-    <div class="stat-card accent-yellow"><div class="stat-value">0</div><div class="stat-label">Revisão R4</div></div>
+    <!-- ═══ ROW 1: Hero + Stats ═══ -->
+
+    <!-- Tópicos a Iniciar (left) -->
+    <div class="card hero-card grid-left">
+      <div class="card-title"><span>🎯</span> Tópicos a Iniciar Hoje</div>
+      <div class="hero-subtitle">Disciplinas: Matemática, Língua Portuguesa, Física, Literatura</div>
+      <div class="iniciar-grid"><a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/2.%20Matem%C3%A1tica/1.%20Aritm%C3%A9tica%20e%20Conjuntos%20Num%C3%A9ricos/4.%20M%C3%A1ximo%20Divisor%20Comum%20%28MDC%29%20e%20M%C3%ADnimo%20M%C3%BAltiplo%20Comum%20%28MMC%29"><div class="iniciar-left"><span class="iniciar-topic">Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC)</span><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span><span class="iniciar-assunto">Aritmética e Conjuntos Numéricos</span></div></div><span class="iniciar-arrow">→</span></a>
+<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/1.%20L%C3%ADngua%20Portuguesa/1.%20Leitura%20e%20Interpreta%C3%A7%C3%A3o%20de%20Texto/4.%20Coer%C3%AAncia%20Textual"><div class="iniciar-left"><span class="iniciar-topic">Coerência Textual</span><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(200,91,142,0.12);color:#C85B8E">Língua Portuguesa</span><span class="iniciar-assunto">Leitura e Interpretação de Texto</span></div></div><span class="iniciar-arrow">→</span></a>
+<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/4.%20F%C3%ADsica/1.%20Fundamentos%20da%20F%C3%ADsica/5.%20An%C3%A1lise%20Dimensional"><div class="iniciar-left"><span class="iniciar-topic">Análise Dimensional</span><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span><span class="iniciar-assunto">Fundamentos da Física</span></div></div><span class="iniciar-arrow">→</span></a>
+<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/13.%20Literatura/1.%20Teoria%20Liter%C3%A1ria%20e%20G%C3%AAneros/3.%20Versifica%C3%A7%C3%A3o%20e%20Po%C3%A9tica"><div class="iniciar-left"><span class="iniciar-topic">Versificação e Poética</span><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(198,168,56,0.12);color:#C6A838">Literatura</span><span class="iniciar-assunto">Teoria Literária e Gêneros</span></div></div><span class="iniciar-arrow">→</span></a></div>
     </div>
-  </section>
 
-  <div class="progress-section">
-    <div class="progress-header">
-      <span class="title">🏆 Progresso Geral</span>
-      <span class="pct">2%</span>
+    <!-- Stats + Progress (right) -->
+    <div class="card grid-right" style="display:flex;flex-direction:column;justify-content:space-between;">
+      <div>
+        <div class="card-title"><span>📊</span> Estatísticas</div>
+        <div class="stats-row">
+          <div class="stat-mini"><div class="val">846</div><div class="lbl">Total</div></div>
+          <div class="stat-mini"><div class="val c-green">20</div><div class="lbl">Estudados</div></div>
+          <div class="stat-mini"><div class="val c-blue">16</div><div class="lbl">R1</div></div>
+          <div class="stat-mini"><div class="val c-purple">0</div><div class="lbl">R2</div></div>
+          <div class="stat-mini"><div class="val c-orange">0</div><div class="lbl">R3</div></div>
+          <div class="stat-mini"><div class="val c-yellow">0</div><div class="lbl">R4</div></div>
+        </div>
+      </div>
+      <div class="progress-block">
+        <div class="progress-header">
+          <span class="title">🏆 Progresso</span>
+          <span class="pct">2%</span>
+        </div>
+        <div class="progress-bar-track">
+          <div class="progress-bar-fill" style="width:2%"></div>
+        </div>
+        <div class="progress-details">
+          <span>20/846 tópicos</span>
+          <span>826 restantes</span>
+        </div>
+      </div>
     </div>
-    <div class="progress-bar-track">
-      <div class="progress-bar-fill" style="width:2%"></div>
+
+    <!-- ═══ ROW 2: Revisões + Cronograma ═══ -->
+
+    <!-- Revisões Pendentes (left, wider) -->
+    <div class="card grid-left">
+      <div class="card-title">
+        <span>🔥</span> Revisões Pendentes
+        <span class="alert-count ok">0</span>
+      </div>
+      <div class="empty-state"><span class="emoji">🎉</span>Parabéns! Nenhuma revisão pendente.</div>
     </div>
-    <div class="progress-details">
-      <span>20 de 846 tópicos</span>
-      <span>826 restantes</span>
-    </div>
-  </div>
 
-  <div class="divider"></div>
-
-  <section class="section">
-    <div class="section-title">
-      <span>🔥</span> Revisões Pendentes
-      <span class="alert-count ok">0</span>
-    </div>
-    <div class="empty-state"><span class="emoji">🎉</span>Parabéns! Nenhuma revisão pendente.</div>
-  </section>
-
-  <div class="divider"></div>
-
-  <section class="section">
-    <div class="section-title"><span>📚</span> Progresso por Disciplina</div>
-    <div class="discipline-list">
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">Matemática</span><span class="discipline-stats">3/129 · 2%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:2%;background:#529CCA"></div></div></div>
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">Biologia</span><span class="discipline-stats">2/99 · 2%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:2%;background:#9D6DD7"></div></div></div>
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">Física</span><span class="discipline-stats">3/97 · 3%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:3%;background:#4DAB9A"></div></div></div>
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">Geografia</span><span class="discipline-stats">2/85 · 2%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:2%;background:#CB7B3E"></div></div></div>
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">Língua Portuguesa</span><span class="discipline-stats">3/72 · 4%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:4%;background:#D44C47"></div></div></div>
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">Filosofia</span><span class="discipline-stats">0/61 · 0%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:0%;background:#C6A838"></div></div></div>
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">Sociologia</span><span class="discipline-stats">0/54 · 0%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:0%;background:#C85B8E"></div></div></div>
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">Atualidades</span><span class="discipline-stats">1/52 · 2%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:2%;background:#529CCA"></div></div></div>
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">Química</span><span class="discipline-stats">1/51 · 2%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:2%;background:#9D6DD7"></div></div></div>
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">Literatura</span><span class="discipline-stats">2/50 · 4%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:4%;background:#4DAB9A"></div></div></div>
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">História</span><span class="discipline-stats">2/47 · 4%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:4%;background:#CB7B3E"></div></div></div>
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">Artes</span><span class="discipline-stats">1/26 · 4%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:4%;background:#D44C47"></div></div></div>
-<div class="discipline-row"><div class="discipline-info"><span class="discipline-name">Educação Fisica</span><span class="discipline-stats">0/23 · 0%</span></div><div class="discipline-bar-track"><div class="discipline-bar-fill" style="width:0%;background:#C6A838"></div></div></div>
-    </div>
-  </section>
-
-  <div class="divider"></div>
-
-  <section class="section">
-    <div class="section-title"><span>🕐</span> Últimos Estudados</div>
-    <table class="notion-table"><thead><tr><th>📖 Tópico</th><th>📅 Data</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th></tr></thead><tbody><tr><td class="topic-name">Elementos da Narrativa</td><td>02/03</td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
-<tr><td class="topic-name">Ordens de Grandeza e Estimativas</td><td>02/03</td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
-<tr><td class="topic-name">Procedimentos de Leitura</td><td>27/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
-<tr><td class="topic-name">História da Arte</td><td>27/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
-<tr><td class="topic-name">Números Naturais e Inteiros</td><td>27/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
-<tr><td class="topic-name">Antiguidade Oriental-</td><td>27/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
-<tr><td class="topic-name">Nova Ordem Mundial e Multipolaridade</td><td>26/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
-<tr><td class="topic-name">Ácidos Nucleicos e Código Genético</td><td>26/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr></tbody></table>
-  </section>
-
-  <div class="divider"></div>
-
-  <section class="section">
-    <div class="section-title"><span>🗓️</span> Cronograma Semanal</div>
-    <div class="crono-grid">
+    <!-- Cronograma (right) -->
+    <div class="card grid-right">
+      <div class="card-title"><span>🗓️</span> Cronograma Semanal</div>
+      <div class="crono-grid">
 <div class="crono-day today"><div class="crono-label">Seg</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Língua Portuguesa</span> <span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span> <span class="crono-pill" style="background:rgba(198,168,56,0.12);color:#C6A838">Literatura</span></div></div>
 <div class="crono-day"><div class="crono-label">Ter</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span> <span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">História</span> <span class="crono-pill" style="background:rgba(203,123,62,0.12);color:#CB7B3E">Biologia</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Geografia</span></div></div>
 <div class="crono-day"><div class="crono-label">Qua</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">Filosofia</span> <span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Sociologia</span> <span class="crono-pill" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span></div></div>
@@ -429,25 +391,61 @@ body {
 <div class="crono-day"><div class="crono-label">Sex</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span> <span class="crono-pill" style="background:rgba(198,168,56,0.12);color:#C6A838">Artes</span> <span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">História</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Língua Portuguesa</span></div></div>
 <div class="crono-day"><div class="crono-label">Sáb</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Educação Fisica</span> <span class="crono-pill" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span> <span class="crono-pill" style="background:rgba(203,123,62,0.12);color:#CB7B3E">Biologia</span></div></div>
 <div class="crono-day"><div class="crono-label">Dom</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Sociologia</span> <span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">Filosofia</span></div></div>
+      </div>
     </div>
-  </section>
 
-  <div class="divider"></div>
+    <!-- ═══ ROW 3: Disciplinas + Recentes ═══ -->
 
-  <section class="section">
-    <div class="section-title"><span>🚀</span> Acesso Rápido</div>
-    <div class="quick-links">
-      <a class="quick-link" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FRunBook">
-        <div class="link-icon">📋</div><span>RunBook</span>
-      </a>
-      <a class="quick-link" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FRevisao%20Espacada">
-        <div class="link-icon">🔄</div><span>Revisão Espaçada</span>
-      </a>
-      <a class="quick-link" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FDisciplinas">
-        <div class="link-icon">📂</div><span>Disciplinas</span>
-      </a>
+    <!-- Progresso por Disciplina (left) -->
+    <div class="card grid-left">
+      <div class="card-title"><span>📚</span> Progresso por Disciplina</div>
+      <div class="disc-list">
+<div class="disc-row"><span class="disc-name">Matemática</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:2%;background:#529CCA"></div></div><span class="disc-pct">3/129</span></div>
+<div class="disc-row"><span class="disc-name">Biologia</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:2%;background:#9D6DD7"></div></div><span class="disc-pct">2/99</span></div>
+<div class="disc-row"><span class="disc-name">Física</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:3%;background:#4DAB9A"></div></div><span class="disc-pct">3/97</span></div>
+<div class="disc-row"><span class="disc-name">Geografia</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:2%;background:#CB7B3E"></div></div><span class="disc-pct">2/85</span></div>
+<div class="disc-row"><span class="disc-name">Língua Portuguesa</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:4%;background:#D44C47"></div></div><span class="disc-pct">3/72</span></div>
+<div class="disc-row"><span class="disc-name">Filosofia</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#C6A838"></div></div><span class="disc-pct">0/61</span></div>
+<div class="disc-row"><span class="disc-name">Sociologia</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#C85B8E"></div></div><span class="disc-pct">0/54</span></div>
+<div class="disc-row"><span class="disc-name">Atualidades</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:2%;background:#529CCA"></div></div><span class="disc-pct">1/52</span></div>
+<div class="disc-row"><span class="disc-name">Química</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:2%;background:#9D6DD7"></div></div><span class="disc-pct">1/51</span></div>
+<div class="disc-row"><span class="disc-name">Literatura</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:4%;background:#4DAB9A"></div></div><span class="disc-pct">2/50</span></div>
+<div class="disc-row"><span class="disc-name">História</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:4%;background:#CB7B3E"></div></div><span class="disc-pct">2/47</span></div>
+<div class="disc-row"><span class="disc-name">Artes</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:4%;background:#D44C47"></div></div><span class="disc-pct">1/26</span></div>
+<div class="disc-row"><span class="disc-name">Educação Fisica</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#C6A838"></div></div><span class="disc-pct">0/23</span></div>
+      </div>
     </div>
-  </section>
+
+    <!-- Últimos Estudados + Quick Links (right) -->
+    <div class="grid-right" style="display:flex;flex-direction:column;gap:14px;">
+      <div class="card">
+        <div class="card-title"><span>🕐</span> Últimos Estudados</div>
+        <table class="notion-table"><thead><tr><th>📖 Tópico</th><th>📅 Data</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th></tr></thead><tbody><tr><td class="topic-name">Elementos da Narrativa</td><td>02/03</td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
+<tr><td class="topic-name">Divisibilidade e Fatoração</td><td>02/03</td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
+<tr><td class="topic-name">Ordens de Grandeza e Estimativas</td><td>02/03</td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
+<tr><td class="topic-name">Procedimentos de Leitura</td><td>27/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
+<tr><td class="topic-name">História da Arte</td><td>27/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
+<tr><td class="topic-name">Números Naturais e Inteiros</td><td>27/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
+<tr><td class="topic-name">Antiguidade Oriental-</td><td>27/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
+<tr><td class="topic-name">Nova Ordem Mundial e Multipolaridade</td><td>26/02</td><td><span class="check-on">✅</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr></tbody></table>
+      </div>
+      <div class="card">
+        <div class="card-title"><span>🚀</span> Acesso Rápido</div>
+        <div class="qlinks">
+          <a class="qlink" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FRunBook">
+            <div class="qlink-icon" style="background:rgba(82,156,202,0.12)">📋</div>RunBook
+          </a>
+          <a class="qlink" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FRevisao%20Espacada">
+            <div class="qlink-icon" style="background:rgba(77,171,154,0.12)">🔄</div>Revisão Espaçada
+          </a>
+          <a class="qlink" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning%2FDisciplinas">
+            <div class="qlink-icon" style="background:rgba(157,109,215,0.12)">📂</div>Disciplinas
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
 
   <div class="dash-footer">
     Gerado em 2026-03-02 · SmartNoteBrain
