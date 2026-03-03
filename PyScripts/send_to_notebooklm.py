@@ -123,6 +123,23 @@ def extract_prompt_from_file(file_path, prompt_name):
     test_cards_only = "--test-cards" in sys.argv
     test_video_only = "--test-video" in sys.argv
     
+    only_genquest = "--only-genquest" in sys.argv
+    only_genquest_expert = "--only-genquest-expert" in sys.argv
+    only_genvid = "--only-genvid" in sys.argv
+    only_genvid_expert = "--only-genvid-expert" in sys.argv
+    is_specific_action = only_genquest or only_genquest_expert or only_genvid or only_genvid_expert
+    
+    saved_url = None
+    if is_specific_action:
+        text = path.read_text(encoding="utf-8")
+        import re
+        match = re.search(r'^notebooklm:\s*"?([^"\n]+)"?', text, re.MULTILINE)
+        if match:
+            saved_url = match.group(1).strip()
+        else:
+            print("❌ Erro: Não encontrei a URL do NotebookLM no frontmatter. Execute a geração completa primeiro.")
+            sys.exit(1)
+    
     prompt_genvid = extract_prompt_from_file(file_path, 'GenVid')
     prompt_genvid_expert = extract_prompt_from_file(file_path, 'GenVidExpert')
     prompt_genvid_pers = extract_prompt_from_file(file_path, 'GenVidPersonalization')
@@ -140,7 +157,11 @@ def extract_prompt_from_file(file_path, prompt_name):
             context = browser.contexts[0]
             page = context.new_page()
             
-            if test_cards_only or test_video_only:
+            if is_specific_action and saved_url:
+                print(f"➡️ Modo de ação específica ativado: Indo direto para o notebook salvo: {saved_url} ...")
+                page.goto(saved_url)
+                page.wait_for_timeout(5000)
+            elif test_cards_only or test_video_only:
                 print("➡️ Modo de teste ativado: Indo direto para o notebook hardcoded...")
                 page.goto("https://notebooklm.google.com/notebook/a7970a7f-e08e-47bb-b725-1d4d119ecebb")
                 page.wait_for_timeout(5000)
@@ -381,12 +402,12 @@ def extract_prompt_from_file(file_path, prompt_name):
                 print(f"⏳ [{step_name}] Importação rodando (15s)...")
                 page.wait_for_timeout(15000) 
 
-            if not test_cards_only and not test_video_only:
+            if not test_cards_only and not test_video_only and not is_specific_action:
                 do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
                 do_search_and_import(prompt_deepresearch, "DeepSearch (Fonte 2)", wait_excluir=True)
                 do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", wait_excluir=True, use_deep_research=True)
             else:
-                print("⚠️ Modo de teste ativado. Pulando as importações de fontes.")
+                print("⚠️ Modo de teste ou ação única ativado. Pulando as importações de fontes.")
             
             # --- Etapa: Cartões Didáticos ---
             def do_flashcards(promptText, step_name):
@@ -459,10 +480,10 @@ def extract_prompt_from_file(file_path, prompt_name):
                 print(f"⏳ [{step_name}] Aguardando 7s após salvar...")
                 page.wait_for_timeout(7000)
 
-            if not test_video_only:
-                if prompt_genquest:
+            if not test_video_only and not only_genvid and not only_genvid_expert:
+                if prompt_genquest and (not is_specific_action or only_genquest):
                     do_flashcards(prompt_genquest, "Cartões Didáticos - GenQuest")
-                if prompt_genquest_expert:
+                if prompt_genquest_expert and (not is_specific_action or only_genquest_expert):
                     do_flashcards(prompt_genquest_expert, "Cartões Didáticos - GenQuestExpert")
                     
                 print("✨ Sucesso Extremo com Cartões Didáticos!")
@@ -585,37 +606,16 @@ def extract_prompt_from_file(file_path, prompt_name):
                 print(f"⏳ [{step_name}] Aguardando 10s após gerar...")
                 page.wait_for_timeout(10000)
 
-            if not test_cards_only:
-                if prompt_genvid and prompt_genvid_pers:
+            if not test_cards_only and not only_genquest and not only_genquest_expert:
+                if prompt_genvid and prompt_genvid_pers and (not is_specific_action or only_genvid):
                     do_video(prompt_genvid, prompt_genvid_pers, "Vídeo - GenVid")
-                if prompt_genvid_expert and prompt_genvid_pers:
+                if prompt_genvid_expert and prompt_genvid_pers and (not is_specific_action or only_genvid_expert):
                     do_video(prompt_genvid_expert, prompt_genvid_pers, "Vídeo - GenVidExpert")
     
                 print("✨ Sucesso Extremo com Vídeos!")
             
-            # Extrair URL final e salvar no frontmatter
-            url_final = page.url
-            print(f"🔗 URL Final do Notebook: {url_final}")
-            
-            try:
-                import re
-                text = path.read_text(encoding="utf-8")
-                if text.startswith("---"):
-                    parts = text.split("---", 2)
-                    if len(parts) >= 3:
-                        frontmatter = parts[1]
-                        if re.search(r'^notebooklm:.*$', frontmatter, re.MULTILINE):
-                            new_frontmatter = re.sub(r'^notebooklm:.*$', f'notebooklm: "{url_final}"', frontmatter, flags=re.MULTILINE)
-                        else:
-                            if not frontmatter.endswith('\n'):
-                                frontmatter += '\n'
-                            new_frontmatter = frontmatter + f'notebooklm: "{url_final}"\n'
-                            
-                        new_text = f"---{new_frontmatter}---" + parts[2]
-                        path.write_text(new_text, encoding="utf-8")
-                        print("📝 URL salva com sucesso no frontmatter do arquivo.")
-            except Exception as e:
-                print(f"⚠️ Aviso: Não foi possível salvar a URL no frontmatter. Erro: {e}")
+            # Extrair URL final e salvar no frontmatter apenas se foi rodada a automação completa
+            if not is_specific_action and not test_cards_only and not test_video_only:
             
         except Exception as e:
             print(f"❌ Automação falhou. Erro capturado:\n{e}")
