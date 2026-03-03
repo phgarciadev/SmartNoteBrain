@@ -5,7 +5,7 @@ send_to_notebooklm.py — Envia a nota atual para o Google NotebookLM via RPA.
 Dependências: pip install playwright && playwright install chromium
 Requisito de Execução: 
 Você PRECISA estar rodando o Google Chrome com a porta de depuração ativada.
-Exemplo no Linux: google-chrome-stable --remote-debugging-port=9222
+Exemplo no Linux: google-chrome-stable --remote-debugging-port=9222 --user-data-dir=~/.config/google-chrome-debug
 
 Uso:
     python3 PyScripts/send_to_notebooklm.py "caminho/do/arquivo.md"
@@ -25,8 +25,6 @@ def is_port_open(port):
 def start_chrome():
     print("🚀 Iniciando o Google Chrome com modo de depuração ativado...")
     try:
-        # Chrome bloqueia porta de depuração no perfil padrão por segurança.
-        # Precisamos passar uma pasta de perfil dedicada para automação.
         debug_dir = Path.home() / ".config" / "google-chrome-debug"
         debug_dir.mkdir(parents=True, exist_ok=True)
         
@@ -36,7 +34,6 @@ def start_chrome():
             f"--user-data-dir={debug_dir}"
         ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
-        # Aguarda até o Chrome abrir a porta
         sucesso = False
         for _ in range(15):
             if is_port_open(9222):
@@ -49,43 +46,75 @@ def start_chrome():
         print("❌ 'google-chrome-stable' não encontrado no sistema!")
         return False
 
+def get_prompt(prompt_name, materia, assunto, topic_full, other_topics):
+    prompt_path = Path(f"/home/Pedro/Documentos/Obsidian/SmartNoteBrain/DailyLearning/Prompts/{prompt_name}.md")
+    if not prompt_path.exists():
+        return f"Conteúdo sobre {topic_full} de {materia} - {assunto}"
+    
+    text = prompt_path.read_text(encoding="utf-8")
+    
+    # Remove marcações markdown
+    if text.startswith("```markdown\n"): text = text[12:]
+    elif text.startswith("```markdown"): text = text[11:]
+    if text.endswith("\n```\n"): text = text[:-5]
+    elif text.endswith("\n```"): text = text[:-4]
+    elif text.endswith("```"): text = text[:-3]
+    
+    text = text.replace("são eles: <>", f"são eles: {topic_full}")
+    text = text.replace("do assunto: <>", f"do assunto: {assunto}")
+    text = text.replace("da disciplina: <>", f"da disciplina: {materia}")
+    
+    others_str = "\n".join([f"- {t}" for t in other_topics])
+    text = text.replace("<OTHER_TOPICS>", others_str)
+    
+    return text.strip()
+
 def send_to_notebooklm(file_path):
     path = Path(file_path)
     if not path.exists():
         print(f"❌ Erro: Arquivo {file_path} não encontrado.")
         sys.exit(1)
         
-    content = path.read_text(encoding="utf-8")
     title = path.stem
+    
+    parts = path.parts
+    try:
+        idx_disc = parts.index("Disciplinas")
+        materia_dir = parts[idx_disc+1]
+        materia = materia_dir.split(". ", 1)[1] if ". " in materia_dir else materia_dir
+        
+        assunto_dir = parts[idx_disc+2]
+        assunto = assunto_dir.split(". ", 1)[1] if ". " in assunto_dir else assunto_dir
+        
+        other_topics = []
+        for f in path.parent.glob("*.md"):
+            if f.name != path.name:
+                other_topics.append(f.stem)
+    except ValueError:
+        materia = "Desconhecida"
+        assunto = "Desconhecido"
+        other_topics = []
+
+    prompt_deepsearch = get_prompt("DeepSearch", materia, assunto, title, other_topics)
+    prompt_deepresearch = get_prompt("DeepResearch", materia, assunto, title, other_topics)
 
     if not is_port_open(9222):
         print("⚠️ Chrome não está rodando na porta 9222.")
         if not start_chrome():
             print("❌ Falha crítica: Não foi possível iniciar e conectar ao Chrome.")
-            print("Certifique-se de que o Google Chrome está totalmente fechado antes de rodar o script.")
             sys.exit(1)
             
-    print("� Conectando ao Chrome na porta 9222...")
+    print("🔌 Conectando ao Chrome na porta 9222...")
     with sync_playwright() as p:
         try:
             browser = p.chromium.connect_over_cdp("http://localhost:9222")
-        except Exception as e:
-            print("❌ Falha ao conectar. O Chrome deve estar fechado antes para que possamos injetar a flag.")
-            print(f"Detalhe: {e}")
-            sys.exit(1)
+            context = browser.contexts[0]
+            page = context.new_page()
             
-        print("✅ Conectado! Abrindo NotebookLM...")
-        context = browser.contexts[0]
-        page = context.new_page()
-        
-        try:
             page.goto("https://notebooklm.google.com/")
-            page.wait_for_load_state("networkidle")
             page.wait_for_timeout(3000)
             
-            print("➡️ Procurando botão de 'Criar/Novo notebook' via JS Injection...")
-            
-            # Injeta JS para achar qualquer botão ou div clicável que contenha "Novo" ou "New" e clica
+            print("➡️ Procurando botão de 'Criar/Novo notebook'...")
             js_click_new = """() => {
                 const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
                 let node;
@@ -93,93 +122,145 @@ def send_to_notebooklm(file_path):
                     let txt = node.textContent.toLowerCase();
                     if(txt.includes('novo bloco') || txt.includes('new notebook') || txt.includes('create')) {
                         let parent = node.parentElement;
-                        // Sobe na árvore até achar algo clicável (button, md-elevated-button, div com role=button)
                         while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON') && parent.getAttribute('role') !== 'button') {
                             if(parent.tagName === 'BODY') break;
                             parent = parent.parentElement;
                         }
-                        if(parent && parent.tagName !== 'BODY') {
-                            parent.click();
-                            return true;
-                        }
+                        if(parent && parent.tagName !== 'BODY') { parent.click(); return true; }
                     }
                 }
-                // Fallback: clica na primeira coisa que parece um botão principal
                 const btn = document.querySelector('md-elevated-button, button.mat-mdc-unelevated-button');
                 if(btn) { btn.click(); return true; }
                 return false;
             }"""
+            page.evaluate(js_click_new)
+            page.wait_for_timeout(4000)
             
-            clicked = page.evaluate(js_click_new)
-            if not clicked:
-                print("⚠️ Aviso: Botão Novo Notebook não encontrado pelo JS, tentando click fallback.")
-                page.mouse.click(200, 200) # Fallback bobo
-                
-            page.wait_for_timeout(2000)
-            
-            print("➡️ Procurando opção 'Texto Copiado'...")
-            js_click_paste = """() => {
-                const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-                let node;
-                while(node = walker.nextNode()) {
-                    let txt = node.textContent.toLowerCase();
-                    if(txt.includes('texto copiado') || txt.includes('copied text') || txt.includes('colar texto')) {
-                        let parent = node.parentElement;
-                        while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON') && parent.getAttribute('role') !== 'button' && parent.tagName !== 'DIV') {
-                            if(parent.tagName === 'BODY') break;
-                            parent = parent.parentElement;
-                        }
-                        if(parent && parent.tagName !== 'BODY') { parent.click(); return true; }
+            print("➡️ Fechando modal inicial (X)...")
+            js_close_modal = """() => {
+                const closeBtns = Array.from(document.querySelectorAll('button, md-icon-button'));
+                for(let b of closeBtns) {
+                    if(b.getAttribute('aria-label') === 'Close' || b.getAttribute('aria-label') === 'Fechar' || 
+                       (b.textContent && b.textContent.toLowerCase().includes('close'))) {
+                        b.click(); return true;
                     }
+                }
+                const icons = Array.from(document.querySelectorAll('.google-symbols'));
+                for(let i of icons) {
+                   if(i.textContent.includes('close')) {
+                       if(i.parentElement) { i.parentElement.click(); return true; }
+                   }
                 }
                 return false;
             }"""
-            page.evaluate(js_click_paste)
-            
+            page.evaluate(js_close_modal)
             page.wait_for_timeout(1000)
-            print("➡️ Digitando título do tópico e colando o conteúdo...")
             
-            # Título e texto preenchidos via Playwright
-            textarea = page.locator("textarea").first
-            textarea.wait_for(state="visible", timeout=3000)
-            textarea.fill(content)
-            
-            inputs = page.locator("input[type='text']").all()
-            for inp in inputs:
-                if inp.is_visible():
-                    inp.fill(title)
-                    break
-            
-            page.wait_for_timeout(500)
-            
-            print("➡️ Finalizando Inserção no Notebook...")
-            js_click_insert = """() => {
+            print(f"➡️ Renomeando notebook para '{title}'...")
+            js_rename = """(newTitle) => {
                 const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
                 let node;
                 while(node = walker.nextNode()) {
-                    let txt = node.textContent.toLowerCase().trim();
-                    if(txt === 'inserir' || txt === 'insert') {
+                    let txt = node.textContent.trim().toLowerCase();
+                    if(txt === 'untitled notebook' || txt === 'bloco de notas sem título' || txt === 'notebook sem título') {
                         let parent = node.parentElement;
-                        while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON')) {
-                            if(parent.tagName === 'BODY') break;
-                            parent = parent.parentElement;
+                        if(parent) { 
+                            parent.click(); 
+                            return true;
                         }
-                        if(parent && parent.tagName !== 'BODY') { parent.click(); return true; }
                     }
                 }
+                // Tenta achar textarea/input e preencher direto
+                const ta = document.querySelector('textarea');
+                if(ta) { ta.value = newTitle; ta.dispatchEvent(new Event('input', {bubbles:true})); return false; }
                 return false;
             }"""
-            page.evaluate(js_click_insert)
             
-            print("✨ Sucesso! O NotebookLM está carregando as fontes dessa nota.")
-            page.wait_for_timeout(5000)
+            clicked_title = page.evaluate(js_rename, title)
+            page.wait_for_timeout(500)
+            if clicked_title:
+                page.keyboard.type(title, delay=10)
+                page.keyboard.press("Enter")
+            page.wait_for_timeout(1000)
+            
+            def do_search_and_import(prompt_text, step_name):
+                print(f"➡️ [{step_name}] Abrindo Busca na Web...")
+                
+                # Clica em Adicionar Fonte (+ ou Web)
+                page.evaluate("""() => {
+                    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                    let node;
+                    while(node = walker.nextNode()) {
+                        let txt = node.textContent.trim().toLowerCase();
+                        if(txt.includes('adicionar fonte') || txt.includes('add source') || txt === 'web' || txt === 'site' || txt === 'sites') {
+                            let parent = node.parentElement;
+                            while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON')) {
+                                if(parent.tagName === 'BODY') break;
+                                parent = parent.parentElement;
+                            }
+                            if(parent && parent.tagName !== 'BODY') { parent.click(); return true; }
+                        }
+                    }
+                    // Tenta pelo botão de icone
+                    const icons = Array.from(document.querySelectorAll('.google-symbols'));
+                    for(let i of icons) {
+                        if(i.textContent.includes('add')) {
+                            if(i.parentElement) { i.parentElement.click(); return true;}
+                        }
+                    }
+                }""")
+                page.wait_for_timeout(2000)
+                
+                print(f"➡️ [{step_name}] Preenchendo a busca...")
+                # Acha o input de pesquisa e força os eventos de input pra react/angular pegarem
+                page.evaluate("""(text) => {
+                    const inputs = document.querySelectorAll('input[type="text"], textarea');
+                    for(let inp of inputs) {
+                        let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
+                        if(placeholder.includes('pesquise novas fontes') || placeholder.includes('search') || placeholder.includes('pesquisa') || placeholder.includes('web')) {
+                            inp.focus();
+                            inp.value = text;
+                            inp.dispatchEvent(new Event('input', { bubbles: true }));
+                            inp.dispatchEvent(new Event('change', { bubbles: true }));
+                            return true;
+                        }
+                    }
+                    return false;
+                }""", prompt_text)
+                
+                page.keyboard.press("Enter")
+                print(f"➡️ [{step_name}] Clicando 'Importar fontes'...")
+                page.wait_for_timeout(6000) # Espera loading da pesquisa
+                
+                page.evaluate("""() => {
+                    const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button'));
+                    for(let b of btns) {
+                        let txt = (b.textContent || '').toLowerCase();
+                        if(txt.includes('importar fontes') || txt.includes('import source') || txt.includes('inserir')) {
+                            b.click(); return true;
+                        }
+                    }
+                }""")
+                print(f"⏳ [{step_name}] Aguardando 15 segundos para baixar dados...")
+                page.wait_for_timeout(15000)
+
+            # Executa DeepSearch
+            do_search_and_import(prompt_deepsearch, "DeepSearch")
+            
+            # Fecha possível modal de importação
+            page.evaluate(js_close_modal)
+            page.wait_for_timeout(1000)
+            
+            # Executa DeepResearch
+            do_search_and_import(prompt_deepresearch, "DeepResearch")
+            
+            print("✨ Sucesso! O NotebookLM concluiu o fluxo avançado de pesquisas.")
             
         except Exception as e:
-            print(f"❌ Automação falhou. A interface do Google pode ter mudado.")
-            print(f"   Erro capturado: {e}")
+            print(f"❌ Automação falhou. Erro capturado: {e}")
             
         finally:
-            print("🏁 Fechando script (A aba continuará aberta no seu Chrome para você usar o NotebookLM).")
+            print("🏁 Fechando script (A aba continuará aberta).")
 
 if __name__ == "__main__":
     if len(sys.argv) < 2:
