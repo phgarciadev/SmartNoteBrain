@@ -130,15 +130,21 @@ def extract_prompt_from_file(file_path, prompt_name):
     is_specific_action = only_genquest or only_genquest_expert or only_genvid or only_genvid_expert
     
     saved_url = None
+    text = path.read_text(encoding="utf-8")
+    import re
+    match = re.search(r'^notebooklm:\s*"?([^"\n]+)"?', text, re.MULTILINE)
+    if match:
+        saved_url = match.group(1).strip()
+        
     if is_specific_action:
-        text = path.read_text(encoding="utf-8")
-        import re
-        match = re.search(r'^notebooklm:\s*"?([^"\n]+)"?', text, re.MULTILINE)
-        if match:
-            saved_url = match.group(1).strip()
-        else:
+        if not saved_url:
             print("❌ Erro: Não encontrei a URL do NotebookLM no frontmatter. Execute a geração completa primeiro.")
             sys.exit(1)
+    elif not test_cards_only and not test_video_only:
+        # Modo completo
+        if saved_url:
+            print(f"⚠️ Aviso: Este notebook já possui um link ({saved_url}). Execução completa abortada.")
+            sys.exit(0)
     
     prompt_genvid = extract_prompt_from_file(file_path, 'GenVid')
     prompt_genvid_expert = extract_prompt_from_file(file_path, 'GenVidExpert')
