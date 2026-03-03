@@ -82,13 +82,31 @@ def extract_prompt_from_file(file_path, prompt_name):
                 
     return ""
 
-def send_to_notebooklm(file_path):
+    import re
     path = Path(file_path)
     if not path.exists():
         print(f"❌ Erro: Arquivo {file_path} não encontrado.")
         sys.exit(1)
         
     title = path.stem
+    try:
+        parts = path.parts
+        if "Disciplinas" in parts:
+            idx = parts.index("Disciplinas")
+            rel_parts = parts[idx+1:]
+            
+            nums = []
+            for p in rel_parts:
+                m = re.match(r'^(\d+)\.', p)
+                if m:
+                    nums.append(m.group(1))
+            
+            if nums:
+                clean_name = re.sub(r'^\d+\.\s*', '', title).strip()
+                title = f"{'.'.join(nums)} - {clean_name}"
+    except Exception as e:
+        print(f"⚠️ Aviso: Não foi possível estruturar o título hierárquico. Usando o original ({title}). Erro: {e}")
+
     
     prompt_text = extract_prompt_from_file(file_path, 'DeepSearch')
     if not prompt_text:
@@ -574,6 +592,30 @@ def send_to_notebooklm(file_path):
                     do_video(prompt_genvid_expert, prompt_genvid_pers, "Vídeo - GenVidExpert")
     
                 print("✨ Sucesso Extremo com Vídeos!")
+            
+            # Extrair URL final e salvar no frontmatter
+            url_final = page.url
+            print(f"🔗 URL Final do Notebook: {url_final}")
+            
+            try:
+                import re
+                text = path.read_text(encoding="utf-8")
+                if text.startswith("---"):
+                    parts = text.split("---", 2)
+                    if len(parts) >= 3:
+                        frontmatter = parts[1]
+                        if re.search(r'^notebooklm:.*$', frontmatter, re.MULTILINE):
+                            new_frontmatter = re.sub(r'^notebooklm:.*$', f'notebooklm: "{url_final}"', frontmatter, flags=re.MULTILINE)
+                        else:
+                            if not frontmatter.endswith('\n'):
+                                frontmatter += '\n'
+                            new_frontmatter = frontmatter + f'notebooklm: "{url_final}"\n'
+                            
+                        new_text = f"---{new_frontmatter}---" + parts[2]
+                        path.write_text(new_text, encoding="utf-8")
+                        print("📝 URL salva com sucesso no frontmatter do arquivo.")
+            except Exception as e:
+                print(f"⚠️ Aviso: Não foi possível salvar a URL no frontmatter. Erro: {e}")
             
         except Exception as e:
             print(f"❌ Automação falhou. Erro capturado:\n{e}")

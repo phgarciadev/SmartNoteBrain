@@ -110,6 +110,13 @@ def fill_prompt(template: str, disciplina: str, assunto: str, topico: str, promp
 
 def generate_buttons(prompts: dict, disciplina: str, assunto: str, topico: str, other_topics_block: str) -> str:
     """Gera os blocos de botões."""
+    
+    nb_button = """```button
+name 🤖 Gerar NotebookLM
+type command
+action Shell Command: NotebookLM Generate
+```"""
+
     buttons = []
     
     button_config = [
@@ -139,7 +146,7 @@ action {filled_escaped}
 ```"""
             buttons.append(button)
     
-    return "\n\n".join(buttons)
+    return nb_button + "\n" * 10 + "\n\n".join(buttons)
 
 
 def process_file(filepath: Path, base_dir: Path, prompts: dict) -> str:
