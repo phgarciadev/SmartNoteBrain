@@ -46,28 +46,41 @@ def start_chrome():
         print("❌ 'google-chrome-stable' não encontrado no sistema!")
         return False
 
-def get_prompt(prompt_name, materia, assunto, topic_full, other_topics):
-    prompt_path = Path(f"/home/Pedro/Documentos/Obsidian/SmartNoteBrain/DailyLearning/Prompts/{prompt_name}.md")
-    if not prompt_path.exists():
-        return f"Conteúdo sobre {topic_full} de {materia} - {assunto}"
+def extract_deepsearch_from_file(file_path):
+    text = Path(file_path).read_text(encoding="utf-8")
+    lines = text.split('\n')
+    in_button = False
+    is_deepsearch = False
+    prompt_lines = []
     
-    text = prompt_path.read_text(encoding="utf-8")
-    
-    # Remove marcações markdown
-    if text.startswith("```markdown\n"): text = text[12:]
-    elif text.startswith("```markdown"): text = text[11:]
-    if text.endswith("\n```\n"): text = text[:-5]
-    elif text.endswith("\n```"): text = text[:-4]
-    elif text.endswith("```"): text = text[:-3]
-    
-    text = text.replace("são eles: <>", f"são eles: {topic_full}")
-    text = text.replace("do assunto: <>", f"do assunto: {assunto}")
-    text = text.replace("da disciplina: <>", f"da disciplina: {materia}")
-    
-    others_str = "\n".join([f"- {t}" for t in other_topics])
-    text = text.replace("<OTHER_TOPICS>", others_str)
-    
-    return text.strip()
+    for line in lines:
+        if line.strip() == '```button':
+            in_button = True
+            is_deepsearch = False
+            prompt_lines = []
+            continue
+            
+        if in_button:
+            if line.startswith('name ') and 'DeepSearch' in line:
+                is_deepsearch = True
+                continue
+            if line.startswith('type '):
+                continue
+            if line.startswith('action '):
+                if is_deepsearch:
+                    prompt_lines.append(line[7:])
+                continue
+                
+            if line.strip() == '```':
+                in_button = False
+                if is_deepsearch:
+                    return '\n'.join(prompt_lines).strip()
+                continue
+                
+            if is_deepsearch:
+                prompt_lines.append(line)
+                
+    return ""
 
 def send_to_notebooklm(file_path):
     path = Path(file_path)
@@ -77,26 +90,13 @@ def send_to_notebooklm(file_path):
         
     title = path.stem
     
-    parts = path.parts
-    try:
-        idx_disc = parts.index("Disciplinas")
-        materia_dir = parts[idx_disc+1]
-        materia = materia_dir.split(". ", 1)[1] if ". " in materia_dir else materia_dir
-        
-        assunto_dir = parts[idx_disc+2]
-        assunto = assunto_dir.split(". ", 1)[1] if ". " in assunto_dir else assunto_dir
-        
-        other_topics = []
-        for f in path.parent.glob("*.md"):
-            if f.name != path.name:
-                other_topics.append(f.stem)
-    except ValueError:
-        materia = "Desconhecida"
-        assunto = "Desconhecido"
-        other_topics = []
+    prompt_text = extract_deepsearch_from_file(file_path)
+    if not prompt_text:
+        print(f"❌ Erro: Não foi possível encontrar o botão DeepSearch no arquivo {file_path}")
+        sys.exit(1)
 
-    prompt_deepsearch = get_prompt("DeepSearch", materia, assunto, title, other_topics)
-    prompt_deepresearch = get_prompt("DeepResearch", materia, assunto, title, other_topics)
+    prompt_deepsearch = prompt_text
+    prompt_deepresearch = prompt_text
 
     if not is_port_open(9222):
         print("⚠️ Chrome não está rodando na porta 9222.")
