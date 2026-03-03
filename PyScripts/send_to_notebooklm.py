@@ -133,7 +133,7 @@ def send_to_notebooklm(file_path):
     saved_url = None
     text = path.read_text(encoding="utf-8")
     import re
-    match = re.search(r'^NotebookLM:\s*"?([^"\n]+)"?', text, re.MULTILINE | re.IGNORECASE)
+    match = re.search(r'^NotebookLM:\s*"?([^"\n]+)"?', text, flags=re.MULTILINE | re.IGNORECASE)
     if match:
         saved_url = match.group(1).strip()
         
@@ -241,26 +241,27 @@ def send_to_notebooklm(file_path):
                 page.keyboard.press("Escape")
                 page.wait_for_timeout(500)
                 
-                # Assim que renomeamos/criamos a página, o URL já é o definitivo do notebook
+                # JÁ CAPTURAMOS A URL AGORA E SALVAMOS NO FRONTMATTER
                 url_final = page.url
-                print(f"🔗 URL Inicial do Notebook Cadastrado: {url_final}")
+                print(f"🔗 URL Inicial do Notebook: {url_final}")
                 
                 try:
-                    text_content = path.read_text(encoding="utf-8")
-                    if text_content.startswith("---"):
-                        parts_content = text_content.split("---", 2)
-                        if len(parts_content) >= 3:
-                            frontmatter = parts_content[1]
-                            if re.search(r'^NotebookLM:.*$', frontmatter, re.MULTILINE | re.IGNORECASE):
+                    import re
+                    text = path.read_text(encoding="utf-8")
+                    if text.startswith("---"):
+                        parts = text.split("---", 2)
+                        if len(parts) >= 3:
+                            frontmatter = parts[1]
+                            if re.search(r'^NotebookLM:.*$', frontmatter, flags=re.MULTILINE | re.IGNORECASE):
                                 new_frontmatter = re.sub(r'^NotebookLM:.*$', f'NotebookLM: "{url_final}"', frontmatter, flags=re.MULTILINE | re.IGNORECASE)
                             else:
                                 if not frontmatter.endswith('\n'):
                                     frontmatter += '\n'
                                 new_frontmatter = frontmatter + f'NotebookLM: "{url_final}"\n'
                                 
-                            new_text = f"---{new_frontmatter}---" + parts_content[2]
+                            new_text = f"---{new_frontmatter}---" + parts[2]
                             path.write_text(new_text, encoding="utf-8")
-                            print("📝 URL inicial salva com sucesso no frontmatter.")
+                            print("📝 URL salva com sucesso no frontmatter do arquivo.")
                 except Exception as e:
                     print(f"⚠️ Aviso: Não foi possível salvar a URL no frontmatter. Erro: {e}")
             
@@ -643,6 +644,9 @@ def send_to_notebooklm(file_path):
                     do_video(prompt_genvid_expert, prompt_genvid_pers, "Vídeo - GenVidExpert")
     
                 print("✨ Sucesso Extremo com Vídeos!")
+            
+            if not is_specific_action and not test_cards_only and not test_video_only:
+                print("✨ Fluxo de automação finalizado!")
             
         except Exception as e:
             print(f"❌ Automação falhou. Erro capturado:\n{e}")
