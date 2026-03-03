@@ -179,7 +179,7 @@ def send_to_notebooklm(file_path):
             page.keyboard.press("Escape")
             page.wait_for_timeout(500)
             
-            def do_search_and_import(prompt_text, step_name, wait_excluir=False):
+            def do_search_and_import(prompt_text, step_name, wait_excluir=False, use_deep_research=False):
                 print(f"➡️ [{step_name}] Clicando no botão de Adicionar Fonte...")
                 
                 # Clica no botão (+) ou "Adicionar fontes" 
@@ -261,6 +261,41 @@ def send_to_notebooklm(file_path):
                         });
                     }""")
                 
+                if use_deep_research:
+                    print(f"➡️ [{step_name}] Mudando tipo para Deep Research...")
+                    page.evaluate("""() => {
+                        return new Promise((resolve) => {
+                            const btns = Array.from(document.querySelectorAll('button, div[role="button"], md-text-button, md-outlined-button, md-filled-button'));
+                            let clickedDropdown = false;
+                            for(let b of btns) {
+                                let txt = (b.textContent || '').toLowerCase().trim();
+                                if(txt.includes('pesquisa rápida') || txt.includes('quick search')) {
+                                    b.click();
+                                    clickedDropdown = true;
+                                    break;
+                                }
+                            }
+                            if(!clickedDropdown) {
+                                resolve(false);
+                                return;
+                            }
+                            
+                            setTimeout(() => {
+                                const options = Array.from(document.querySelectorAll('md-menu-item, div[role="menuitem"], li, md-list-item, span'));
+                                for(let opt of options) {
+                                    let txt = (opt.textContent || '').toLowerCase();
+                                    if((txt.includes('deep research') || txt.includes('pesquisa profunda')) && !txt.includes('pesquisa rápida')) {
+                                        opt.click();
+                                        resolve(true);
+                                        return;
+                                    }
+                                }
+                                resolve(false);
+                            }, 1000);
+                        });
+                    }""")
+                    page.wait_for_timeout(1000)
+
                 print(f"➡️ [{step_name}] Preenchendo a caixa de pesquisa...")
                 page.evaluate("""(text) => {
                     const inputs = document.querySelectorAll('input[type="text"], textarea');
@@ -279,25 +314,42 @@ def send_to_notebooklm(file_path):
                 }""", prompt_text)
                 
                 page.keyboard.press("Enter")
-                print(f"⏳ [{step_name}] Aguardando a pesquisa carregar (15s)...")
-                page.wait_for_timeout(15000) 
+                print(f"⏳ [{step_name}] Aguardando a pesquisa concluir (esperando botão Importar habilitar)...")
                 
-                print(f"➡️ [{step_name}] Clicando 'Importar'...")
-                page.evaluate("""() => {
-                    const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button'));
-                    for(let b of btns) {
-                        let txt = (b.textContent || '').toLowerCase();
-                        if((txt.includes('importar') || txt.includes('import') || txt.includes('inserir')) && !b.disabled) {
-                            b.click(); return true;
-                        }
-                    }
+                clicked_import = page.evaluate("""() => {
+                    return new Promise((resolve) => {
+                        let attempts = 0;
+                        let check = setInterval(() => {
+                            attempts++;
+                            const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button'));
+                            for(let b of btns) {
+                                let txt = (b.textContent || '').toLowerCase();
+                                if((txt.includes('importar') || txt.includes('import') || txt.includes('inserir')) && !txt.includes('fontes')) {
+                                    if(!b.disabled && !b.hasAttribute('disabled')) {
+                                        b.click();
+                                        clearInterval(check);
+                                        resolve(true);
+                                        return;
+                                    }
+                                }
+                            }
+                            if(attempts >= 300) { // Timeout de 5 minutos
+                                clearInterval(check);
+                                resolve(false);
+                            }
+                        }, 1000);
+                    });
                 }""")
+                
+                if not clicked_import:
+                    print(f"⚠️ Aviso: Botão Importar não foi clicado ou timeout de 5 minutos excedido.")
                 
                 print(f"⏳ [{step_name}] Importação rodando (15s)...")
                 page.wait_for_timeout(15000) 
 
             do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
-            do_search_and_import(prompt_deepresearch, "DeepResearch (Fonte 2)", wait_excluir=True)
+            do_search_and_import(prompt_deepresearch, "DeepSearch (Fonte 2)", wait_excluir=True)
+            do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", wait_excluir=True, use_deep_research=True)
             print("✨ Sucesso Extremo!")
             
         except Exception as e:
