@@ -178,8 +178,10 @@ def send_to_notebooklm(file_path):
             clicked_title = page.evaluate(js_rename)
             page.wait_for_timeout(500)
             if clicked_title:
+                page.keyboard.press("Control+A")
                 page.keyboard.type(title, delay=10)
                 page.keyboard.press("Enter")
+                page.mouse.click(0, 0)  # Tira o foco para evitar submits acidentais
             else:
                 print("⚠️ Não achei o elemento Untitled Notebook para clicar. Apenas focado no DOM.")
             page.wait_for_timeout(1000)
@@ -202,7 +204,6 @@ def send_to_notebooklm(file_path):
                             if(parent && parent.tagName !== 'BODY') { parent.click(); return true; }
                         }
                     }
-                    // Tenta pelo botão de ícone + (add) dentro da section de sources
                     const icons = Array.from(document.querySelectorAll('.google-symbols'));
                     for(let i of icons) {
                         if(i.textContent === 'add') {
@@ -210,8 +211,39 @@ def send_to_notebooklm(file_path):
                         }
                     }
                 }""")
-                page.wait_for_timeout(2000)
                 
+                print(f"⏳ [{step_name}] Aguardando a caixa de pesquisa web ser liberada pelo sistema...")
+                # O Google bloqueia novas pesquisas enquanto a anterior ainda está baixando/processando.
+                # Esse JS vai rodar num loop por até 60 segundos esperando a barra liberar.
+                liberado = page.evaluate("""() => {
+                    return new Promise((resolve) => {
+                        let attempts = 0;
+                        let check = setInterval(() => {
+                            attempts++;
+                            let bodyText = document.body.textContent.toLowerCase();
+                            if(!bodyText.includes('temporariamente desativada') && !bodyText.includes('temporarily disabled')) {
+                                const inputs = document.querySelectorAll('input[type="text"], textarea');
+                                for(let inp of inputs) {
+                                    let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
+                                    if(placeholder.includes('pesquise novas fontes') || placeholder.includes('search') || placeholder.includes('web')) {
+                                        if(!inp.disabled) {
+                                            clearInterval(check);
+                                            resolve(true);
+                                            return;
+                                        }
+                                    }
+                                }
+                            }
+                            if(attempts > 60) { clearInterval(check); resolve(false); } // Max 60 seg
+                        }, 1000);
+                    });
+                }""")
+                
+                if not liberado:
+                    print(f"⚠️ Aviso: A barra de pesquisa não liberou a tempo. Prosseguindo forçadamente...")
+                else:
+                    page.wait_for_timeout(1000)
+                    
                 print(f"➡️ [{step_name}] Preenchendo a caixa de pesquisa na Web...")
                 page.evaluate("""(text) => {
                     const inputs = document.querySelectorAll('input[type="text"], textarea');
@@ -228,22 +260,20 @@ def send_to_notebooklm(file_path):
                     return false;
                 }""", prompt_text)
                 
-                # Executa a pesquisa (O Google usa um botão com flecha "➡" ou press Enter)
+                # Executa a pesquisa
                 page.keyboard.press("Enter")
                 page.wait_for_timeout(5000) # Esperar a pesquisa exibir os resultados
                 
                 print(f"➡️ [{step_name}] Clicando no botão principal 'Importar fontes'...")
                 page.evaluate("""() => {
-                    // Tenta achar botao de importar (Pode estar como "Importar fontes")
                     const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button'));
                     for(let b of btns) {
                         let txt = (b.textContent || '').toLowerCase();
-                        if(txt.includes('importar fontes') || txt.includes('import sources')) {
+                        if((txt.includes('importar fontes') || txt.includes('import sources')) && !b.disabled) {
                             b.click(); return true;
                         }
                     }
                     
-                    // Alternativa: walker de texto se o botão estiver aninhado
                     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
                     let node;
                     while(node = walker.nextNode()) {
@@ -253,13 +283,13 @@ def send_to_notebooklm(file_path):
                             while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON')) {
                                 parent = parent.parentElement;
                             }
-                            if(parent) { parent.click(); return true; }
+                            if(parent && !parent.disabled) { parent.click(); return true; }
                         }
                     }
                 }""")
                 
-                print(f"⏳ [{step_name}] Aguardando 15 segundos vitais para processamento...")
-                page.wait_for_timeout(15000)
+                print(f"⏳ [{step_name}] Processamento da pesquisa iniciado na nuvem...")
+                page.wait_for_timeout(2000) # Apenas uma pausa leve antes do próximo ciclo
 
             # Executa a Sequência Completa
             do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
