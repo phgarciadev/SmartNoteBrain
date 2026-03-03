@@ -254,7 +254,8 @@ def send_to_notebooklm(file_path):
                 }""", prompt_text)
                 
                 page.keyboard.press("Enter")
-                page.wait_for_timeout(4000) 
+                print(f"⏳ [{step_name}] Aguardando a pesquisa carregar (15s)...")
+                page.wait_for_timeout(15000) 
                 
                 print(f"➡️ [{step_name}] Clicando 'Importar'...")
                 page.evaluate("""() => {
@@ -267,8 +268,8 @@ def send_to_notebooklm(file_path):
                     }
                 }""")
                 
-                print(f"⏳ [{step_name}] Importação rodando...")
-                page.wait_for_timeout(2000) 
+                print(f"⏳ [{step_name}] Importação rodando (15s)...")
+                page.wait_for_timeout(15000) 
 
             do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
             do_search_and_import(prompt_deepresearch, "DeepResearch (Fonte 2)")
