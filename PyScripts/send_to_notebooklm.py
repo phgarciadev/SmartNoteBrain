@@ -46,38 +46,38 @@ def start_chrome():
         print("❌ 'google-chrome-stable' não encontrado no sistema!")
         return False
 
-def extract_deepsearch_from_file(file_path):
+def extract_prompt_from_file(file_path, prompt_name):
     text = Path(file_path).read_text(encoding="utf-8")
     lines = text.split('\n')
     in_button = False
-    is_deepsearch = False
+    is_target = False
     prompt_lines = []
     
     for line in lines:
         if line.strip() == '```button':
             in_button = True
-            is_deepsearch = False
+            is_target = False
             prompt_lines = []
             continue
             
         if in_button:
-            if line.startswith('name ') and 'DeepSearch' in line:
-                is_deepsearch = True
+            if line.startswith('name ') and prompt_name in line:
+                is_target = True
                 continue
             if line.startswith('type '):
                 continue
             if line.startswith('action '):
-                if is_deepsearch:
+                if is_target:
                     prompt_lines.append(line[7:])
                 continue
                 
             if line.strip() == '```':
                 in_button = False
-                if is_deepsearch:
+                if is_target:
                     return '\n'.join(prompt_lines).strip()
                 continue
                 
-            if is_deepsearch:
+            if is_target:
                 prompt_lines.append(line)
                 
     return ""
@@ -90,13 +90,19 @@ def send_to_notebooklm(file_path):
         
     title = path.stem
     
-    prompt_text = extract_deepsearch_from_file(file_path)
+    prompt_text = extract_prompt_from_file(file_path, 'DeepSearch')
     if not prompt_text:
         print(f"❌ Erro: Não foi possível encontrar o botão DeepSearch no arquivo {file_path}")
         sys.exit(1)
 
     prompt_deepsearch = prompt_text
     prompt_deepresearch = prompt_text
+    
+    prompt_genquest = extract_prompt_from_file(file_path, 'GenQuest')
+    prompt_genquest_expert = extract_prompt_from_file(file_path, 'GenQuestExpert')
+    
+    # flag especial para ignorar as pesquisas do DeepSearch e focar apenas no Flashcards
+    test_cards_only = "--test-cards" in sys.argv
 
     if not is_port_open(9222):
         print("⚠️ Chrome não está rodando na porta 9222.")
@@ -347,10 +353,90 @@ def send_to_notebooklm(file_path):
                 print(f"⏳ [{step_name}] Importação rodando (15s)...")
                 page.wait_for_timeout(15000) 
 
-            do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
-            do_search_and_import(prompt_deepresearch, "DeepSearch (Fonte 2)", wait_excluir=True)
-            do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", wait_excluir=True, use_deep_research=True)
-            print("✨ Sucesso Extremo!")
+            if not test_cards_only:
+                do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
+                do_search_and_import(prompt_deepresearch, "DeepSearch (Fonte 2)", wait_excluir=True)
+                do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", wait_excluir=True, use_deep_research=True)
+            else:
+                print("⚠️ Modo --test-cards ativado. Pulando as importações de fontes.")
+            
+            # --- Etapa: Cartões Didáticos ---
+            def do_flashcards(promptText, step_name):
+                print(f"➡️ [{step_name}] Procurando lápis de 'Cartões didáticos'...")
+                page.evaluate("""() => {
+                    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                    let node;
+                    while(node = walker.nextNode()) {
+                        let txt = node.textContent.trim().toLowerCase();
+                        if(txt === 'cartões didáticos' || txt === 'flashcards' || txt.includes('cartões didáticos') || txt.includes('study guide')) {
+                            let container = node.parentElement;
+                            while(container && container.tagName !== 'BODY') {
+                                const icons = container.querySelectorAll('.google-symbols, md-icon');
+                                for(let icon of icons) {
+                                    if(icon.textContent.includes('edit') || icon.textContent.includes('pencil') || icon.getAttribute('aria-label')?.includes('edit')) {
+                                        let btn = icon.closest('button, md-icon-button, [role="button"]') || icon;
+                                        btn.click();
+                                        return true;
+                                    }
+                                }
+                                container = container.parentElement;
+                            }
+                        }
+                    }
+                    return false;
+                }""")
+                page.wait_for_timeout(2000)
+                
+                print(f"➡️ [{step_name}] Configurando 'Número de cards' (menos) e 'Dificuldade' (difícil)...")
+                page.evaluate("""() => {
+                    const allButtons = Array.from(document.querySelectorAll('md-filter-chip, md-chip, button, div[role="button"], md-radio, label'));
+                    for(let el of allButtons) {
+                        let t = (el.textContent || '').trim().toLowerCase();
+                        if(t === 'menos' || t === 'less') { el.click(); }
+                        if(t === 'difícil' || t === 'hard' || t === 'dificult') { el.click(); }
+                    }
+                }""")
+                page.wait_for_timeout(1000)
+                
+                print(f"➡️ [{step_name}] Colando o prompt e clicando em Salvar/Gerar...")
+                page.evaluate("""(text) => {
+                    const textareas = document.querySelectorAll('textarea');
+                    let targetTa = null;
+                    for(let ta of textareas) {
+                        if(!ta.disabled && ta.getBoundingClientRect().height > 0) {
+                            targetTa = ta;
+                        }
+                    }
+                    if(targetTa) {
+                        targetTa.focus();
+                        targetTa.value = '';
+                        targetTa.value = text;
+                        targetTa.dispatchEvent(new Event('input', { bubbles: true }));
+                        targetTa.dispatchEvent(new Event('change', { bubbles: true }));
+                    }
+                }""", promptText)
+                
+                page.wait_for_timeout(1000)
+                
+                page.evaluate("""() => {
+                    const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button'));
+                    for(let b of btns) {
+                        let txt = (b.textContent || '').trim().toLowerCase();
+                        if(txt === 'salvar' || txt === 'save' || txt === 'gerar' || txt === 'generate' || txt === 'aplicar' || txt === 'apply') {
+                            b.click();
+                            return true;
+                        }
+                    }
+                }""")
+                print(f"⏳ [{step_name}] Aguardando 7s após salvar...")
+                page.wait_for_timeout(7000)
+
+            if prompt_genquest:
+                do_flashcards(prompt_genquest, "Cartões Didáticos - GenQuest")
+            if prompt_genquest_expert:
+                do_flashcards(prompt_genquest_expert, "Cartões Didáticos - GenQuestExpert")
+                
+            print("✨ Sucesso Extremo com Cartões Didáticos!")
             
         except Exception as e:
             print(f"❌ Automação falhou. Erro capturado:\n{e}")
@@ -358,8 +444,12 @@ def send_to_notebooklm(file_path):
             print("🏁 Fechando script (A aba continuará aberta).")
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
-        print("Uso do script: python send_to_notebooklm.py <caminho_da_nota.md>")
-        sys.exit(1)
+    import sys
     
-    send_to_notebooklm(sys.argv[1])
+    # Lida com o caso de múltiplos argumentos ou flags misturadas
+    args = [arg for arg in sys.argv[1:] if not arg.startswith('--')]
+    if not args:
+        print("Uso do script: python send_to_notebooklm.py <caminho_da_nota.md> [--test-cards]")
+        sys.exit(1)
+        
+    send_to_notebooklm(args[0])
