@@ -141,9 +141,10 @@ def send_to_notebooklm(file_path):
             page.keyboard.press("Escape")
             page.wait_for_timeout(1000)
             
-            print(f"➡️ Renomeando notebook para '{title}' (Silenciosamente)...")
-            # Injetamos JavaScript puro que edita o atributo diretamente, burlando recarregamentos do teclado do Playwright
-            renamed = page.evaluate("""(newTitle) => {
+            print(f"➡️ Renomeando notebook para '{title}'...")
+            
+            # Tenta um "triple click" no título visível para focar e selecionar
+            js_find_title = """() => {
                 const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
                 let node;
                 while(node = walker.nextNode()) {
@@ -151,36 +152,30 @@ def send_to_notebooklm(file_path):
                     if(txt === 'untitled notebook' || txt === 'bloco de notas sem título' || txt === 'notebook sem título') {
                         let parent = node.parentElement;
                         if(parent) {
-                            // Clica pra virar input
-                            parent.click();
-                            return true;
+                            const rect = parent.getBoundingClientRect();
+                            return {x: rect.x + rect.width/2, y: rect.y + rect.height/2};
                         }
                     }
                 }
-                return false;
-            }""")
-            
-            page.wait_for_timeout(500)
-            
-            if renamed:
-                # Preenche sem dar Enter, apenas dispara os eventos pro Angular/React pegar silenciosamente
-                page.evaluate("""(newTitle) => {
-                    if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA' || document.activeElement.isContentEditable)) {
-                        if (document.activeElement.isContentEditable) {
-                           document.activeElement.innerText = newTitle;
-                        } else {
-                           document.activeElement.value = newTitle;
-                        }
-                        document.activeElement.dispatchEvent(new Event('input', { bubbles: true }));
-                        document.activeElement.dispatchEvent(new Event('change', { bubbles: true }));
-                        document.activeElement.blur(); // Perde o foco naturalmente
-                    }
-                }""", title)
-                page.wait_for_timeout(2000)
+                return null;
+            }"""
+            box = page.evaluate(js_find_title)
+            if box:
+                # Triple click para varrer tudo e selecionar o texto
+                page.mouse.click(box['x'], box['y'], click_count=3)
+                page.wait_for_timeout(500)
+                
+                # Digita no teclado naturalmente como um usuário (Angular capta isso)
+                page.keyboard.type(title, delay=20)
+                page.wait_for_timeout(500)
+                
+                # Tira o foco clicando no vazio
+                page.mouse.click(10, 10)
+                page.wait_for_timeout(1000)
             else:
                  print("⚠️ Untitled Notebook não encontrado para renomear.")
             
-            # Verificar se algum modal voltou magicamente e tentar fechar (se a pagina recarregar, recair)
+            # Escape de precaução caso o modal inicial esteja teimoso
             page.keyboard.press("Escape")
             page.wait_for_timeout(500)
             
