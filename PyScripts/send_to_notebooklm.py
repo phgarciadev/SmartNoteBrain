@@ -427,48 +427,8 @@ def send_to_notebooklm(file_path):
                 if not clicked_import:
                     print(f"⚠️ Aviso: Botão Importar não foi clicado ou timeout de 5 minutos excedido.")
                 
-                print(f"⏳ [{step_name}] Importação iniciada. Aguardando processamento das fontes...")
-                page.evaluate("""() => {
-                    return new Promise((resolve) => {
-                        // Espera um segundinho inicial pro spinner aparecer na tela
-                        setTimeout(() => {
-                            let attempts = 0;
-                            let check = setInterval(() => {
-                                attempts++;
-                                
-                                // Verifica spinners / barras de progresso ativas do Material Design
-                                const spinners = document.querySelectorAll('md-circular-progress, md-linear-progress, mat-progress-spinner, mat-progress-bar');
-                                let processing = false;
-                                for(let s of spinners) {
-                                    const style = window.getComputedStyle(s);
-                                    if(style.display !== 'none' && style.visibility !== 'hidden' && s.getAttribute('aria-hidden') !== 'true') {
-                                        processing = true;
-                                        break;
-                                    }
-                                }
-                                
-                                // Verifica textualmente se a interface ainda está dizendo "importando" etc.
-                                let txt = document.body.textContent.toLowerCase();
-                                if(txt.includes('importando') || txt.includes('carregando') || txt.includes('salvando...')) {
-                                    processing = true;
-                                }
-                                
-                                if(!processing) {
-                                    clearInterval(check);
-                                    // Aguarda mais 2 segundinhos após terminar pra ter certeza que a UI se estabilizou
-                                    setTimeout(() => { resolve(true); }, 2000);
-                                }
-                                
-                                // Timeout global de 5 minutos (150 * 2000ms = 300s)
-                                if(attempts >= 150) { 
-                                    clearInterval(check);
-                                    resolve(false);
-                                }
-                            }, 2000);
-                        }, 2000);
-                    });
-                }""")
-                print(f"✅ [{step_name}] Fonte perfeitamente carregada!")
+                print(f"⏳ [{step_name}] Importação finalizada. Aguardando a estabilização de fontes antes da próxima ação (20s)...")
+                page.wait_for_timeout(20000) 
 
             if not test_cards_only and not test_video_only and not is_specific_action:
                 do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
