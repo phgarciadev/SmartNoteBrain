@@ -270,7 +270,7 @@ def send_to_notebooklm(file_path):
                 except Exception as e:
                     print(f"⚠️ Aviso: Não foi possível salvar a URL no frontmatter. Erro: {e}")
             
-            def do_search_and_import(prompt_text, step_name, wait_excluir=False, use_deep_research=False):
+            def do_search_and_import(prompt_text, step_name, use_deep_research=False):
                 print(f"➡️ [{step_name}] Clicando no botão de Adicionar Fonte...")
                 
                 # Clica no botão (+) ou "Adicionar fontes" 
@@ -327,65 +327,57 @@ def send_to_notebooklm(file_path):
                     });
                 }""")
                 
-                if wait_excluir:
-                    print(f"⏳ [{step_name}] Verificando pesquisa anterior (Excluir)...")
-                    page.evaluate("""() => {
-                        return new Promise((resolve) => {
-                            let attempts = 0;
-                            let check = setInterval(() => {
-                                attempts++;
-                                const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button'));
-                                for(let b of btns) {
-                                    let txt = (b.textContent || '').toLowerCase().trim();
-                                    if(txt === 'excluir' || txt === 'delete') {
-                                        b.click();
-                                        clearInterval(check);
-                                        resolve(true);
-                                        return;
-                                    }
-                                }
-                                if(attempts >= 5) {
-                                    clearInterval(check);
-                                    resolve(false);
-                                }
-                            }, 1000);
-                        });
-                    }""")
-                
                 if use_deep_research:
                     print(f"➡️ [{step_name}] Mudando tipo para Deep Research...")
                     page.evaluate("""() => {
                         return new Promise((resolve) => {
-                            const btns = Array.from(document.querySelectorAll('button, div[role="button"], md-text-button, md-outlined-button, md-filled-button'));
-                            let clickedDropdown = false;
-                            for(let b of btns) {
-                                let txt = (b.textContent || '').toLowerCase().trim();
-                                if(txt.includes('pesquisa rápida') || txt.includes('quick search')) {
-                                    b.click();
-                                    clickedDropdown = true;
-                                    break;
+                            let walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                            let node;
+                            let clicked = false;
+                            while(node = walker.nextNode()) {
+                                if(node.textContent.toLowerCase().includes('pesquisa rápida')) {
+                                    let parent = node.parentElement;
+                                    while(parent && parent.tagName !== 'BODY') {
+                                        if(parent.tagName.includes('BUTTON') || parent.getAttribute('role') === 'button' || parent.getAttribute('role') === 'combobox' || parent.hasAttribute('aria-haspopup') || parent.tagName.includes('SELECT')) {
+                                            parent.click();
+                                            clicked = true;
+                                            break;
+                                        }
+                                        parent = parent.parentElement;
+                                    }
+                                    if(clicked) break;
                                 }
-                            }
-                            if(!clickedDropdown) {
-                                resolve(false);
-                                return;
                             }
                             
+                            if(!clicked) { resolve(false); return; }
+                            
                             setTimeout(() => {
-                                const options = Array.from(document.querySelectorAll('md-menu-item, div[role="menuitem"], li, md-list-item, span'));
-                                for(let opt of options) {
-                                    let txt = (opt.textContent || '').toLowerCase();
-                                    if((txt.includes('deep research') || txt.includes('pesquisa profunda')) && !txt.includes('pesquisa rápida')) {
-                                        opt.click();
-                                        resolve(true);
-                                        return;
+                                let walker2 = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                                let n2;
+                                let clickedOption = false;
+                                while(n2 = walker2.nextNode()) {
+                                    if(n2.textContent.toLowerCase().includes('deep research')) {
+                                        let parent2 = n2.parentElement;
+                                        while(parent2 && parent2.tagName !== 'BODY') {
+                                            if(parent2.tagName.includes('MENU-ITEM') || parent2.getAttribute('role') === 'menuitem' || parent2.tagName === 'LI' || parent2.tagName.includes('OPTION')) {
+                                                parent2.click();
+                                                clickedOption = true;
+                                                break;
+                                            }
+                                            parent2 = parent2.parentElement;
+                                        }
+                                        if(!clickedOption && n2.parentElement) {
+                                            n2.parentElement.click(); // fallback genérico
+                                            clickedOption = true;
+                                        }
+                                        if(clickedOption) break;
                                     }
                                 }
-                                resolve(false);
-                            }, 1000);
+                                resolve(clickedOption);
+                            }, 1500);
                         });
                     }""")
-                    page.wait_for_timeout(1000)
+                    page.wait_for_timeout(2000)
 
                 print(f"➡️ [{step_name}] Preenchendo a caixa de pesquisa...")
                 page.evaluate("""(text) => {
@@ -435,13 +427,13 @@ def send_to_notebooklm(file_path):
                 if not clicked_import:
                     print(f"⚠️ Aviso: Botão Importar não foi clicado ou timeout de 5 minutos excedido.")
                 
-                print(f"⏳ [{step_name}] Importação rodando (15s)...")
-                page.wait_for_timeout(15000) 
+                print(f"⏳ [{step_name}] Importação finalizada. Aguardando a estabilização de fontes antes da próxima ação (20s)...")
+                page.wait_for_timeout(20000) 
 
             if not test_cards_only and not test_video_only and not is_specific_action:
                 do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
-                do_search_and_import(prompt_deepresearch, "DeepSearch (Fonte 2)", wait_excluir=True)
-                do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", wait_excluir=True, use_deep_research=True)
+                do_search_and_import(prompt_deepresearch, "DeepSearch (Fonte 2)")
+                do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", use_deep_research=True)
             else:
                 print("⚠️ Modo de teste ou ação única ativado. Pulando as importações de fontes.")
             
