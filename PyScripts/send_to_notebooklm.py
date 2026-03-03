@@ -133,19 +133,9 @@ def send_to_notebooklm(file_path):
     saved_url = None
     text = path.read_text(encoding="utf-8")
     import re
-    # Match both plain URLs and markdown link formats: [name](url)
-    match_plain = re.search(r'^notebooklm:\s*"?([^"\[\n]+)"?', text, re.MULTILINE)
-    match_md = re.search(r'^notebooklm:\s*"?!\[.*?\]\((.*?)\)"?', text, re.MULTILINE)
-    
-    # Also support normal [name](url) without ! for images
-    match_md2 = re.search(r'^notebooklm:\s*"?\[.*?\]\((.*?)\)"?', text, re.MULTILINE)
-    
-    if match_md2:
-        saved_url = match_md2.group(1).strip()
-    elif match_md:
-        saved_url = match_md.group(1).strip()
-    elif match_plain:
-        saved_url = match_plain.group(1).strip()
+    match = re.search(r'^notebooklm:\s*"?([^"\n]+)"?', text, re.MULTILINE)
+    if match:
+        saved_url = match.group(1).strip()
         
     if is_specific_action:
         if not saved_url:
@@ -250,40 +240,6 @@ def send_to_notebooklm(file_path):
                 # Escape de precaução caso o modal inicial esteja teimoso
                 page.keyboard.press("Escape")
                 page.wait_for_timeout(500)
-                
-                # Extrair URL inicial/permanente e salvar no frontmatter agora mesmo!
-                url_final = page.url
-                print(f"🔗 URL do Notebook recém-criado: {url_final}")
-                
-                try:
-                    import re
-                    text = path.read_text(encoding="utf-8")
-                    if text.startswith("---"):
-                        parts = text.split("---", 2)
-                        if len(parts) >= 3:
-                            frontmatter = parts[1]
-                            
-                            # O link tem q ser formato [Nome do Arquivo](url)
-                            nm_arquivo = path.stem
-                            link_formatado = f"[{nm_arquivo}]({url_final})"
-                            
-                            if re.search(r'^notebooklm:.*$', frontmatter, re.MULTILINE):
-                                new_frontmatter = re.sub(
-                                    r'^notebooklm:.*$', 
-                                    f'notebooklm: "{link_formatado}"', 
-                                    frontmatter, 
-                                    flags=re.MULTILINE
-                                )
-                            else:
-                                if not frontmatter.endswith('\n'):
-                                    frontmatter += '\n'
-                                new_frontmatter = frontmatter + f'notebooklm: "{link_formatado}"\n'
-                                
-                            new_text = f"---{new_frontmatter}---" + parts[2]
-                            path.write_text(new_text, encoding="utf-8")
-                            print("📝 URL salva com sucesso no frontmatter logo no início.")
-                except Exception as e:
-                    print(f"⚠️ Aviso: Não foi possível salvar a URL no frontmatter. Erro: {e}")
             
             def do_search_and_import(prompt_text, step_name, wait_excluir=False, use_deep_research=False):
                 print(f"➡️ [{step_name}] Clicando no botão de Adicionar Fonte...")
@@ -664,7 +620,31 @@ def send_to_notebooklm(file_path):
                     do_video(prompt_genvid_expert, prompt_genvid_pers, "Vídeo - GenVidExpert")
     
                 print("✨ Sucesso Extremo com Vídeos!")
-            # (A URL já foi extraída e salva logo após a renomeação)
+            
+            # Extrair URL final e salvar no frontmatter apenas se foi rodada a automação completa
+            if not is_specific_action and not test_cards_only and not test_video_only:
+                url_final = page.url
+                print(f"🔗 URL Final do Notebook: {url_final}")
+                
+                try:
+                    import re
+                    text = path.read_text(encoding="utf-8")
+                    if text.startswith("---"):
+                        parts = text.split("---", 2)
+                        if len(parts) >= 3:
+                            frontmatter = parts[1]
+                            if re.search(r'^notebooklm:.*$', frontmatter, re.MULTILINE):
+                                new_frontmatter = re.sub(r'^notebooklm:.*$', f'notebooklm: "{url_final}"', frontmatter, flags=re.MULTILINE)
+                            else:
+                                if not frontmatter.endswith('\n'):
+                                    frontmatter += '\n'
+                                new_frontmatter = frontmatter + f'notebooklm: "{url_final}"\n'
+                                
+                            new_text = f"---{new_frontmatter}---" + parts[2]
+                            path.write_text(new_text, encoding="utf-8")
+                            print("📝 URL salva com sucesso no frontmatter do arquivo.")
+                except Exception as e:
+                    print(f"⚠️ Aviso: Não foi possível salvar a URL no frontmatter. Erro: {e}")
             
         except Exception as e:
             print(f"❌ Automação falhou. Erro capturado:\n{e}")
