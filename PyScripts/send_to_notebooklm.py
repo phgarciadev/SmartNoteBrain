@@ -84,29 +84,40 @@ def send_to_notebooklm(file_path):
             page.wait_for_timeout(3000)
             
             print("➡️ Clicando em 'Criar/Novo notebook'...")
-            # Tenta encontrar qualquer botão com texto Novo ou Criar ou New
-            btn_novo = page.locator("text=/novo bloco de notas|new notebook|novo bloco|create/i").first
+            # Em Material Design Web 3, os botões são <md-elevated-button> ou <button> com text-content oculto
+            # O get_by_role('button') interage melhor com shadow DOMs que o text=
+            btn_novo = page.get_by_role("button", name="Novo bloco de notas", exact=False)
+            if not btn_novo.is_visible():
+                btn_novo = page.get_by_role("button", name="New notebook", exact=False)
+            if not btn_novo.is_visible():
+                # Tenta localizar pela div de classe de container se as arias falharem
+                btn_novo = page.locator("md-elevated-button").first
+                
             btn_novo.wait_for(state="visible", timeout=10000)
             btn_novo.click()
             
             page.wait_for_timeout(2000)
             
             print("➡️ Abrindo opção de colar texto (Texto Copiado) ...")
-            btn_texto = page.locator("text=/texto copiado|copied text|colar texto|paste text/i").first
+            # Procura por qualquer elemento que tenha Copy/Paste no texto ou aria
+            btn_texto = page.get_by_text("Texto copiado", exact=False)
+            if not btn_texto.is_visible():
+                btn_texto = page.get_by_text("Copied text", exact=False)
+            if not btn_texto.is_visible():
+                btn_texto = page.locator("text=/texto/i").nth(1) # fallback
+                
             btn_texto.wait_for(state="visible", timeout=5000)
             btn_texto.click()
             
             page.wait_for_timeout(1000)
             print("➡️ Digitando título do tópico e colando o conteúdo...")
             
-            # Foco geralmente vai para o modal. Vamos preencher textareas/inputs visíveis.
-            # No Google M2, pode haver um input field pra Title e um pra Text.
-            # Localizar textarea principal
+            # Localizar textarea principal ou input de texto multiline
             textarea = page.locator("textarea").first
             textarea.wait_for(state="visible", timeout=3000)
             textarea.fill(content)
             
-            # E se houver um <input> (para título) vísivel que não seja hidden?
+            # Título: geralmente é o primeiro input text
             inputs = page.locator("input[type='text']").all()
             for inp in inputs:
                 if inp.is_visible():
@@ -116,7 +127,12 @@ def send_to_notebooklm(file_path):
             page.wait_for_timeout(500)
             
             print("➡️ Finalizando Inserção no Notebook...")
-            btn_inserir = page.locator("text=/inserir|insert/i").first
+            btn_inserir = page.get_by_role("button", name="Inserir", exact=False)
+            if not btn_inserir.is_visible():
+                btn_inserir = page.get_by_role("button", name="Insert", exact=False)
+            if not btn_inserir.is_visible():
+                btn_inserir = page.locator("text=/inserir|insert/i").first
+                
             btn_inserir.wait_for(state="visible", timeout=3000)
             btn_inserir.click()
             
