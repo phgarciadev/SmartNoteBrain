@@ -334,19 +334,15 @@ def send_to_notebooklm(file_path):
                             let attempts = 0;
                             let check = setInterval(() => {
                                 attempts++;
-                                const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button, div[role="button"]'));
-                                let clicked = false;
+                                const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button'));
                                 for(let b of btns) {
                                     let txt = (b.textContent || '').toLowerCase().trim();
-                                    if(txt === 'excluir' || txt === 'delete' || txt === 'limpar' || txt === 'clear' || txt === 'remover' || txt === 'remove') {
+                                    if(txt === 'excluir' || txt === 'delete') {
                                         b.click();
-                                        clicked = true;
+                                        clearInterval(check);
+                                        resolve(true);
+                                        return;
                                     }
-                                }
-                                if(clicked) {
-                                    clearInterval(check);
-                                    resolve(true);
-                                    return;
                                 }
                                 if(attempts >= 5) {
                                     clearInterval(check);
@@ -355,72 +351,58 @@ def send_to_notebooklm(file_path):
                             }, 1000);
                         });
                     }""")
-                    page.wait_for_timeout(1000)
                 
                 if use_deep_research:
                     print(f"➡️ [{step_name}] Mudando tipo para Deep Research...")
                     page.evaluate("""() => {
                         return new Promise((resolve) => {
-                            let attempts = 0;
-                            let check = setInterval(() => {
-                                attempts++;
-                                const btns = Array.from(document.querySelectorAll('button, div[role="button"], md-text-button, md-outlined-button, md-filled-button, mat-select, span'));
-                                let clickedDropdown = false;
-                                for(let b of btns) {
-                                    let txt = (b.textContent || '').toLowerCase().trim();
-                                    if(txt === 'pesquisa rápida' || txt === 'quick search' || (txt.includes('pesquisa rápida') && txt.length < 25)) {
-                                        b.click();
-                                        clickedDropdown = true;
-                                        break;
+                            const btns = Array.from(document.querySelectorAll('button, div[role="button"], md-text-button, md-outlined-button, md-filled-button'));
+                            let clickedDropdown = false;
+                            for(let b of btns) {
+                                let txt = (b.textContent || '').toLowerCase().trim();
+                                if(txt.includes('pesquisa rápida') || txt.includes('quick search')) {
+                                    b.click();
+                                    clickedDropdown = true;
+                                    break;
+                                }
+                            }
+                            if(!clickedDropdown) {
+                                resolve(false);
+                                return;
+                            }
+                            
+                            setTimeout(() => {
+                                const options = Array.from(document.querySelectorAll('md-menu-item, div[role="menuitem"], li, md-list-item, span'));
+                                for(let opt of options) {
+                                    let txt = (opt.textContent || '').toLowerCase();
+                                    if((txt.includes('deep research') || txt.includes('pesquisa profunda')) && !txt.includes('pesquisa rápida')) {
+                                        opt.click();
+                                        resolve(true);
+                                        return;
                                     }
                                 }
-                                
-                                if(clickedDropdown) {
-                                    clearInterval(check);
-                                    setTimeout(() => {
-                                        const options = Array.from(document.querySelectorAll('*'));
-                                        for(let opt of options) {
-                                            let txt = (opt.textContent || '').toLowerCase();
-                                            if(txt.includes('deep research') && !txt.includes('pesquisa rápida')) {
-                                                opt.click();
-                                                resolve(true);
-                                                return;
-                                            }
-                                        }
-                                        resolve(false);
-                                    }, 1000);
-                                } else if(attempts >= 5) {
-                                    clearInterval(check);
-                                    resolve(false);
-                                }
+                                resolve(false);
                             }, 1000);
                         });
                     }""")
-                    page.wait_for_timeout(1500)
                     page.wait_for_timeout(1000)
 
                 print(f"➡️ [{step_name}] Preenchendo a caixa de pesquisa...")
-                found_input = page.evaluate("""() => {
+                page.evaluate("""(text) => {
                     const inputs = document.querySelectorAll('input[type="text"], textarea');
                     for(let inp of inputs) {
                         let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
                         if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web')) {
                             inp.focus();
+                            inp.value = '';
+                            inp.value = text;
+                            inp.dispatchEvent(new Event('input', { bubbles: true }));
+                            inp.dispatchEvent(new Event('change', { bubbles: true }));
                             return true;
                         }
                     }
                     return false;
-                }""")
-                
-                if found_input:
-                    page.keyboard.press("Control+A")
-                    page.wait_for_timeout(100)
-                    page.keyboard.press("Backspace")
-                    page.wait_for_timeout(100)
-                    page.keyboard.type(prompt_text, delay=5)
-                    page.wait_for_timeout(200)
-                else:
-                    print("⚠️ Aviso: Input de pesquisa não encontrado.")
+                }""", prompt_text)
                 
                 page.keyboard.press("Enter")
                 print(f"⏳ [{step_name}] Aguardando a pesquisa concluir (esperando botão Importar habilitar)...")
