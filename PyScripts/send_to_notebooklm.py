@@ -103,6 +103,7 @@ def send_to_notebooklm(file_path):
     
     # flag especial para ignorar as pesquisas do DeepSearch e focar apenas no Flashcards
     test_cards_only = "--test-cards" in sys.argv
+    test_video_only = "--test-video" in sys.argv
     
     prompt_genvid = extract_prompt_from_file(file_path, 'GenVid')
     prompt_genvid_expert = extract_prompt_from_file(file_path, 'GenVidExpert')
@@ -121,8 +122,8 @@ def send_to_notebooklm(file_path):
             context = browser.contexts[0]
             page = context.new_page()
             
-            if test_cards_only:
-                print("➡️ Modo --test-cards: Indo direto para o notebook hardcoded...")
+            if test_cards_only or test_video_only:
+                print("➡️ Modo de teste ativado: Indo direto para o notebook hardcoded...")
                 page.goto("https://notebooklm.google.com/notebook/a7970a7f-e08e-47bb-b725-1d4d119ecebb")
                 page.wait_for_timeout(5000)
             else:
@@ -362,12 +363,12 @@ def send_to_notebooklm(file_path):
                 print(f"⏳ [{step_name}] Importação rodando (15s)...")
                 page.wait_for_timeout(15000) 
 
-            if not test_cards_only:
+            if not test_cards_only and not test_video_only:
                 do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
                 do_search_and_import(prompt_deepresearch, "DeepSearch (Fonte 2)", wait_excluir=True)
                 do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", wait_excluir=True, use_deep_research=True)
             else:
-                print("⚠️ Modo --test-cards ativado. Pulando as importações de fontes.")
+                print("⚠️ Modo de teste ativado. Pulando as importações de fontes.")
             
             # --- Etapa: Cartões Didáticos ---
             def do_flashcards(promptText, step_name):
@@ -440,34 +441,39 @@ def send_to_notebooklm(file_path):
                 print(f"⏳ [{step_name}] Aguardando 7s após salvar...")
                 page.wait_for_timeout(7000)
 
-            if prompt_genquest:
-                do_flashcards(prompt_genquest, "Cartões Didáticos - GenQuest")
-            if prompt_genquest_expert:
-                do_flashcards(prompt_genquest_expert, "Cartões Didáticos - GenQuestExpert")
-                
-            print("✨ Sucesso Extremo com Cartões Didáticos!")
+            if not test_video_only:
+                if prompt_genquest:
+                    do_flashcards(prompt_genquest, "Cartões Didáticos - GenQuest")
+                if prompt_genquest_expert:
+                    do_flashcards(prompt_genquest_expert, "Cartões Didáticos - GenQuestExpert")
+                    
+                print("✨ Sucesso Extremo com Cartões Didáticos!")
             
             # --- Etapa: Resumo em Vídeo ---
             def do_video(prompt_video, prompt_pers, step_name):
                 print(f"➡️ [{step_name}] Procurando botão de 'Resumo em Vídeo'...")
                 page.evaluate("""() => {
+                    const allButtons = Array.from(document.querySelectorAll('button, div[role="button"], md-text-button, md-elevated-button, md-outlined-button, md-filled-button, div.card, div'));
+                    for(let el of allButtons) {
+                        let t = (el.textContent || '').trim().toLowerCase();
+                        if(t === 'resumo em vídeo' || t === 'video overview') {
+                            if(el.tagName === 'BUTTON' || el.getAttribute('role') === 'button' || el.tagName.includes('-BUTTON')) {
+                                el.click(); 
+                                return true;
+                            }
+                        }
+                    }
+                
                     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
                     let node;
                     while(node = walker.nextNode()) {
                         let txt = node.textContent.trim().toLowerCase();
                         if(txt === 'resumo em vídeo' || txt === 'video overview' || txt.includes('resumo em vídeo')) {
-                            let container = node.parentElement;
-                            while(container && container.tagName !== 'BODY') {
-                                const icons = container.querySelectorAll('.google-symbols, md-icon');
-                                for(let icon of icons) {
-                                    if(icon.textContent.includes('video') || icon.getAttribute('aria-label')?.includes('video') || icon.textContent.includes('movie')) {
-                                        let btn = icon.closest('button, md-icon-button, [role="button"]') || icon;
-                                        btn.click();
-                                        return true;
-                                    }
-                                }
-                                container = container.parentElement;
-                            }
+                            let parent = node.parentElement;
+                            let btn = parent.closest('button, [role="button"], md-filled-button, md-elevated-button');
+                            if(btn) { btn.click(); return true; }
+                            parent.click();
+                            return true;
                         }
                     }
                     return false;
@@ -476,11 +482,15 @@ def send_to_notebooklm(file_path):
                 
                 print(f"➡️ [{step_name}] Selecionando 'Personalizado'...")
                 page.evaluate("""() => {
-                    const allButtons = Array.from(document.querySelectorAll('button, div[role="button"], md-radio, label, div.card, div'));
-                    for(let el of allButtons) {
-                        let t = (el.textContent || '').trim().toLowerCase();
-                        if(t === 'personalizado' || t === 'custom') { 
-                            el.click(); 
+                    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                    let node;
+                    while(node = walker.nextNode()) {
+                        let txt = node.textContent.trim().toLowerCase();
+                        if(txt === 'personalizado' || txt === 'custom') {
+                            let parent = node.parentElement;
+                            let btn = parent.closest('button, [role="button"], div.card, md-radio');
+                            if(btn) { btn.click(); return true; }
+                            parent.click();
                             return true;
                         }
                     }
@@ -557,12 +567,13 @@ def send_to_notebooklm(file_path):
                 print(f"⏳ [{step_name}] Aguardando 10s após gerar...")
                 page.wait_for_timeout(10000)
 
-            if prompt_genvid and prompt_genvid_pers:
-                do_video(prompt_genvid, prompt_genvid_pers, "Vídeo - GenVid")
-            if prompt_genvid_expert and prompt_genvid_pers:
-                do_video(prompt_genvid_expert, prompt_genvid_pers, "Vídeo - GenVidExpert")
-
-            print("✨ Sucesso Extremo com Vídeos!")
+            if not test_cards_only:
+                if prompt_genvid and prompt_genvid_pers:
+                    do_video(prompt_genvid, prompt_genvid_pers, "Vídeo - GenVid")
+                if prompt_genvid_expert and prompt_genvid_pers:
+                    do_video(prompt_genvid_expert, prompt_genvid_pers, "Vídeo - GenVidExpert")
+    
+                print("✨ Sucesso Extremo com Vídeos!")
             
         except Exception as e:
             print(f"❌ Automação falhou. Erro capturado:\n{e}")
@@ -575,7 +586,7 @@ if __name__ == "__main__":
     # Lida com o caso de múltiplos argumentos ou flags misturadas
     args = [arg for arg in sys.argv[1:] if not arg.startswith('--')]
     if not args:
-        print("Uso do script: python send_to_notebooklm.py <caminho_da_nota.md> [--test-cards]")
+        print("Uso do script: python send_to_notebooklm.py <caminho_da_nota.md> [--test-cards] [--test-video]")
         sys.exit(1)
         
     send_to_notebooklm(args[0])
