@@ -159,7 +159,7 @@ def send_to_notebooklm(file_path):
             page.wait_for_timeout(1000)
             
             print(f"➡️ Renomeando notebook para '{title}'...")
-            js_rename = """() => {
+            box = page.evaluate("""() => {
                 const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
                 let node;
                 while(node = walker.nextNode()) {
@@ -167,21 +167,37 @@ def send_to_notebooklm(file_path):
                     if(txt === 'untitled notebook' || txt === 'bloco de notas sem título' || txt === 'notebook sem título') {
                         let parent = node.parentElement;
                         if(parent) { 
-                            parent.click(); 
-                            return true;
+                            const rect = parent.getBoundingClientRect();
+                            return {x: rect.x + rect.width/2, y: rect.y + rect.height/2};
                         }
                     }
                 }
-                return false;
-            }"""
+                return null;
+            }""")
             
-            clicked_title = page.evaluate(js_rename)
-            page.wait_for_timeout(500)
-            if clicked_title:
-                page.keyboard.press("Control+A")
-                page.keyboard.type(title, delay=10)
+            if box:
+                page.mouse.click(box['x'], box['y'])
+                page.wait_for_timeout(500)
+                
+                # Tenta jogar o valor direto num input ativo, se houver
+                foco_input = page.evaluate("""(newTitle) => {
+                    if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
+                        document.activeElement.value = newTitle;
+                        document.activeElement.dispatchEvent(new Event('input', { bubbles: true }));
+                        document.activeElement.dispatchEvent(new Event('change', { bubbles: true }));
+                        return true;
+                    }
+                    return false;
+                }""", title)
+                
+                if not foco_input:
+                    # Tenta 3 backspaces rapidos como fallback seguro
+                    for _ in range(25):
+                        page.keyboard.press("Backspace")
+                    page.keyboard.type(title, delay=10)
+                
                 page.keyboard.press("Enter")
-                page.mouse.click(0, 0)  # Tira o foco para evitar submits acidentais
+                page.mouse.click(0, 0)  # Tira o foco
             else:
                 print("⚠️ Não achei o elemento Untitled Notebook para clicar. Apenas focado no DOM.")
             page.wait_for_timeout(1000)
