@@ -256,14 +256,12 @@ def send_to_notebooklm(file_path):
                 page.keyboard.press("Enter")
                 page.wait_for_timeout(4000) 
                 
-                print(f"➡️ [{step_name}] Clicando 'Importar'...")
+                print(f"➡️ [{step_name}] Clicando 'Importar fontes'...")
                 page.evaluate("""() => {
                     const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button'));
                     for(let b of btns) {
-                        let txt = (b.textContent || '').toLowerCase().trim();
-                        if((txt.includes('importar') || txt.includes('import') || txt.includes('inserir')) && !b.disabled) {
-                            // Cuidado para não clicar no "Importar do Drive", mas sim no de confirmar a web
-                            // O botão que queremos costuma ser o principal destacado
+                        let txt = (b.textContent || '').toLowerCase();
+                        if((txt.includes('importar fontes') || txt.includes('import sources') || txt.includes('inserir')) && !b.disabled) {
                             b.click(); return true;
                         }
                     }
