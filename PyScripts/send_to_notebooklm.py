@@ -135,7 +135,12 @@ def send_to_notebooklm(file_path):
     import re
     match = re.search(r'^NotebookLM:\s*"?([^"\n]+)"?', text, flags=re.MULTILINE | re.IGNORECASE)
     if match:
-        saved_url = match.group(1).strip()
+        extracted = match.group(1).strip()
+        if "https://notebooklm.google.com" in extracted:
+            # Pega exatamente a URL caso ela esteja misturada com colchetes ou outras coisas
+            url_match = re.search(r'(https://notebooklm\.google\.com[^\s>\]"\']+)', extracted)
+            if url_match:
+                saved_url = url_match.group(1)
         
     if is_specific_action:
         if not saved_url:
@@ -144,7 +149,7 @@ def send_to_notebooklm(file_path):
     elif not test_cards_only and not test_video_only:
         # Modo completo
         if saved_url:
-            print(f"⚠️ Aviso: Este notebook já possui um link ({saved_url}). Execução completa abortada.")
+            print(f"⚠️ Aviso: Este notebook já possui um link válido ({saved_url}). Execução completa abortada.")
             sys.exit(0)
     
     prompt_genvid = extract_prompt_from_file(file_path, 'GenVid')
