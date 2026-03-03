@@ -112,7 +112,7 @@ def send_to_notebooklm(file_path):
             page = context.new_page()
             
             page.goto("https://notebooklm.google.com/")
-            page.wait_for_timeout(3000)
+            page.wait_for_timeout(4000)
             
             print("➡️ Procurando botão de 'Criar/Novo notebook'...")
             js_click_new = """() => {
@@ -135,79 +135,60 @@ def send_to_notebooklm(file_path):
             }"""
             page.evaluate(js_click_new)
             
-            # Quando clica em Novo, um modal se abre automaticamente. Esperamos ele carregar.
-            page.wait_for_timeout(4000)
-            
+            # Modal de fontes abre...
+            page.wait_for_timeout(3000)
             print("➡️ Pressionando 'Escape' para fechar a abinha inicial de fontes...")
             page.keyboard.press("Escape")
             page.wait_for_timeout(1000)
-            # Tenta clicar no X caso o Escape falhe
-            page.evaluate("""() => {
-                const closeBtns = Array.from(document.querySelectorAll('button, md-icon-button'));
-                for(let b of closeBtns) {
-                    if((b.getAttribute('aria-label')||'').match(/close|fechar/i) || (b.textContent||'').match(/close/i)) {
-                        b.click(); return true;
-                    }
-                }
-                const icons = Array.from(document.querySelectorAll('.google-symbols'));
-                for(let i of icons) {
-                   if(i.textContent.includes('close')) {
-                       if(i.parentElement) { i.parentElement.click(); return true; }
-                   }
-                }
-            }""")
-            page.wait_for_timeout(1000)
             
-            print(f"➡️ Renomeando notebook para '{title}'...")
-            box = page.evaluate("""() => {
+            print(f"➡️ Renomeando notebook para '{title}' (Silenciosamente)...")
+            # Injetamos JavaScript puro que edita o atributo diretamente, burlando recarregamentos do teclado do Playwright
+            renamed = page.evaluate("""(newTitle) => {
                 const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
                 let node;
                 while(node = walker.nextNode()) {
                     let txt = node.textContent.trim().toLowerCase();
                     if(txt === 'untitled notebook' || txt === 'bloco de notas sem título' || txt === 'notebook sem título') {
                         let parent = node.parentElement;
-                        if(parent) { 
-                            const rect = parent.getBoundingClientRect();
-                            return {x: rect.x + rect.width/2, y: rect.y + rect.height/2};
+                        if(parent) {
+                            // Clica pra virar input
+                            parent.click();
+                            return true;
                         }
                     }
                 }
-                return null;
+                return false;
             }""")
             
-            if box:
-                page.mouse.click(box['x'], box['y'])
-                page.wait_for_timeout(500)
-                
-                # Tenta jogar o valor direto num input ativo, se houver
-                foco_input = page.evaluate("""(newTitle) => {
-                    if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA')) {
-                        document.activeElement.value = newTitle;
+            page.wait_for_timeout(500)
+            
+            if renamed:
+                # Preenche sem dar Enter, apenas dispara os eventos pro Angular/React pegar silenciosamente
+                page.evaluate("""(newTitle) => {
+                    if (document.activeElement && (document.activeElement.tagName === 'INPUT' || document.activeElement.tagName === 'TEXTAREA' || document.activeElement.isContentEditable)) {
+                        if (document.activeElement.isContentEditable) {
+                           document.activeElement.innerText = newTitle;
+                        } else {
+                           document.activeElement.value = newTitle;
+                        }
                         document.activeElement.dispatchEvent(new Event('input', { bubbles: true }));
                         document.activeElement.dispatchEvent(new Event('change', { bubbles: true }));
-                        return true;
+                        document.activeElement.blur(); // Perde o foco naturalmente
                     }
-                    return false;
                 }""", title)
-                
-                if not foco_input:
-                    # Tenta 3 backspaces rapidos como fallback seguro
-                    for _ in range(25):
-                        page.keyboard.press("Backspace")
-                    page.keyboard.type(title, delay=10)
-                
-                page.wait_for_timeout(500)
-                # Tira o foco do elemento para salvar (Blur) sem dar Enter (que recarrega a página)
-                page.mouse.click(10, 10) 
+                page.wait_for_timeout(2000)
             else:
-                print("⚠️ Não achei o elemento Untitled Notebook para clicar. Apenas focado no DOM.")
-            page.wait_for_timeout(1000)
+                 print("⚠️ Untitled Notebook não encontrado para renomear.")
+            
+            # Verificar se algum modal voltou magicamente e tentar fechar (se a pagina recarregar, recair)
+            page.keyboard.press("Escape")
+            page.wait_for_timeout(500)
             
             def do_search_and_import(prompt_text, step_name):
                 print(f"➡️ [{step_name}] Clicando no botão de Adicionar Fonte...")
                 
-                # Clica no botão (+) ou "Adicionar fontes" (geralmente lado esquerdo)
-                page.evaluate("""() => {
+                # Clica no botão (+) ou "Adicionar fontes" 
+                clicked_add = page.evaluate("""() => {
                     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
                     let node;
                     while(node = walker.nextNode()) {
@@ -227,11 +208,15 @@ def send_to_notebooklm(file_path):
                             if(i.parentElement) { i.parentElement.click(); return true;}
                         }
                     }
+                    return false;
                 }""")
                 
-                print(f"⏳ [{step_name}] Aguardando a caixa de pesquisa web ser liberada pelo sistema...")
-                # O Google bloqueia novas pesquisas enquanto a anterior ainda está baixando/processando.
-                # Esse JS vai rodar num loop por até 60 segundos esperando a barra liberar.
+                if not clicked_add:
+                    print(f"⚠️ Aviso: Não conseguiu achar o botão Add Source. A tela de fontes já deve estar aberta.")
+                
+                page.wait_for_timeout(2000)
+                
+                print(f"⏳ [{step_name}] Aguardando a caixa web...")
                 liberado = page.evaluate("""() => {
                     return new Promise((resolve) => {
                         let attempts = 0;
@@ -242,7 +227,7 @@ def send_to_notebooklm(file_path):
                                 const inputs = document.querySelectorAll('input[type="text"], textarea');
                                 for(let inp of inputs) {
                                     let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
-                                    if(placeholder.includes('pesquise novas fontes') || placeholder.includes('search') || placeholder.includes('web')) {
+                                    if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web')) {
                                         if(!inp.disabled) {
                                             clearInterval(check);
                                             resolve(true);
@@ -251,23 +236,19 @@ def send_to_notebooklm(file_path):
                                     }
                                 }
                             }
-                            if(attempts > 60) { clearInterval(check); resolve(false); } // Max 60 seg
+                            if(attempts > 60) { clearInterval(check); resolve(false); }
                         }, 1000);
                     });
                 }""")
                 
-                if not liberado:
-                    print(f"⚠️ Aviso: A barra de pesquisa não liberou a tempo. Prosseguindo forçadamente...")
-                else:
-                    page.wait_for_timeout(1000)
-                    
-                print(f"➡️ [{step_name}] Preenchendo a caixa de pesquisa na Web...")
+                print(f"➡️ [{step_name}] Preenchendo a caixa de pesquisa...")
                 page.evaluate("""(text) => {
                     const inputs = document.querySelectorAll('input[type="text"], textarea');
                     for(let inp of inputs) {
                         let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
-                        if(placeholder.includes('pesquise novas fontes') || placeholder.includes('search') || placeholder.includes('web')) {
+                        if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web')) {
                             inp.focus();
+                            inp.value = '';
                             inp.value = text;
                             inp.dispatchEvent(new Event('input', { bubbles: true }));
                             inp.dispatchEvent(new Event('change', { bubbles: true }));
@@ -277,47 +258,29 @@ def send_to_notebooklm(file_path):
                     return false;
                 }""", prompt_text)
                 
-                # Executa a pesquisa
                 page.keyboard.press("Enter")
-                page.wait_for_timeout(5000) # Esperar a pesquisa exibir os resultados
+                page.wait_for_timeout(4000) 
                 
-                print(f"➡️ [{step_name}] Clicando no botão principal 'Importar fontes'...")
+                print(f"➡️ [{step_name}] Clicando 'Importar fontes'...")
                 page.evaluate("""() => {
                     const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button'));
                     for(let b of btns) {
                         let txt = (b.textContent || '').toLowerCase();
-                        if((txt.includes('importar fontes') || txt.includes('import sources')) && !b.disabled) {
+                        if((txt.includes('importar fontes') || txt.includes('import sources') || txt.includes('inserir')) && !b.disabled) {
                             b.click(); return true;
-                        }
-                    }
-                    
-                    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-                    let node;
-                    while(node = walker.nextNode()) {
-                        let txt = node.textContent.toLowerCase();
-                        if(txt.includes('importar fonte') || txt.includes('import source')) {
-                            let parent = node.parentElement;
-                            while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON')) {
-                                parent = parent.parentElement;
-                            }
-                            if(parent && !parent.disabled) { parent.click(); return true; }
                         }
                     }
                 }""")
                 
-                print(f"⏳ [{step_name}] Processamento da pesquisa iniciado na nuvem...")
-                page.wait_for_timeout(2000) # Apenas uma pausa leve antes do próximo ciclo
+                print(f"⏳ [{step_name}] Importação rodando...")
+                page.wait_for_timeout(2000) 
 
-            # Executa a Sequência Completa
             do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
-            
             do_search_and_import(prompt_deepresearch, "DeepResearch (Fonte 2)")
-            
-            print("✨ Sucesso Extremo! O NotebookLM concluiu o fluxo mestre avançado.")
+            print("✨ Sucesso Extremo!")
             
         except Exception as e:
             print(f"❌ Automação falhou. Erro capturado:\n{e}")
-            
         finally:
             print("🏁 Fechando script (A aba continuará aberta).")
 
