@@ -196,8 +196,9 @@ def send_to_notebooklm(file_path):
                         page.keyboard.press("Backspace")
                     page.keyboard.type(title, delay=10)
                 
-                page.keyboard.press("Enter")
-                page.mouse.click(0, 0)  # Tira o foco
+                page.wait_for_timeout(500)
+                # Tira o foco do elemento para salvar (Blur) sem dar Enter (que recarrega a página)
+                page.mouse.click(10, 10) 
             else:
                 print("⚠️ Não achei o elemento Untitled Notebook para clicar. Apenas focado no DOM.")
             page.wait_for_timeout(1000)
