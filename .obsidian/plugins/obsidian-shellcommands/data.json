@@ -29,7 +29,7 @@
     {
       "id": "notebooklm_generate",
       "platform_specific_commands": {
-        "default": "python3 PyScripts/send_to_notebooklm.py {{file_path:absolute}}"
+        "default": "python3 PyScripts/send_to_notebooklm.py \"{{file_path:absolute}}\""
       },
       "shells": {},
       "alias": "NotebookLM Generate",
@@ -65,7 +65,7 @@
     {
       "id": "notebooklm_genquest",
       "platform_specific_commands": {
-        "default": "python3 PyScripts/send_to_notebooklm.py {{file_path:absolute}} --only-genquest"
+        "default": "python3 PyScripts/send_to_notebooklm.py \"{{file_path:absolute}}\" --only-genquest"
       },
       "shells": {},
       "alias": "NotebookLM GenQuest",
@@ -101,7 +101,7 @@
     {
       "id": "notebooklm_genquestexpert",
       "platform_specific_commands": {
-        "default": "python3 PyScripts/send_to_notebooklm.py {{file_path:absolute}} --only-genquest-expert"
+        "default": "python3 PyScripts/send_to_notebooklm.py \"{{file_path:absolute}}\" --only-genquest-expert"
       },
       "shells": {},
       "alias": "NotebookLM GenQuestExpert",
@@ -137,7 +137,7 @@
     {
       "id": "notebooklm_genvid",
       "platform_specific_commands": {
-        "default": "python3 PyScripts/send_to_notebooklm.py {{file_path:absolute}} --only-genvid"
+        "default": "python3 PyScripts/send_to_notebooklm.py \"{{file_path:absolute}}\" --only-genvid"
       },
       "shells": {},
       "alias": "NotebookLM GenVid",
@@ -173,7 +173,7 @@
     {
       "id": "notebooklm_genvidexpert",
       "platform_specific_commands": {
-        "default": "python3 PyScripts/send_to_notebooklm.py {{file_path:absolute}} --only-genvid-expert"
+        "default": "python3 PyScripts/send_to_notebooklm.py \"{{file_path:absolute}}\" --only-genvid-expert"
       },
       "shells": {},
       "alias": "NotebookLM GenVidExpert",
