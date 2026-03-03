@@ -51,7 +51,8 @@
               "title": "RunBook"
             }
           }
-        ]
+        ],
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -242,12 +243,12 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "33e794c6ad5cdb22",
+  "active": "358543b9f55b81bb",
   "lastOpenFiles": [
-    "DailyLearning/Revisao Espacada.base",
-    "DailyLearning/RunBook.base",
-    "Dashboard.html",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/3. Coesão Textual.md",
+    "DailyLearning/Revisao Espacada.base",
+    "Dashboard.html",
+    "DailyLearning/RunBook.base",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/3. Divisibilidade e Fatoração.md",
     "DailyLearning/Allshit.md",
     "DailyLearning/Cronograma de Estudos.md",
