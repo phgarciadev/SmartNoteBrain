@@ -182,53 +182,50 @@ def send_to_notebooklm(file_path):
                 page.wait_for_timeout(5000)
             else:
                 page.goto("https://notebooklm.google.com/")
-                page.wait_for_timeout(4000)
                 
-                print("⏳ Aguardando a tela inicial 'Carregando seus notebooks...' sumir...")
-                page.evaluate("""() => {
+                print("⏳ Aguardando a página inicial carregar (pesquisando botão de Criar/Novo notebook)...")
+                js_click_new = """() => {
                     return new Promise((resolve) => {
                         let attempts = 0;
-                        const check = setInterval(() => {
+                        let check = setInterval(() => {
                             attempts++;
-                            let text = document.body.textContent.toLowerCase();
-                            if (!text.includes('carregando seus notebooks') && 
-                                !text.includes('loading your notebooks') &&
-                                !text.includes('loading')) {
-                                clearInterval(check);
-                                resolve(true);
-                                return;
+                            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                            let node;
+                            while(node = walker.nextNode()) {
+                                let txt = node.textContent.toLowerCase();
+                                if(txt.includes('novo bloco') || txt.includes('new notebook') || txt.includes('create')) {
+                                    let parent = node.parentElement;
+                                    while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON') && parent.getAttribute('role') !== 'button') {
+                                        if(parent.tagName === 'BODY') break;
+                                        parent = parent.parentElement;
+                                    }
+                                    if(parent && parent.tagName !== 'BODY' && !parent.disabled && parent.offsetWidth > 0) { 
+                                        parent.click(); 
+                                        clearInterval(check);
+                                        resolve(true); 
+                                        return; 
+                                    }
+                                }
                             }
-                            if (attempts > 60) { // 30s max wait
+                            
+                            const btn = document.querySelector('md-elevated-button, button.mat-mdc-unelevated-button');
+                            if(btn && !btn.disabled && btn.offsetWidth > 0) { 
+                                btn.click(); 
+                                clearInterval(check);
+                                resolve(true); 
+                                return; 
+                            }
+                            
+                            if (attempts >= 90) { // Timeout de 45 segundos
                                 clearInterval(check);
                                 resolve(false);
                             }
                         }, 500);
                     });
-                }""")
-                page.wait_for_timeout(1000)
-                
-                print("➡️ Procurando botão de 'Criar/Novo notebook'...")
-                js_click_new = """() => {
-                    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-                    let node;
-                    while(node = walker.nextNode()) {
-                        let txt = node.textContent.toLowerCase();
-                        if(txt.includes('novo bloco') || txt.includes('new notebook') || txt.includes('create')) {
-                            let parent = node.parentElement;
-                            while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON') && parent.getAttribute('role') !== 'button') {
-                                if(parent.tagName === 'BODY') break;
-                                parent = parent.parentElement;
-                            }
-                            if(parent && parent.tagName !== 'BODY') { parent.click(); return true; }
-                        }
-                    }
-                    const btn = document.querySelector('md-elevated-button, button.mat-mdc-unelevated-button');
-                    if(btn) { btn.click(); return true; }
-                    return false;
                 }"""
                 page.evaluate(js_click_new)
                 
-                # Modal de fontes abre...
+                # Tempo adicional pro modal de adicionar fontes ser renderizado após clicar
                 page.wait_for_timeout(3000)
                 print("➡️ Pressionando 'Escape' para fechar a abinha inicial de fontes...")
                 page.keyboard.press("Escape")
@@ -525,7 +522,6 @@ def send_to_notebooklm(file_path):
                 try:
                     page.bring_to_front()
                     page.mouse.click(10, 10)
-                    page.evaluate("window.focus();") # Reforço extra de foco no DOM
                 except:
                     pass
                 
@@ -535,9 +531,7 @@ def send_to_notebooklm(file_path):
                     print(f"⚠️ Aviso ao recarregar aba: {e}")
                 
                 # Outro clique para garantir que a página renderize e continue o onLoad
-                try: 
-                    page.mouse.click(10, 50)
-                    page.evaluate("window.focus(); document.body.click();")
+                try: page.mouse.click(10, 50)
                 except: pass
                 
                 try: page.wait_for_load_state("domcontentloaded", timeout=10000)
@@ -578,10 +572,6 @@ def send_to_notebooklm(file_path):
                     });
                 }""")
                 print("✅ Página recarregada e estabilizada. Iniciando Deep Research...")
-                
-                print("➡️ Fechando qualquer modal intrusivo que tenha aberto junto com o reload...")
-                page.keyboard.press("Escape")
-                page.wait_for_timeout(1000)
                 
                 do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", use_deep_research=True)
             else:
