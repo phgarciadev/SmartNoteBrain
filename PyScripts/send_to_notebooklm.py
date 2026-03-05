@@ -424,27 +424,49 @@ def send_to_notebooklm(file_path):
                 if not clicked_import:
                     print(f"⚠️ Aviso: Botão Importar não foi clicado ou timeout de 5 minutos excedido.")
                 
-                print(f"⏳ [{step_name}] Importação finalizada. Aguardando indicadores de carregamento sumirem...")
+                print(f"⏳ [{step_name}] Importação finalizada. Aguardando o modal fechar e os carregamentos concluírem...")
                 loading_done = page.evaluate("""() => {
                     return new Promise((resolve) => {
                         let stableCount = 0;
                         let attempts = 0;
-                        const STABLE_THRESHOLD = 4; // 4 checks x 500ms = 2s de estabilidade
-                        const MAX_ATTEMPTS = 600;   // 600 x 500ms = 5 min timeout
+                        const STABLE_THRESHOLD = 6;  // 6 checks x 1s = 6s de estabilidade sem loaders
+                        const MAX_ATTEMPTS = 300;    // 300 x 1s = 5 min timeout
+                        const MIN_WAIT = 5;          // espera mínima de 5s antes de começar a contar estabilidade
                         
                         const check = setInterval(() => {
                             attempts++;
                             
-                            // Detecta indicadores de carregamento visíveis
-                            const loaders = Array.from(document.querySelectorAll(
-                                'md-circular-progress, md-linear-progress, ' +
-                                '.loading, .spinner, [role="progressbar"], ' +
-                                'mat-spinner, mat-progress-bar, mat-progress-spinner, ' +
-                                '.mat-mdc-progress-spinner, .mdc-circular-progress, ' +
-                                'circle[stroke-dasharray], svg.loading'
-                            ));
+                            // Fase 1: Verifica se o modal/dialog de importação ainda está aberto
+                            const dialogs = document.querySelectorAll('dialog[open], [role="dialog"], mat-dialog-container, .cdk-overlay-pane, md-dialog');
+                            let dialogOpen = false;
+                            for (const d of dialogs) {
+                                const r = d.getBoundingClientRect();
+                                const s = window.getComputedStyle(d);
+                                if (r.width > 0 && r.height > 0 && s.display !== 'none' && s.visibility !== 'hidden') {
+                                    dialogOpen = true;
+                                    break;
+                                }
+                            }
+                            if (dialogOpen) {
+                                stableCount = 0;
+                                return; // modal ainda aberto, espera
+                            }
                             
+                            // Fase 2: Procura indicadores de carregamento visíveis (seletores amplos)
                             let hasVisibleLoader = false;
+                            
+                            // 2a. Busca por elementos de progresso/spinner conhecidos
+                            const loaderSelectors = [
+                                'md-circular-progress', 'md-linear-progress',
+                                'mat-spinner', 'mat-progress-bar', 'mat-progress-spinner',
+                                '.mat-mdc-progress-spinner', '.mdc-circular-progress',
+                                '[role="progressbar"]',
+                                '.loading', '.spinner',
+                                // Animações CSS de rotação (spinners genéricos)
+                                '[class*="progress"]', '[class*="loading"]', '[class*="spinner"]'
+                            ].join(', ');
+                            
+                            const loaders = document.querySelectorAll(loaderSelectors);
                             for (const el of loaders) {
                                 const rect = el.getBoundingClientRect();
                                 const style = window.getComputedStyle(el);
@@ -457,44 +479,74 @@ def send_to_notebooklm(file_path):
                                 }
                             }
                             
-                            // Também verifica se há textos de "carregando"/"loading"
+                            // 2b. Verifica SVGs com animações (spinners animados do NotebookLM)
                             if (!hasVisibleLoader) {
-                                const allText = document.body.innerText.toLowerCase();
-                                // Procura por spinners dentro de contêineres de fonte
-                                const sourceItems = document.querySelectorAll('[class*="source"], [class*="fonte"]');
-                                for (const item of sourceItems) {
-                                    const itemLoaders = item.querySelectorAll(
-                                        'md-circular-progress, [role="progressbar"], .spinner, svg'
-                                    );
-                                    for (const loader of itemLoaders) {
-                                        const r = loader.getBoundingClientRect();
-                                        const s = window.getComputedStyle(loader);
-                                        if (r.width > 0 && r.height > 0 && 
-                                            s.display !== 'none' && s.visibility !== 'hidden') {
+                                const allSvgs = document.querySelectorAll('svg');
+                                for (const svg of allSvgs) {
+                                    const rect = svg.getBoundingClientRect();
+                                    if (rect.width <= 0 || rect.height <= 0) continue;
+                                    // Procura SVGs com animações ativas (animate, animateTransform)
+                                    const anims = svg.querySelectorAll('animate, animateTransform, animateMotion');
+                                    if (anims.length > 0) {
+                                        const style = window.getComputedStyle(svg);
+                                        if (style.display !== 'none' && style.visibility !== 'hidden') {
                                             hasVisibleLoader = true;
                                             break;
                                         }
                                     }
-                                    if (hasVisibleLoader) break;
+                                    // Verifica CSS animation ativa no SVG ou seus pais próximos
+                                    const csAnim = style ? style.animationName : '';
+                                    if (csAnim && csAnim !== 'none' && rect.width < 50 && rect.height < 50) {
+                                        hasVisibleLoader = true;
+                                        break;
+                                    }
                                 }
                             }
                             
+                            // 2c. Procura por elementos com CSS animation rodando (indeterminate spinners)
                             if (!hasVisibleLoader) {
+                                const animated = document.querySelectorAll('*');
+                                // Limita a busca a elementos pequenos (ícones/spinners) para não pegar animações de página
+                                for (const el of animated) {
+                                    const rect = el.getBoundingClientRect();
+                                    if (rect.width <= 0 || rect.width > 60 || rect.height <= 0 || rect.height > 60) continue;
+                                    const style = window.getComputedStyle(el);
+                                    const anim = style.animationName || '';
+                                    const animDur = style.animationDuration || '0s';
+                                    if (anim && anim !== 'none' && animDur !== '0s') {
+                                        // Verifica se é um elemento de progresso/spinner pelo contexto
+                                        const tag = el.tagName.toLowerCase();
+                                        const cls = (el.className || '').toString().toLowerCase();
+                                        const role = (el.getAttribute('role') || '').toLowerCase();
+                                        if (tag.includes('progress') || tag.includes('spinner') || 
+                                            cls.includes('progress') || cls.includes('spinner') || cls.includes('loading') ||
+                                            role.includes('progress') ||
+                                            tag === 'svg' || tag === 'circle') {
+                                            hasVisibleLoader = true;
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // Fase 3: Estabilidade
+                            if (!hasVisibleLoader && attempts > MIN_WAIT) {
                                 stableCount++;
                                 if (stableCount >= STABLE_THRESHOLD) {
                                     clearInterval(check);
                                     resolve(true);
                                     return;
                                 }
-                            } else {
-                                stableCount = 0; // Reset se ainda tem loader
+                            } else if (hasVisibleLoader) {
+                                stableCount = 0;
                             }
+                            // Se attempts <= MIN_WAIT e !hasVisibleLoader, não incrementa (grace period)
                             
                             if (attempts >= MAX_ATTEMPTS) {
                                 clearInterval(check);
                                 resolve(false);
                             }
-                        }, 500);
+                        }, 1000);
                     });
                 }""")
                 
