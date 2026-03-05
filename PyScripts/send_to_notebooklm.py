@@ -428,13 +428,17 @@ def send_to_notebooklm(file_path):
                 clicked_import = page.evaluate("""() => {
                     return new Promise((resolve) => {
                         let attempts = 0;
-                        let check = setInterval(() => {
+                        const check = setInterval(() => {
                             attempts++;
-                            const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button'));
+                            // Busca ampla por botões ou elementos clicáveis
+                            const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button, [role="button"], .mat-mdc-button, .mdc-button'));
+                            
                             for(let b of btns) {
-                                let txt = (b.textContent || '').toLowerCase();
+                                let txt = (b.textContent || '').toLowerCase().trim();
+                                // Procura por "importar", "import", "inserir" ou "+ importar"
                                 if((txt.includes('importar') || txt.includes('import') || txt.includes('inserir')) && !txt.includes('fontes')) {
-                                    if(!b.disabled && !b.hasAttribute('disabled')) {
+                                    if(!b.disabled && !b.hasAttribute('disabled') && b.offsetWidth > 0) {
+                                        console.log(' botão importar encontrado:', txt);
                                         b.click();
                                         clearInterval(check);
                                         resolve(true);
@@ -442,6 +446,29 @@ def send_to_notebooklm(file_path):
                                     }
                                 }
                             }
+
+                            // Fallback caso seja um div/span com texto dentro de um card de pesquisa concluído
+                            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                            let node;
+                            while(node = walker.nextNode()) {
+                                let nt = node.textContent.toLowerCase().trim();
+                                if(nt === 'importar' || nt === '+ importar' || nt === 'import') {
+                                    let p = node.parentElement;
+                                    // Sobe até achar algo clicável
+                                    for(let i=0; i<5; i++) {
+                                        if(!p || p.tagName === 'BODY') break;
+                                        let style = window.getComputedStyle(p);
+                                        if(p.offsetWidth > 0 && (p.getAttribute('role') === 'button' || style.cursor === 'pointer' || p.tagName.includes('BUTTON'))) {
+                                            p.click();
+                                            clearInterval(check);
+                                            resolve(true);
+                                            return;
+                                        }
+                                        p = p.parentElement;
+                                    }
+                                }
+                            }
+
                             if(attempts >= 300) { // Timeout de 5 minutos
                                 clearInterval(check);
                                 resolve(false);
