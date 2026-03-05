@@ -8,6 +8,20 @@
         "type": "tabs",
         "children": [
           {
+            "id": "8addd9b54bb90c29",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "html-view",
+              "state": {
+                "file": "Dashboard.html"
+              },
+              "pinned": true,
+              "icon": "code-glyph",
+              "title": "Dashboard"
+            }
+          },
+          {
             "id": "b319895822a7e61c",
             "type": "leaf",
             "pinned": true,
@@ -20,18 +34,6 @@
               "pinned": true,
               "icon": "lucide-table",
               "title": "Revisao Espacada"
-            }
-          },
-          {
-            "id": "bdaee2acda63ddfb",
-            "type": "leaf",
-            "state": {
-              "type": "html-view",
-              "state": {
-                "file": "Dashboard.html"
-              },
-              "icon": "code-glyph",
-              "title": "Dashboard"
             }
           }
         ],
@@ -226,11 +228,12 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "bdaee2acda63ddfb",
+  "active": "b319895822a7e61c",
   "lastOpenFiles": [
-    "Dashboard.md",
-    "DailyLearning/Revisao Espacada.base",
+    "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
     "Dashboard.html",
+    "DailyLearning/Revisao Espacada.base",
+    "Dashboard.md",
     "DailyLearning/Disciplinas/12. Atualidades/1. Geopolítica e Relações Internacionais/2. Conflitos no Oriente Médio.md",
     "DailyLearning/Disciplinas/12. Atualidades/1. Geopolítica e Relações Internacionais/1. Nova Ordem Mundial e Multipolaridade.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/5. Análise Dimensional.md",
