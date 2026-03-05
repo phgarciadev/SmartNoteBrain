@@ -502,6 +502,7 @@ def send_to_notebooklm(file_path):
                 try:
                     page.bring_to_front()
                     page.mouse.click(10, 10)
+                    page.evaluate("window.focus();") # Reforço extra de foco no DOM
                 except:
                     pass
                 
@@ -511,7 +512,9 @@ def send_to_notebooklm(file_path):
                     print(f"⚠️ Aviso ao recarregar aba: {e}")
                 
                 # Outro clique para garantir que a página renderize e continue o onLoad
-                try: page.mouse.click(10, 50)
+                try: 
+                    page.mouse.click(10, 50)
+                    page.evaluate("window.focus(); document.body.click();")
                 except: pass
                 
                 try: page.wait_for_load_state("domcontentloaded", timeout=10000)
