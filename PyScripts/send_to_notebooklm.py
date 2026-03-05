@@ -430,41 +430,36 @@ def send_to_notebooklm(file_path):
                         let attempts = 0;
                         const check = setInterval(() => {
                             attempts++;
-                            // Busca ampla por botões ou elementos clicáveis
-                            const btns = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button, [role="button"], .mat-mdc-button, .mdc-button'));
                             
-                            for(let b of btns) {
-                                let txt = (b.textContent || '').toLowerCase().trim();
-                                // Procura por "importar", "import", "inserir" ou "+ importar"
-                                if((txt.includes('importar') || txt.includes('import') || txt.includes('inserir')) && !txt.includes('fontes')) {
-                                    if(!b.disabled && !b.hasAttribute('disabled') && b.offsetWidth > 0) {
-                                        console.log(' botão importar encontrado:', txt);
-                                        b.click();
-                                        clearInterval(check);
-                                        resolve(true);
-                                        return;
-                                    }
-                                }
-                            }
-
-                            // Fallback caso seja um div/span com texto dentro de um card de pesquisa concluído
-                            const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-                            let node;
-                            while(node = walker.nextNode()) {
-                                let nt = node.textContent.toLowerCase().trim();
-                                if(nt === 'importar' || nt === '+ importar' || nt === 'import') {
-                                    let p = node.parentElement;
-                                    // Sobe até achar algo clicável
-                                    for(let i=0; i<5; i++) {
-                                        if(!p || p.tagName === 'BODY') break;
-                                        let style = window.getComputedStyle(p);
-                                        if(p.offsetWidth > 0 && (p.getAttribute('role') === 'button' || style.cursor === 'pointer' || p.tagName.includes('BUTTON'))) {
-                                            p.click();
-                                            clearInterval(check);
-                                            resolve(true);
-                                            return;
+                            // 1. Busca ampla por botões ou elementos que contêm o texto de importação
+                            const allElements = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button, [role="button"], .mat-mdc-button, .mdc-button, div, span'));
+                            
+                            for(let el of allElements) {
+                                let txt = (el.textContent || '').trim().toLowerCase();
+                                // Se o texto contém exatamente "+ importar" ou "importar" e é visível
+                                if((txt === 'importar' || txt === '+ importar' || (txt.includes('importar') && !txt.includes('fontes'))) && el.offsetWidth > 0) {
+                                    
+                                    // Sobe para achar o elemento clicável caso seja um span/div interno
+                                    let clickable = el;
+                                    let depth = 0;
+                                    while(clickable && depth < 5) {
+                                        const style = window.getComputedStyle(clickable);
+                                        if(clickable.tagName === 'BUTTON' || clickable.getAttribute('role') === 'button' || style.cursor === 'pointer' || clickable.tagName.includes('-BUTTON')) {
+                                            if(!clickable.disabled && !clickable.hasAttribute('disabled')) {
+                                                console.log('✅ Botão Importar/Inserir encontrado e clicado:', txt);
+                                                clickable.click();
+                                                
+                                                // Dispara eventos manuais para garantir que o framework (Angular) sinta o clique
+                                                clickable.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
+                                                clickable.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
+                                                
+                                                clearInterval(check);
+                                                resolve(true);
+                                                return;
+                                            }
                                         }
-                                        p = p.parentElement;
+                                        clickable = clickable.parentElement;
+                                        depth++;
                                     }
                                 }
                             }
@@ -478,21 +473,25 @@ def send_to_notebooklm(file_path):
                 }""")
                 
                 if not clicked_import:
-                    print(f"⚠️ Aviso: Botão Importar não foi clicado ou timeout de 5 minutos excedido.")
+                    print(f"❌ Erro Crítico: Botão Importar não foi clicado no tempo limite. Abortando para evitar erros na pipeline.")
+                    sys.exit(1)
                 
-                print(f"⏳ [{step_name}] Importação finalizada. Aguardando indicadores de carregamento sumirem...")
+                # Aguarda um pouco para o loader (SVG animado ou spinner) dar as caras
+                print(f"⏳ [{step_name}] Clique realizado. Aguardando 2s para início do processamento...")
+                page.wait_for_timeout(2000)
+                
+                print(f"⏳ [{step_name}] Importação em curso. Aguardando indicadores de carregamento (incluindo SVGs animados) sumirem...")
                 loading_done = page.evaluate("""() => {
                     return new Promise((resolve) => {
                         let stableCount = 0;
                         let attempts = 0;
-                        const STABLE_THRESHOLD = 4; // 4 checks x 500ms = 2s de estabilidade
-                        const MAX_ATTEMPTS = 600;   // 600 x 500ms = 5 min timeout
+                        const STABLE_THRESHOLD = 5; // ~2.5s de estabilidade
+                        const MAX_ATTEMPTS = 600;   // 5 min timeout
                         
                         const check = setInterval(() => {
                             attempts++;
                             
-                            // Detecta APENAS indicadores reais de carregamento
-                            // (NÃO inclui svg genérico ou circle — esses são ícones normais)
+                            // 1. Loaders tradicionais
                             const loaders = Array.from(document.querySelectorAll(
                                 'md-circular-progress, md-linear-progress, ' +
                                 '[role="progressbar"], ' +
@@ -504,12 +503,30 @@ def send_to_notebooklm(file_path):
                             for (const el of loaders) {
                                 const rect = el.getBoundingClientRect();
                                 const style = window.getComputedStyle(el);
-                                if (rect.width > 0 && rect.height > 0 && 
-                                    style.display !== 'none' && 
-                                    style.visibility !== 'hidden' &&
-                                    style.opacity !== '0') {
+                                if (rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') {
                                     hasVisibleLoader = true;
                                     break;
+                                }
+                            }
+                            
+                            // 2. "SVGs animados" (Detecção de rotação ou tags animate)
+                            if (!hasVisibleLoader) {
+                                const svgs = document.querySelectorAll('svg');
+                                for (const svg of svgs) {
+                                    const rect = svg.getBoundingClientRect();
+                                    const style = window.getComputedStyle(svg);
+                                    
+                                    // Se o SVG está visível e parece estar animando
+                                    if (rect.width > 0 && rect.height > 1 && style.display !== 'none' && style.visibility !== 'hidden') {
+                                        const hasAnimateTag = svg.querySelector('animate, animateTransform, animateMotion');
+                                        const hasRotationCSS = style.animationName && style.animationName !== 'none';
+                                        
+                                        // No NotebookLM, loaders de fonte costumam ser SVGs que rodam ou pulsam
+                                        if (hasAnimateTag || hasRotationCSS) {
+                                            hasVisibleLoader = true;
+                                            break;
+                                        }
+                                    }
                                 }
                             }
                             
@@ -521,7 +538,7 @@ def send_to_notebooklm(file_path):
                                     return;
                                 }
                             } else {
-                                stableCount = 0; // Reset se ainda tem loader
+                                stableCount = 0; // Ainda carregando...
                             }
                             
                             if (attempts >= MAX_ATTEMPTS) {
