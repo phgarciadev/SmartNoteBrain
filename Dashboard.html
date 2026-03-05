@@ -330,7 +330,13 @@ body {
   background: rgba(82, 156, 202, 0.1);
   border-color: rgba(82, 156, 202, 0.3);
   color: var(--accent-blue);
-  transform: rotate(180deg);
+}
+.refresh-btn.spinning svg {
+  animation: spin 1s linear infinite;
+}
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
 }
 .refresh-btn svg {
   width: 14px;
@@ -362,7 +368,7 @@ body {
     <div class="card hero-card grid-left">
       <div class="card-title">
         <span>🎯</span> Tópicos a Iniciar Hoje
-        <a href="obsidian://shell-commands/execute/generate_dashboard" class="refresh-btn" title="Atualizar Dashboard">
+        <a href="obsidian://shell-commands/execute/generate_dashboard" class="refresh-btn" onclick="this.classList.add('spinning'); setTimeout(() => window.location.reload(), 4000);" title="Atualizar Dashboard">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
         </a>
       </div>
