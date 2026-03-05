@@ -274,76 +274,59 @@ def send_to_notebooklm(file_path):
                     print(f"⚠️ Aviso: Não foi possível salvar a URL no frontmatter. Erro: {e}")
             
             def do_search_and_import(prompt_text, step_name, use_deep_research=False):
-                print(f"⏳ [{step_name}] Abrindo e aguardando a caixa web...")
+                print(f"➡️ [{step_name}] Clicando no botão de Adicionar Fonte...")
                 
-                liberado = False
-                for attempt in range(60):
-                    # 1. Verifica se a caixa web já está visível
-                    has_input = page.evaluate("""() => {
-                        const inputs = Array.from(document.querySelectorAll('input[type="text"], input[type="url"], textarea'));
-                        for(let inp of inputs) {
-                            let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
-                            if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web') || placeholder.includes('url') || placeholder.includes('link')) {
-                                if(!inp.disabled && inp.getBoundingClientRect().height > 0) return true;
+                # Clica no botão (+) ou "Adicionar fontes" 
+                clicked_add = page.evaluate("""() => {
+                    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                    let node;
+                    while(node = walker.nextNode()) {
+                        let txt = node.textContent.trim().toLowerCase();
+                        if(txt.includes('adicionar fonte') || txt.includes('add source') || txt === 'web' || txt === 'site' || txt === 'sites') {
+                            let parent = node.parentElement;
+                            while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON')) {
+                                if(parent.tagName === 'BODY') break;
+                                parent = parent.parentElement;
                             }
+                            if(parent && parent.tagName !== 'BODY') { parent.click(); return true; }
                         }
-                        return false;
-                    }""")
-                    
-                    if has_input:
-                        liberado = True
-                        break
-                        
-                    # 2. Se não está visível, tenta clicar na opção "Web/Website/Link de site" no menu aberto
-                    clicked_web = page.evaluate("""() => {
-                        const texts = ['web', 'website', 'link de site', 'site', 'sites'];
-                        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-                        let node;
-                        while(node = walker.nextNode()) {
-                            let txt = node.textContent.trim().toLowerCase();
-                            if(texts.includes(txt)) {
-                                let btn = node.parentElement.closest('button, [role="button"], md-menu-item, [role="menuitem"], .menu-item');
-                                if(btn && btn.getBoundingClientRect().height > 0) { btn.click(); return true; }
-                                if(node.parentElement.getBoundingClientRect().height > 0) { node.parentElement.click(); return true; }
+                    }
+                    const icons = Array.from(document.querySelectorAll('.google-symbols'));
+                    for(let i of icons) {
+                        if(i.textContent === 'add') {
+                            if(i.parentElement) { i.parentElement.click(); return true;}
+                        }
+                    }
+                    return false;
+                }""")
+                
+                if not clicked_add:
+                    print(f"⚠️ Aviso: Não conseguiu achar o botão Add Source. A tela de fontes já deve estar aberta.")
+                
+                print(f"⏳ [{step_name}] Aguardando a caixa web...")
+                liberado = page.evaluate("""() => {
+                    return new Promise((resolve) => {
+                        let attempts = 0;
+                        let check = setInterval(() => {
+                            attempts++;
+                            let bodyText = document.body.textContent.toLowerCase();
+                            if(!bodyText.includes('temporariamente desativada') && !bodyText.includes('temporarily disabled')) {
+                                const inputs = document.querySelectorAll('input[type="text"], textarea');
+                                for(let inp of inputs) {
+                                    let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
+                                    if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web')) {
+                                        if(!inp.disabled) {
+                                            clearInterval(check);
+                                            resolve(true);
+                                            return;
+                                        }
+                                    }
+                                }
                             }
-                        }
-                        return false;
-                    }""")
-                    
-                    if clicked_web:
-                        page.wait_for_timeout(500)
-                        continue
-                        
-                    # 3. Se não achou "Web", tenta achar "Adicionar fonte" ou "+"
-                    page.evaluate("""() => {
-                        const texts = ['adicionar fonte', 'add source'];
-                        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-                        let node;
-                        while(node = walker.nextNode()) {
-                            let txt = node.textContent.trim().toLowerCase();
-                            if(texts.some(t => txt.includes(t))) {
-                                let btn = node.parentElement.closest('button, [role="button"], md-text-button, md-elevated-button');
-                                if(btn && btn.getBoundingClientRect().height > 0) { btn.click(); return true; }
-                                if(node.parentElement.getBoundingClientRect().height > 0) { node.parentElement.click(); return true; }
-                            }
-                        }
-                        
-                        // Fallback: icones de +
-                        const icons = Array.from(document.querySelectorAll('.google-symbols, md-icon'));
-                        for(let i of icons) {
-                            if(i.textContent.trim() === 'add') {
-                                let btn = i.closest('button, [role="button"], md-icon-button, [aria-label*="source"], [aria-label*="fonte"]');
-                                if(btn && btn.getBoundingClientRect().height > 0) { btn.click(); return true; }
-                            }
-                        }
-                    }""")
-                    
-                    page.wait_for_timeout(1000)
-                    
-                if not liberado:
-                    print(f"⚠️ Aviso: Caixa web não abriu após múltiplas tentativas.")
-                else:
-                    print(f"✅ [{step_name}] Caixa web verificada e disponível.")
+                            if(attempts > 60) { clearInterval(check); resolve(false); }
+                        }, 1000);
+                    });
+                }""")
                 
                 if use_deep_research:
                     print(f"➡️ [{step_name}] Mudando tipo para Deep Research...")
@@ -353,8 +336,7 @@ def send_to_notebooklm(file_path):
                             let node;
                             let clicked = false;
                             while(node = walker.nextNode()) {
-                                let txt = node.textContent.toLowerCase();
-                                if(txt.includes('pesquisa rápida') || txt.includes('quick search')) {
+                                if(node.textContent.toLowerCase().includes('pesquisa rápida')) {
                                     let parent = node.parentElement;
                                     while(parent && parent.tagName !== 'BODY') {
                                         if(parent.tagName.includes('BUTTON') || parent.getAttribute('role') === 'button' || parent.getAttribute('role') === 'combobox' || parent.hasAttribute('aria-haspopup') || parent.tagName.includes('SELECT')) {
@@ -399,10 +381,10 @@ def send_to_notebooklm(file_path):
 
                 print(f"➡️ [{step_name}] Preenchendo a caixa de pesquisa...")
                 page.evaluate("""(text) => {
-                    const inputs = document.querySelectorAll('input[type="text"], input[type="url"], textarea');
+                    const inputs = document.querySelectorAll('input[type="text"], textarea');
                     for(let inp of inputs) {
                         let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
-                        if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web') || placeholder.includes('url') || placeholder.includes('link')) {
+                        if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web')) {
                             inp.focus();
                             inp.value = '';
                             inp.value = text;
