@@ -354,27 +354,19 @@ def send_to_notebooklm(file_path):
                     page.keyboard.press("Escape")
                     page.wait_for_timeout(1000)
                     
-                    # Força a aba para frente e clica num ponto neutro para "acordar" o DOM de vez
-                    try:
-                        page.bring_to_front()
-                        page.mouse.click(10, 10)
-                    except:
-                        pass
-                    page.wait_for_timeout(500)
-                    
                     print(f"➡️ [{step_name}] Mudando tipo para Deep Research...")
                     try:
-                        # Usando locators dinâmicos do Playwright. 
-                        # Adicionado force=True para bypassar actionability handlers caso haja sobreposições invisíveis pós-modal 
+                        # Usando locators dinâmicos do Playwright pois eles disparam eventos completos (click/mouse)
+                        # o que é vital para o Angular Material (framework do NotebookLM) atualizar de fato.
                         
-                        # Clicar no dropdown "Pesquisa rápida" (pegamos o primeiro que representa a aba lateral)
+                        # Clicar no dropdown "Pesquisa rápida" (pegamos o primeiro que representa a aba lateral, em vez do modal central que fica no topo do z-index)
                         dropdown = page.locator("text=/Pesquisa r[áa]pida|Quick search/i").locator("visible=true").first
-                        dropdown.click(timeout=3000, force=True)
+                        dropdown.click(timeout=3000)
                         page.wait_for_timeout(1000)
                         
                         # Clicar na opção "Deep Research" 
                         deep_option = page.locator("text=/Deep Research/i").locator("visible=true").first
-                        deep_option.click(timeout=3000, force=True)
+                        deep_option.click(timeout=3000)
                         page.wait_for_timeout(1500)
                     except Exception as e:
                         print(f"⚠️ Aviso: Falha ao mudar para Deep Research via Playwright Locators: {e}")
