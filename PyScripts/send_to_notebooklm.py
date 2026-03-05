@@ -348,7 +348,7 @@ def send_to_notebooklm(file_path):
                 }""", prompt_text)
                 
                 page.wait_for_timeout(500)
-                
+                #fr
                 if use_deep_research:
                     print(f"➡️ [{step_name}] Mudando tipo para Deep Research...")
                     try:
