@@ -348,7 +348,7 @@ def send_to_notebooklm(file_path):
                 }""", prompt_text)
                 
                 page.wait_for_timeout(500)
-                
+                #MVP2
                 if use_deep_research:
                     print(f"➡️ [{step_name}] Fechando modal central para focar na aba esquerda...")
                     page.keyboard.press("Escape")
