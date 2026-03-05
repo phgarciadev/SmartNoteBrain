@@ -300,8 +300,6 @@ def send_to_notebooklm(file_path):
                 if not clicked_add:
                     print(f"⚠️ Aviso: Não conseguiu achar o botão Add Source. A tela de fontes já deve estar aberta.")
                 
-                page.wait_for_timeout(2000)
-                
                 print(f"⏳ [{step_name}] Aguardando a caixa web...")
                 liberado = page.evaluate("""() => {
                     return new Promise((resolve) => {
@@ -377,7 +375,6 @@ def send_to_notebooklm(file_path):
                             }, 1500);
                         });
                     }""")
-                    page.wait_for_timeout(2000)
 
                 print(f"➡️ [{step_name}] Preenchendo a caixa de pesquisa...")
                 page.evaluate("""(text) => {
@@ -427,8 +424,84 @@ def send_to_notebooklm(file_path):
                 if not clicked_import:
                     print(f"⚠️ Aviso: Botão Importar não foi clicado ou timeout de 5 minutos excedido.")
                 
-                print(f"⏳ [{step_name}] Importação finalizada. Aguardando a estabilização de fontes antes da próxima ação (20s)...")
-                page.wait_for_timeout(20000) 
+                print(f"⏳ [{step_name}] Importação finalizada. Aguardando indicadores de carregamento sumirem...")
+                loading_done = page.evaluate("""() => {
+                    return new Promise((resolve) => {
+                        let stableCount = 0;
+                        let attempts = 0;
+                        const STABLE_THRESHOLD = 4; // 4 checks x 500ms = 2s de estabilidade
+                        const MAX_ATTEMPTS = 600;   // 600 x 500ms = 5 min timeout
+                        
+                        const check = setInterval(() => {
+                            attempts++;
+                            
+                            // Detecta indicadores de carregamento visíveis
+                            const loaders = Array.from(document.querySelectorAll(
+                                'md-circular-progress, md-linear-progress, ' +
+                                '.loading, .spinner, [role="progressbar"], ' +
+                                'mat-spinner, mat-progress-bar, mat-progress-spinner, ' +
+                                '.mat-mdc-progress-spinner, .mdc-circular-progress, ' +
+                                'circle[stroke-dasharray], svg.loading'
+                            ));
+                            
+                            let hasVisibleLoader = false;
+                            for (const el of loaders) {
+                                const rect = el.getBoundingClientRect();
+                                const style = window.getComputedStyle(el);
+                                if (rect.width > 0 && rect.height > 0 && 
+                                    style.display !== 'none' && 
+                                    style.visibility !== 'hidden' &&
+                                    style.opacity !== '0') {
+                                    hasVisibleLoader = true;
+                                    break;
+                                }
+                            }
+                            
+                            // Também verifica se há textos de "carregando"/"loading"
+                            if (!hasVisibleLoader) {
+                                const allText = document.body.innerText.toLowerCase();
+                                // Procura por spinners dentro de contêineres de fonte
+                                const sourceItems = document.querySelectorAll('[class*="source"], [class*="fonte"]');
+                                for (const item of sourceItems) {
+                                    const itemLoaders = item.querySelectorAll(
+                                        'md-circular-progress, [role="progressbar"], .spinner, svg'
+                                    );
+                                    for (const loader of itemLoaders) {
+                                        const r = loader.getBoundingClientRect();
+                                        const s = window.getComputedStyle(loader);
+                                        if (r.width > 0 && r.height > 0 && 
+                                            s.display !== 'none' && s.visibility !== 'hidden') {
+                                            hasVisibleLoader = true;
+                                            break;
+                                        }
+                                    }
+                                    if (hasVisibleLoader) break;
+                                }
+                            }
+                            
+                            if (!hasVisibleLoader) {
+                                stableCount++;
+                                if (stableCount >= STABLE_THRESHOLD) {
+                                    clearInterval(check);
+                                    resolve(true);
+                                    return;
+                                }
+                            } else {
+                                stableCount = 0; // Reset se ainda tem loader
+                            }
+                            
+                            if (attempts >= MAX_ATTEMPTS) {
+                                clearInterval(check);
+                                resolve(false);
+                            }
+                        }, 500);
+                    });
+                }""")
+                
+                if loading_done:
+                    print(f"✅ [{step_name}] Todos os indicadores de carregamento sumiram. Pronto para a próxima ação.")
+                else:
+                    print(f"⚠️ [{step_name}] Timeout de 5 minutos atingido aguardando carregamentos. Prosseguindo...")
 
             if not test_cards_only and not test_video_only and not is_specific_action:
                 do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
