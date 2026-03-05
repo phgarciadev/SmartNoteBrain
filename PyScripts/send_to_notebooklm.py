@@ -424,107 +424,77 @@ def send_to_notebooklm(file_path):
                 if not clicked_import:
                     print(f"⚠️ Aviso: Botão Importar não foi clicado ou timeout de 5 minutos excedido.")
                 
-                print(f"⏳ [{step_name}] Importação finalizada. Aguardando o modal fechar e os carregamentos concluírem...")
+                print(f"⏳ [{step_name}] Importação finalizada. Aguardando os carregamentos concluírem...")
                 loading_done = page.evaluate("""() => {
                     return new Promise((resolve) => {
                         let stableCount = 0;
                         let attempts = 0;
-                        const STABLE_THRESHOLD = 6;  // 6 checks x 1s = 6s de estabilidade sem loaders
+                        const STABLE_THRESHOLD = 4;  // 4 checks x 1s = 4s de estabilidade sem loaders
                         const MAX_ATTEMPTS = 300;    // 300 x 1s = 5 min timeout
-                        const MIN_WAIT = 5;          // espera mínima de 5s antes de começar a contar estabilidade
+                        const MIN_WAIT = 8;          // espera mínima de 8s antes de começar a contar estabilidade
                         
                         const check = setInterval(() => {
                             attempts++;
-                            
-                            // Fase 1: Verifica se o modal/dialog de importação ainda está aberto
-                            const dialogs = document.querySelectorAll('dialog[open], [role="dialog"], mat-dialog-container, .cdk-overlay-pane, md-dialog');
-                            let dialogOpen = false;
-                            for (const d of dialogs) {
-                                const r = d.getBoundingClientRect();
-                                const s = window.getComputedStyle(d);
-                                if (r.width > 0 && r.height > 0 && s.display !== 'none' && s.visibility !== 'hidden') {
-                                    dialogOpen = true;
-                                    break;
-                                }
-                            }
-                            if (dialogOpen) {
-                                stableCount = 0;
-                                return; // modal ainda aberto, espera
-                            }
-                            
-                            // Fase 2: Procura indicadores de carregamento visíveis (seletores amplos)
                             let hasVisibleLoader = false;
                             
-                            // 2a. Busca por elementos de progresso/spinner conhecidos
-                            const loaderSelectors = [
-                                'md-circular-progress', 'md-linear-progress',
-                                'mat-spinner', 'mat-progress-bar', 'mat-progress-spinner',
-                                '.mat-mdc-progress-spinner', '.mdc-circular-progress',
-                                '[role="progressbar"]',
-                                '.loading', '.spinner',
-                                // Animações CSS de rotação (spinners genéricos)
-                                '[class*="progress"]', '[class*="loading"]', '[class*="spinner"]'
-                            ].join(', ');
-                            
-                            const loaders = document.querySelectorAll(loaderSelectors);
-                            for (const el of loaders) {
+                            // Detecta md-circular-progress (o spinner padrão do Google Material)
+                            const circularProgress = document.querySelectorAll('md-circular-progress');
+                            for (const el of circularProgress) {
                                 const rect = el.getBoundingClientRect();
-                                const style = window.getComputedStyle(el);
-                                if (rect.width > 0 && rect.height > 0 && 
-                                    style.display !== 'none' && 
-                                    style.visibility !== 'hidden' &&
-                                    style.opacity !== '0') {
-                                    hasVisibleLoader = true;
-                                    break;
+                                if (rect.width > 0 && rect.height > 0) {
+                                    const style = window.getComputedStyle(el);
+                                    if (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') {
+                                        hasVisibleLoader = true;
+                                        console.log('[NLMBOT] Spinner encontrado: md-circular-progress', rect.width, rect.height);
+                                        break;
+                                    }
                                 }
                             }
                             
-                            // 2b. Verifica SVGs com animações (spinners animados do NotebookLM)
+                            // Detecta qualquer [role="progressbar"] visível
+                            if (!hasVisibleLoader) {
+                                const progressBars = document.querySelectorAll('[role="progressbar"]');
+                                for (const el of progressBars) {
+                                    const rect = el.getBoundingClientRect();
+                                    if (rect.width > 0 && rect.height > 0) {
+                                        const style = window.getComputedStyle(el);
+                                        if (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') {
+                                            hasVisibleLoader = true;
+                                            console.log('[NLMBOT] Spinner encontrado: progressbar', el.tagName, rect.width, rect.height);
+                                            break;
+                                        }
+                                    }
+                                }
+                            }
+                            
+                            // Detecta SVGs pequenos com animações inline (animate, animateTransform)
                             if (!hasVisibleLoader) {
                                 const allSvgs = document.querySelectorAll('svg');
                                 for (const svg of allSvgs) {
                                     const rect = svg.getBoundingClientRect();
-                                    if (rect.width <= 0 || rect.height <= 0) continue;
-                                    if (rect.width > 60 || rect.height > 60) continue; // ignora SVGs grandes (não são spinners)
-                                    const svgStyle = window.getComputedStyle(svg);
-                                    if (svgStyle.display === 'none' || svgStyle.visibility === 'hidden') continue;
-                                    
-                                    // Procura SVGs com animações inline ativas (animate, animateTransform)
-                                    const anims = svg.querySelectorAll('animate, animateTransform, animateMotion');
+                                    if (rect.width <= 0 || rect.height <= 0 || rect.width > 50 || rect.height > 50) continue;
+                                    const anims = svg.querySelectorAll('animate, animateTransform');
                                     if (anims.length > 0) {
-                                        hasVisibleLoader = true;
-                                        break;
-                                    }
-                                    // Verifica CSS animation ativa no SVG
-                                    const csAnim = svgStyle.animationName || '';
-                                    if (csAnim && csAnim !== 'none') {
-                                        hasVisibleLoader = true;
-                                        break;
+                                        const style = window.getComputedStyle(svg);
+                                        if (style.display !== 'none' && style.visibility !== 'hidden') {
+                                            hasVisibleLoader = true;
+                                            console.log('[NLMBOT] Spinner encontrado: SVG animado', rect.width, rect.height);
+                                            break;
+                                        }
                                     }
                                 }
                             }
                             
-                            // 2c. Procura por circle/path com CSS animation (spinners indeterminate)
-                            if (!hasVisibleLoader) {
-                                const candidates = document.querySelectorAll('circle, path, md-circular-progress *, [class*="spinner"] *, [class*="progress"] *');
-                                for (const el of candidates) {
-                                    const rect = el.getBoundingClientRect();
-                                    if (rect.width <= 0 || rect.width > 60 || rect.height <= 0 || rect.height > 60) continue;
-                                    const style = window.getComputedStyle(el);
-                                    const anim = style.animationName || '';
-                                    const animDur = style.animationDuration || '0s';
-                                    if (anim && anim !== 'none' && animDur !== '0s' && 
-                                        style.display !== 'none' && style.visibility !== 'hidden') {
-                                        hasVisibleLoader = true;
-                                        break;
-                                    }
-                                }
+                            // Log periódico para debug
+                            if (attempts % 5 === 0) {
+                                console.log('[NLMBOT] Check #' + attempts + ' hasLoader=' + hasVisibleLoader + ' stable=' + stableCount);
                             }
                             
-                            // Fase 3: Estabilidade
+                            // Grace period: espera mínima antes de aceitar estabilidade
                             if (!hasVisibleLoader && attempts > MIN_WAIT) {
                                 stableCount++;
                                 if (stableCount >= STABLE_THRESHOLD) {
+                                    console.log('[NLMBOT] Carregamentos concluídos após ' + attempts + 's');
                                     clearInterval(check);
                                     resolve(true);
                                     return;
@@ -532,9 +502,9 @@ def send_to_notebooklm(file_path):
                             } else if (hasVisibleLoader) {
                                 stableCount = 0;
                             }
-                            // Se attempts <= MIN_WAIT e !hasVisibleLoader, não incrementa (grace period)
                             
                             if (attempts >= MAX_ATTEMPTS) {
+                                console.log('[NLMBOT] Timeout de 5 min atingido');
                                 clearInterval(check);
                                 resolve(false);
                             }
