@@ -8,15 +8,13 @@
         "type": "tabs",
         "children": [
           {
-            "id": "f7c9a8e9e817ec19",
+            "id": "766cbbedc7e3c1d7",
             "type": "leaf",
-            "pinned": true,
             "state": {
               "type": "html-view",
               "state": {
                 "file": "Dashboard.html"
               },
-              "pinned": true,
               "icon": "code-glyph",
               "title": "Dashboard"
             }
@@ -241,7 +239,7 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "f7c9a8e9e817ec19",
+  "active": "766cbbedc7e3c1d7",
   "lastOpenFiles": [
     "DailyLearning/Revisao Espacada.base",
     "Dashboard.html",
