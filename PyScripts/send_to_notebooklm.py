@@ -182,7 +182,7 @@ def send_to_notebooklm(file_path):
                 page.wait_for_timeout(5000)
             else:
                 page.goto("https://notebooklm.google.com/")
-                
+                #MVP3
                 print("⏳ Aguardando a página inicial carregar (pesquisando botão de Criar/Novo notebook)...")
                 js_click_new = """() => {
                     return new Promise((resolve) => {
