@@ -679,6 +679,33 @@ body {{
   .dash-header .emoji-title {{ font-size: 22px; }}
   .stats-row {{ grid-template-columns: repeat(2, 1fr); }}
 }}
+
+/* ── Refresh Button ── */
+.refresh-btn {{
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-tertiary);
+  cursor: pointer;
+  transition: all var(--transition);
+  text-decoration: none;
+  margin-left: auto;
+}}
+.refresh-btn:hover {{
+  background: rgba(82, 156, 202, 0.1);
+  border-color: rgba(82, 156, 202, 0.3);
+  color: var(--accent-blue);
+  transform: rotate(180deg);
+}}
+.refresh-btn svg {{
+  width: 14px;
+  height: 14px;
+}}
 </style>
 </head>
 <body>
@@ -703,7 +730,12 @@ body {{
 
     <!-- Tópicos a Iniciar (left) -->
     <div class="card hero-card grid-left">
-      <div class="card-title"><span>🎯</span> Tópicos a Iniciar Hoje</div>
+      <div class="card-title">
+        <span>🎯</span> Tópicos a Iniciar Hoje
+        <a href="obsidian://shell-commands/execute/generate_dashboard" class="refresh-btn" title="Atualizar Dashboard">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
+        </a>
+      </div>
       <div class="hero-subtitle">Disciplinas: {disc_hoje_str}</div>
       {iniciar_html}
     </div>
