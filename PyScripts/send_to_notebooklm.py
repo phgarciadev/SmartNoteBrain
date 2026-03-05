@@ -485,46 +485,38 @@ def send_to_notebooklm(file_path):
                                 for (const svg of allSvgs) {
                                     const rect = svg.getBoundingClientRect();
                                     if (rect.width <= 0 || rect.height <= 0) continue;
-                                    // Procura SVGs com animações ativas (animate, animateTransform)
+                                    if (rect.width > 60 || rect.height > 60) continue; // ignora SVGs grandes (não são spinners)
+                                    const svgStyle = window.getComputedStyle(svg);
+                                    if (svgStyle.display === 'none' || svgStyle.visibility === 'hidden') continue;
+                                    
+                                    // Procura SVGs com animações inline ativas (animate, animateTransform)
                                     const anims = svg.querySelectorAll('animate, animateTransform, animateMotion');
                                     if (anims.length > 0) {
-                                        const style = window.getComputedStyle(svg);
-                                        if (style.display !== 'none' && style.visibility !== 'hidden') {
-                                            hasVisibleLoader = true;
-                                            break;
-                                        }
+                                        hasVisibleLoader = true;
+                                        break;
                                     }
-                                    // Verifica CSS animation ativa no SVG ou seus pais próximos
-                                    const csAnim = style ? style.animationName : '';
-                                    if (csAnim && csAnim !== 'none' && rect.width < 50 && rect.height < 50) {
+                                    // Verifica CSS animation ativa no SVG
+                                    const csAnim = svgStyle.animationName || '';
+                                    if (csAnim && csAnim !== 'none') {
                                         hasVisibleLoader = true;
                                         break;
                                     }
                                 }
                             }
                             
-                            // 2c. Procura por elementos com CSS animation rodando (indeterminate spinners)
+                            // 2c. Procura por circle/path com CSS animation (spinners indeterminate)
                             if (!hasVisibleLoader) {
-                                const animated = document.querySelectorAll('*');
-                                // Limita a busca a elementos pequenos (ícones/spinners) para não pegar animações de página
-                                for (const el of animated) {
+                                const candidates = document.querySelectorAll('circle, path, md-circular-progress *, [class*="spinner"] *, [class*="progress"] *');
+                                for (const el of candidates) {
                                     const rect = el.getBoundingClientRect();
                                     if (rect.width <= 0 || rect.width > 60 || rect.height <= 0 || rect.height > 60) continue;
                                     const style = window.getComputedStyle(el);
                                     const anim = style.animationName || '';
                                     const animDur = style.animationDuration || '0s';
-                                    if (anim && anim !== 'none' && animDur !== '0s') {
-                                        // Verifica se é um elemento de progresso/spinner pelo contexto
-                                        const tag = el.tagName.toLowerCase();
-                                        const cls = (el.className || '').toString().toLowerCase();
-                                        const role = (el.getAttribute('role') || '').toLowerCase();
-                                        if (tag.includes('progress') || tag.includes('spinner') || 
-                                            cls.includes('progress') || cls.includes('spinner') || cls.includes('loading') ||
-                                            role.includes('progress') ||
-                                            tag === 'svg' || tag === 'circle') {
-                                            hasVisibleLoader = true;
-                                            break;
-                                        }
+                                    if (anim && anim !== 'none' && animDur !== '0s' && 
+                                        style.display !== 'none' && style.visibility !== 'hidden') {
+                                        hasVisibleLoader = true;
+                                        break;
                                     }
                                 }
                             }
