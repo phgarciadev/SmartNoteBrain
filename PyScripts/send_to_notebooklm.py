@@ -51,12 +51,14 @@ def extract_prompt_from_file(file_path, prompt_name):
     lines = text.split('\n')
     in_button = False
     is_target = False
+    button_type = None
     prompt_lines = []
     
     for line in lines:
         if line.strip() == '```button':
             in_button = True
             is_target = False
+            button_type = None
             prompt_lines = []
             continue
             
@@ -65,19 +67,20 @@ def extract_prompt_from_file(file_path, prompt_name):
                 is_target = True
                 continue
             if line.startswith('type '):
+                button_type = line[5:].strip()
                 continue
             if line.startswith('action '):
-                if is_target:
+                if is_target and button_type == 'copy':
                     prompt_lines.append(line[7:])
                 continue
                 
             if line.strip() == '```':
                 in_button = False
-                if is_target:
+                if is_target and button_type == 'copy':
                     return '\n'.join(prompt_lines).strip()
                 continue
                 
-            if is_target:
+            if is_target and button_type == 'copy':
                 prompt_lines.append(line)
                 
     return ""
@@ -484,6 +487,46 @@ def send_to_notebooklm(file_path):
             if not test_cards_only and not test_video_only and not is_specific_action:
                 do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
                 do_search_and_import(prompt_deepresearch, "DeepSearch (Fonte 2)")
+                
+                # Recarrega a página antes da 3ª pesquisa (Deep Research)
+                print("🔄 Recarregando a página antes da pesquisa Deep Research...")
+                page.reload()
+                page.wait_for_load_state("networkidle")
+                print("⏳ Aguardando a página estabilizar após recarga...")
+                page.evaluate("""() => {
+                    return new Promise((resolve) => {
+                        let stableCount = 0;
+                        let attempts = 0;
+                        const check = setInterval(() => {
+                            attempts++;
+                            const loaders = Array.from(document.querySelectorAll(
+                                'md-circular-progress, md-linear-progress, ' +
+                                '[role="progressbar"], ' +
+                                'mat-spinner, mat-progress-bar, mat-progress-spinner, ' +
+                                '.mat-mdc-progress-spinner, .mdc-circular-progress'
+                            ));
+                            let hasLoader = false;
+                            for (const el of loaders) {
+                                const rect = el.getBoundingClientRect();
+                                const style = window.getComputedStyle(el);
+                                if (rect.width > 0 && rect.height > 0 && 
+                                    style.display !== 'none' && 
+                                    style.visibility !== 'hidden' &&
+                                    style.opacity !== '0') {
+                                    hasLoader = true;
+                                    break;
+                                }
+                            }
+                            if (!hasLoader) {
+                                stableCount++;
+                                if (stableCount >= 4) { clearInterval(check); resolve(true); return; }
+                            } else { stableCount = 0; }
+                            if (attempts >= 120) { clearInterval(check); resolve(false); }
+                        }, 500);
+                    });
+                }""")
+                print("✅ Página recarregada e estabilizada. Iniciando Deep Research...")
+                
                 do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", use_deep_research=True)
             else:
                 print("⚠️ Modo de teste ou ação única ativado. Pulando as importações de fontes.")
