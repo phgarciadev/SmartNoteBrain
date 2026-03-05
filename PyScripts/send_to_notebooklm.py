@@ -424,91 +424,55 @@ def send_to_notebooklm(file_path):
                 if not clicked_import:
                     print(f"⚠️ Aviso: Botão Importar não foi clicado ou timeout de 5 minutos excedido.")
                 
-                print(f"⏳ [{step_name}] Importação finalizada. Aguardando os carregamentos concluírem...")
+                print(f"⏳ [{step_name}] Importação finalizada. Aguardando indicadores de carregamento sumirem...")
                 loading_done = page.evaluate("""() => {
                     return new Promise((resolve) => {
                         let stableCount = 0;
                         let attempts = 0;
-                        const STABLE_THRESHOLD = 4;  // 4 checks x 1s = 4s de estabilidade sem loaders
-                        const MAX_ATTEMPTS = 300;    // 300 x 1s = 5 min timeout
-                        const MIN_WAIT = 8;          // espera mínima de 8s antes de começar a contar estabilidade
+                        const STABLE_THRESHOLD = 4; // 4 checks x 500ms = 2s de estabilidade
+                        const MAX_ATTEMPTS = 600;   // 600 x 500ms = 5 min timeout
                         
                         const check = setInterval(() => {
                             attempts++;
+                            
+                            // Detecta APENAS indicadores reais de carregamento
+                            // (NÃO inclui svg genérico ou circle — esses são ícones normais)
+                            const loaders = Array.from(document.querySelectorAll(
+                                'md-circular-progress, md-linear-progress, ' +
+                                '[role="progressbar"], ' +
+                                'mat-spinner, mat-progress-bar, mat-progress-spinner, ' +
+                                '.mat-mdc-progress-spinner, .mdc-circular-progress'
+                            ));
+                            
                             let hasVisibleLoader = false;
-                            
-                            // Detecta md-circular-progress (o spinner padrão do Google Material)
-                            const circularProgress = document.querySelectorAll('md-circular-progress');
-                            for (const el of circularProgress) {
+                            for (const el of loaders) {
                                 const rect = el.getBoundingClientRect();
-                                if (rect.width > 0 && rect.height > 0) {
-                                    const style = window.getComputedStyle(el);
-                                    if (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') {
-                                        hasVisibleLoader = true;
-                                        console.log('[NLMBOT] Spinner encontrado: md-circular-progress', rect.width, rect.height);
-                                        break;
-                                    }
+                                const style = window.getComputedStyle(el);
+                                if (rect.width > 0 && rect.height > 0 && 
+                                    style.display !== 'none' && 
+                                    style.visibility !== 'hidden' &&
+                                    style.opacity !== '0') {
+                                    hasVisibleLoader = true;
+                                    break;
                                 }
                             }
                             
-                            // Detecta qualquer [role="progressbar"] visível
                             if (!hasVisibleLoader) {
-                                const progressBars = document.querySelectorAll('[role="progressbar"]');
-                                for (const el of progressBars) {
-                                    const rect = el.getBoundingClientRect();
-                                    if (rect.width > 0 && rect.height > 0) {
-                                        const style = window.getComputedStyle(el);
-                                        if (style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') {
-                                            hasVisibleLoader = true;
-                                            console.log('[NLMBOT] Spinner encontrado: progressbar', el.tagName, rect.width, rect.height);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            // Detecta SVGs pequenos com animações inline (animate, animateTransform)
-                            if (!hasVisibleLoader) {
-                                const allSvgs = document.querySelectorAll('svg');
-                                for (const svg of allSvgs) {
-                                    const rect = svg.getBoundingClientRect();
-                                    if (rect.width <= 0 || rect.height <= 0 || rect.width > 50 || rect.height > 50) continue;
-                                    const anims = svg.querySelectorAll('animate, animateTransform');
-                                    if (anims.length > 0) {
-                                        const style = window.getComputedStyle(svg);
-                                        if (style.display !== 'none' && style.visibility !== 'hidden') {
-                                            hasVisibleLoader = true;
-                                            console.log('[NLMBOT] Spinner encontrado: SVG animado', rect.width, rect.height);
-                                            break;
-                                        }
-                                    }
-                                }
-                            }
-                            
-                            // Log periódico para debug
-                            if (attempts % 5 === 0) {
-                                console.log('[NLMBOT] Check #' + attempts + ' hasLoader=' + hasVisibleLoader + ' stable=' + stableCount);
-                            }
-                            
-                            // Grace period: espera mínima antes de aceitar estabilidade
-                            if (!hasVisibleLoader && attempts > MIN_WAIT) {
                                 stableCount++;
                                 if (stableCount >= STABLE_THRESHOLD) {
-                                    console.log('[NLMBOT] Carregamentos concluídos após ' + attempts + 's');
                                     clearInterval(check);
                                     resolve(true);
                                     return;
                                 }
-                            } else if (hasVisibleLoader) {
-                                stableCount = 0;
+                            } else {
+                                stableCount = 0; // Reset se ainda tem loader
                             }
                             
                             if (attempts >= MAX_ATTEMPTS) {
-                                console.log('[NLMBOT] Timeout de 5 min atingido');
                                 clearInterval(check);
                                 resolve(false);
                             }
-                        }, 1000);
+                        }, 500);
                     });
                 }""")
                 
