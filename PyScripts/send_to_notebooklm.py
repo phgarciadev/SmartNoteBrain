@@ -284,7 +284,7 @@ def send_to_notebooklm(file_path):
                         let txt = node.textContent.trim().toLowerCase();
                         if(txt.includes('adicionar fonte') || txt.includes('add source') || txt === 'web' || txt === 'site' || txt === 'sites') {
                             let parent = node.parentElement;
-                            while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON')) {
+                            while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON') && parent.getAttribute('role') !== 'button') {
                                 if(parent.tagName === 'BODY') break;
                                 parent = parent.parentElement;
                             }
@@ -311,10 +311,11 @@ def send_to_notebooklm(file_path):
                             attempts++;
                             let bodyText = document.body.textContent.toLowerCase();
                             if(!bodyText.includes('temporariamente desativada') && !bodyText.includes('temporarily disabled')) {
-                                const inputs = document.querySelectorAll('input[type="text"], textarea');
+                                const inputs = document.querySelectorAll('input, textarea');
                                 for(let inp of inputs) {
                                     let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
-                                    if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web')) {
+                                    let aria = (inp.getAttribute('aria-label') || '').toLowerCase();
+                                    if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web') || aria.includes('pesquise')) {
                                         if(!inp.disabled) {
                                             clearInterval(check);
                                             resolve(true);
@@ -327,6 +328,26 @@ def send_to_notebooklm(file_path):
                         }, 1000);
                     });
                 }""")
+                
+                print(f"➡️ [{step_name}] Preenchendo a caixa de pesquisa...")
+                page.evaluate("""(text) => {
+                    const inputs = document.querySelectorAll('input, textarea');
+                    for(let inp of inputs) {
+                        let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
+                        let aria = (inp.getAttribute('aria-label') || '').toLowerCase();
+                        if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web') || aria.includes('pesquise')) {
+                            inp.focus();
+                            inp.value = '';
+                            inp.value = text;
+                            inp.dispatchEvent(new Event('input', { bubbles: true }));
+                            inp.dispatchEvent(new Event('change', { bubbles: true }));
+                            return true;
+                        }
+                    }
+                    return false;
+                }""", prompt_text)
+                
+                page.wait_for_timeout(500)
                 
                 if use_deep_research:
                     print(f"➡️ [{step_name}] Mudando tipo para Deep Research...")
@@ -378,23 +399,7 @@ def send_to_notebooklm(file_path):
                             }, 1500);
                         });
                     }""")
-
-                print(f"➡️ [{step_name}] Preenchendo a caixa de pesquisa...")
-                page.evaluate("""(text) => {
-                    const inputs = document.querySelectorAll('input[type="text"], textarea');
-                    for(let inp of inputs) {
-                        let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
-                        if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web')) {
-                            inp.focus();
-                            inp.value = '';
-                            inp.value = text;
-                            inp.dispatchEvent(new Event('input', { bubbles: true }));
-                            inp.dispatchEvent(new Event('change', { bubbles: true }));
-                            return true;
-                        }
-                    }
-                    return false;
-                }""", prompt_text)
+                    page.wait_for_timeout(1000)
                 
                 page.keyboard.press("Enter")
                 print(f"⏳ [{step_name}] Aguardando a pesquisa concluir (esperando botão Importar habilitar)...")
