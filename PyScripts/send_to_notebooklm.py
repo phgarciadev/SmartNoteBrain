@@ -492,40 +492,9 @@ def send_to_notebooklm(file_path):
                 print("🔄 Recarregando a página antes da pesquisa Deep Research...")
                 page.reload()
                 page.wait_for_load_state("networkidle")
-                print("⏳ Aguardando a página estabilizar após recarga...")
-                page.evaluate("""() => {
-                    return new Promise((resolve) => {
-                        let stableCount = 0;
-                        let attempts = 0;
-                        const check = setInterval(() => {
-                            attempts++;
-                            const loaders = Array.from(document.querySelectorAll(
-                                'md-circular-progress, md-linear-progress, ' +
-                                '[role="progressbar"], ' +
-                                'mat-spinner, mat-progress-bar, mat-progress-spinner, ' +
-                                '.mat-mdc-progress-spinner, .mdc-circular-progress'
-                            ));
-                            let hasLoader = false;
-                            for (const el of loaders) {
-                                const rect = el.getBoundingClientRect();
-                                const style = window.getComputedStyle(el);
-                                if (rect.width > 0 && rect.height > 0 && 
-                                    style.display !== 'none' && 
-                                    style.visibility !== 'hidden' &&
-                                    style.opacity !== '0') {
-                                    hasLoader = true;
-                                    break;
-                                }
-                            }
-                            if (!hasLoader) {
-                                stableCount++;
-                                if (stableCount >= 4) { clearInterval(check); resolve(true); return; }
-                            } else { stableCount = 0; }
-                            if (attempts >= 120) { clearInterval(check); resolve(false); }
-                        }, 500);
-                    });
-                }""")
-                print("✅ Página recarregada e estabilizada. Iniciando Deep Research...")
+                print("⏳ Aguardando a interface ser totalmente montada (10s)...")
+                page.wait_for_timeout(10000)
+                print("✅ Página recarregada. Iniciando Deep Research...")
                 
                 do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", use_deep_research=True)
             else:
