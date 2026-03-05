@@ -556,6 +556,10 @@ def send_to_notebooklm(file_path):
                 }""")
                 print("✅ Página recarregada e estabilizada. Iniciando Deep Research...")
                 
+                print("➡️ Fechando qualquer modal intrusivo que tenha aberto junto com o reload...")
+                page.keyboard.press("Escape")
+                page.wait_for_timeout(1000)
+                
                 do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", use_deep_research=True)
             else:
                 print("⚠️ Modo de teste ou ação única ativado. Pulando as importações de fontes.")
