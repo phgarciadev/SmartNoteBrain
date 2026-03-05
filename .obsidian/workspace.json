@@ -8,6 +8,20 @@
         "type": "tabs",
         "children": [
           {
+            "id": "f7c9a8e9e817ec19",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "html-view",
+              "state": {
+                "file": "Dashboard.html"
+              },
+              "pinned": true,
+              "icon": "code-glyph",
+              "title": "Dashboard"
+            }
+          },
+          {
             "id": "b319895822a7e61c",
             "type": "leaf",
             "pinned": true,
@@ -20,18 +34,6 @@
               "pinned": true,
               "icon": "lucide-table",
               "title": "Revisao Espacada"
-            }
-          },
-          {
-            "id": "f7c9a8e9e817ec19",
-            "type": "leaf",
-            "state": {
-              "type": "html-view",
-              "state": {
-                "file": "Dashboard.html"
-              },
-              "icon": "code-glyph",
-              "title": "Dashboard"
             }
           },
           {
@@ -48,8 +50,7 @@
               "title": "2. Conflitos no Oriente Médio"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"

@@ -738,7 +738,7 @@ body {{
     <div class="card hero-card grid-left">
       <div class="card-title">
         <span>🎯</span> Tópicos a Iniciar Hoje
-        <a href="obsidian://shell-commands/?vault=SmartNoteBrain&execute=generate_dashboard" class="refresh-btn" onclick="this.classList.add('spinning'); let initialHTML = document.documentElement.outerHTML; let interval = setInterval(() => { fetch(window.location.href, {cache: 'no-store'}).then(r => r.text()).then(newHTML => { if (newHTML !== initialHTML && newHTML.trim().length > 0) { clearInterval(interval); window.location.reload(); } }) }, 2000);" title="Atualizar Dashboard">
+        <a href="obsidian://shell-commands/?vault=SmartNoteBrain&execute=generate_dashboard" class="refresh-btn" onclick="this.classList.add('spinning'); let initialHTML = document.documentElement.outerHTML; let interval = setInterval(() => {{ fetch(window.location.href, {{cache: 'no-store'}}).then(r => r.text()).then(newHTML => {{ if (newHTML !== initialHTML && newHTML.trim().length > 0) {{ clearInterval(interval); window.location.reload(); }} }}) }}, 2000);" title="Atualizar Dashboard">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
         </a>
       </div>
