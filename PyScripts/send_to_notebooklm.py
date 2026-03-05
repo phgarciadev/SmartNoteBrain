@@ -538,6 +538,30 @@ def send_to_notebooklm(file_path):
                 except: pass
                 
                 page.wait_for_timeout(3000)
+                
+                print("➡️ Tentando fechar modal central pós-recarga (Escape / Clique)...")
+                try:
+                    page.keyboard.press("Escape")
+                    page.wait_for_timeout(500)
+                    page.mouse.click(5, 5) # Clique na quina fora do modal
+                    page.wait_for_timeout(500)
+                    page.keyboard.press("Escape")
+                    page.wait_for_timeout(500)
+                    page.evaluate("""() => {
+                        const icons = Array.from(document.querySelectorAll('.google-symbols, md-icon'));
+                        for(let icon of icons) {
+                            if(icon.textContent.includes('close') || icon.textContent.includes('clear')) {
+                                let btn = icon.closest('button, [role="button"], md-icon-button');
+                                if (btn && !btn.disabled && btn.offsetWidth > 0) {
+                                    btn.click();
+                                }
+                            }
+                        }
+                    }""")
+                    page.wait_for_timeout(1000)
+                except Exception as e:
+                    print(f"⚠️ Erro ao tentar fechar modal: {e}")
+
                 print("⏳ Aguardando a página estabilizar após recarga...")
                 page.evaluate("""() => {
                     return new Promise((resolve) => {
