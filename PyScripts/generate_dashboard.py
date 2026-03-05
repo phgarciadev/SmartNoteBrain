@@ -846,7 +846,18 @@ def main():
 
     html = build_html(pages)
     OUTPUT.write_text(html, encoding="utf-8")
-    print(f"✅ Dashboard gerado: {OUTPUT}")
+    print(f"✅ Dashboard HTML gerado: {OUTPUT}")
+
+    import time
+    md_output = VAULT_ROOT / "Dashboard.md"
+    ts = int(time.time())
+    md_content = f"""---
+cssclasses: dashboard
+---
+<iframe src="file://{OUTPUT.absolute()}?t={ts}" width="100%" height="850px" style="border:none;"></iframe>
+"""
+    md_output.write_text(md_content, encoding="utf-8")
+    print(f"✅ Dashboard Markdown gerado: {md_output}")
 
 
 if __name__ == "__main__":
