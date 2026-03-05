@@ -351,57 +351,54 @@ def send_to_notebooklm(file_path):
                 
                 if use_deep_research:
                     print(f"➡️ [{step_name}] Mudando tipo para Deep Research...")
+                    try:
+                        # Usando locators dinâmicos do Playwright pois eles disparam eventos completos (click/mouse)
+                        # o que é vital para o Angular Material (framework do NotebookLM) atualizar de fato.
+                        
+                        # Clicar no dropdown "Pesquisa rápida" (pegamos o último interativo visível na estrutura DOM)
+                        dropdown = page.locator("text=/Pesquisa r[áa]pida|Quick search/i").locator("visible=true").last
+                        dropdown.click(timeout=3000)
+                        page.wait_for_timeout(1000)
+                        
+                        # Clicar na opção "Deep Research" 
+                        deep_option = page.locator("text=/Deep Research/i").locator("visible=true").last
+                        deep_option.click(timeout=3000)
+                        page.wait_for_timeout(1500)
+                    except Exception as e:
+                        print(f"⚠️ Aviso: Falha ao mudar para Deep Research via Playwright Locators: {e}")
+                    
+                    # Garantir que a perda de foco não impeça a submissão (Enter)
+                    print(f"➡️ [{step_name}] Refocando a caixa de pesquisa...")
                     page.evaluate("""() => {
-                        return new Promise((resolve) => {
-                            let walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-                            let node;
-                            let clicked = false;
-                            while(node = walker.nextNode()) {
-                                if(node.textContent.toLowerCase().includes('pesquisa rápida')) {
-                                    let parent = node.parentElement;
-                                    while(parent && parent.tagName !== 'BODY') {
-                                        if(parent.tagName.includes('BUTTON') || parent.getAttribute('role') === 'button' || parent.getAttribute('role') === 'combobox' || parent.hasAttribute('aria-haspopup') || parent.tagName.includes('SELECT')) {
-                                            parent.click();
-                                            clicked = true;
-                                            break;
-                                        }
-                                        parent = parent.parentElement;
-                                    }
-                                    if(clicked) break;
-                                }
+                        const inputs = document.querySelectorAll('input, textarea');
+                        for(let inp of inputs) {
+                            let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
+                            let aria = (inp.getAttribute('aria-label') || '').toLowerCase();
+                            if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web') || aria.includes('pesquise')) {
+                                inp.focus();
+                                return true;
                             }
-                            
-                            if(!clicked) { resolve(false); return; }
-                            
-                            setTimeout(() => {
-                                let walker2 = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-                                let n2;
-                                let clickedOption = false;
-                                while(n2 = walker2.nextNode()) {
-                                    if(n2.textContent.toLowerCase().includes('deep research')) {
-                                        let parent2 = n2.parentElement;
-                                        while(parent2 && parent2.tagName !== 'BODY') {
-                                            if(parent2.tagName.includes('MENU-ITEM') || parent2.getAttribute('role') === 'menuitem' || parent2.tagName === 'LI' || parent2.tagName.includes('OPTION')) {
-                                                parent2.click();
-                                                clickedOption = true;
-                                                break;
-                                            }
-                                            parent2 = parent2.parentElement;
-                                        }
-                                        if(!clickedOption && n2.parentElement) {
-                                            n2.parentElement.click(); // fallback genérico
-                                            clickedOption = true;
-                                        }
-                                        if(clickedOption) break;
-                                    }
-                                }
-                                resolve(clickedOption);
-                            }, 1500);
-                        });
+                        }
                     }""")
-                    page.wait_for_timeout(1000)
+                    page.wait_for_timeout(500)
                 
+                print(f"➡️ [{step_name}] Enviando termo de pesquisa (Enter/Submit)...")
                 page.keyboard.press("Enter")
+                page.wait_for_timeout(500)
+                
+                # Clica alternativamente na setinha azul de pesquisar (submit) caso o Enter resulte em nada.
+                page.evaluate("""() => {
+                    const icons = Array.from(document.querySelectorAll('.google-symbols, md-icon'));
+                    for(let icon of icons) {
+                        if(icon.textContent.includes('arrow_forward')) {
+                            let btn = icon.closest('button, [role="button"], md-icon-button, md-filled-icon-button');
+                            if (btn && !btn.disabled && btn.offsetWidth > 0) {
+                                btn.click();
+                            }
+                        }
+                    }
+                }""")
+                
                 print(f"⏳ [{step_name}] Aguardando a pesquisa concluir (esperando botão Importar habilitar)...")
                 
                 clicked_import = page.evaluate("""() => {
