@@ -276,57 +276,57 @@ def send_to_notebooklm(file_path):
             def do_search_and_import(prompt_text, step_name, use_deep_research=False):
                 print(f"➡️ [{step_name}] Clicando no botão de Adicionar Fonte...")
                 
-                # Clica no botão (+) ou "Adicionar fontes" 
-                clicked_add = page.evaluate("""() => {
-                    const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
-                    let node;
-                    while(node = walker.nextNode()) {
-                        let txt = node.textContent.trim().toLowerCase();
-                        if(txt.includes('adicionar fonte') || txt.includes('add source') || txt === 'web' || txt === 'site' || txt === 'sites') {
-                            let parent = node.parentElement;
-                            while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON')) {
-                                if(parent.tagName === 'BODY') break;
-                                parent = parent.parentElement;
+                print(f"⏳ [{step_name}] Tentando abrir a caixa web...")
+                # Loop resiliente para tentar clicar no botão de adicionar fonte repetidamente até a caixa web aparecer
+                input_liberado = False
+                for _ in range(20): # Tenta por até 20 segundos
+                    # Primeiro, verifica se a caixa web já está visível e pronta
+                    pronto = page.evaluate("""() => {
+                        let bodyText = document.body.textContent.toLowerCase();
+                        if(bodyText.includes('temporariamente desativada') || bodyText.includes('temporarily disabled')) return false;
+                        const inputs = document.querySelectorAll('input[type="text"], textarea');
+                        for(let inp of inputs) {
+                            let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
+                            if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web')) {
+                                if(!inp.disabled && inp.getBoundingClientRect().height > 0) return true;
                             }
-                            if(parent && parent.tagName !== 'BODY') { parent.click(); return true; }
                         }
-                    }
-                    const icons = Array.from(document.querySelectorAll('.google-symbols'));
-                    for(let i of icons) {
-                        if(i.textContent === 'add') {
-                            if(i.parentElement) { i.parentElement.click(); return true;}
+                        return false;
+                    }""")
+                    
+                    if pronto:
+                        input_liberado = True
+                        break
+                        
+                    # Se não está pronta, tenta clicar no botão de adicionar fonte
+                    page.evaluate("""() => {
+                        const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
+                        let node;
+                        while(node = walker.nextNode()) {
+                            let txt = node.textContent.trim().toLowerCase();
+                            if(txt.includes('adicionar fonte') || txt.includes('add source') || txt === 'web' || txt === 'site' || txt === 'sites') {
+                                let parent = node.parentElement;
+                                while(parent && parent.tagName !== 'BUTTON' && !parent.tagName.includes('-BUTTON')) {
+                                    if(parent.tagName === 'BODY') break;
+                                    parent = parent.parentElement;
+                                }
+                                if(parent && parent.tagName !== 'BODY') { parent.click(); return; }
+                            }
                         }
-                    }
-                    return false;
-                }""")
-                
-                if not clicked_add:
-                    print(f"⚠️ Aviso: Não conseguiu achar o botão Add Source. A tela de fontes já deve estar aberta.")
-                
-                print(f"⏳ [{step_name}] Aguardando a caixa web...")
-                liberado = page.evaluate("""() => {
-                    return new Promise((resolve) => {
-                        let attempts = 0;
-                        let check = setInterval(() => {
-                            attempts++;
-                            let bodyText = document.body.textContent.toLowerCase();
-                            if(!bodyText.includes('temporariamente desativada') && !bodyText.includes('temporarily disabled')) {
-                                const inputs = document.querySelectorAll('input[type="text"], textarea');
-                                for(let inp of inputs) {
-                                    let placeholder = (inp.getAttribute('placeholder') || '').toLowerCase();
-                                    if(placeholder.includes('pesquise') || placeholder.includes('search') || placeholder.includes('web')) {
-                                        if(!inp.disabled) {
-                                            clearInterval(check);
-                                            resolve(true);
-                                            return;
-                                        }
-                                    }
+                        const icons = Array.from(document.querySelectorAll('.google-symbols, md-icon'));
+                        for(let i of icons) {
+                            if(i.textContent === 'add' || i.textContent === 'add_circle') {
+                                if(i.parentElement && !i.closest('button')?.disabled) { 
+                                    (i.closest('button, [role="button"]') || i.parentElement).click(); 
+                                    return;
                                 }
                             }
-                            if(attempts > 60) { clearInterval(check); resolve(false); }
-                        }, 1000);
-                    });
-                }""")
+                        }
+                    }""")
+                    page.wait_for_timeout(1000)
+                
+                if not input_liberado:
+                    print(f"⚠️ Aviso: Não conseguiu abrir a caixa de web search. A automação pode falhar neste passo.")
                 
                 if use_deep_research:
                     print(f"➡️ [{step_name}] Mudando tipo para Deep Research...")
