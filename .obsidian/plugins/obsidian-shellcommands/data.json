@@ -212,7 +212,7 @@
         "default": "python3 PyScripts/generate_dashboard.py"
       },
       "shells": {},
-      "alias": "Generate Dashboard",
+      "alias": "Gerar Dashboard HTML",
       "icon": null,
       "confirm_execution": false,
       "ignore_error_codes": [],
