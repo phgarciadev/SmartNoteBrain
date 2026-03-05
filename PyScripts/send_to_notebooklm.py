@@ -496,7 +496,8 @@ def send_to_notebooklm(file_path):
                 # Recarrega a página antes da 3ª pesquisa (Deep Research)
                 print("🔄 Recarregando a página antes da pesquisa Deep Research...")
                 page.reload()
-                page.wait_for_load_state("networkidle")
+                page.wait_for_load_state("domcontentloaded")
+                page.wait_for_timeout(3000)
                 print("⏳ Aguardando a página estabilizar após recarga...")
                 page.evaluate("""() => {
                     return new Promise((resolve) => {
