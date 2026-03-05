@@ -355,13 +355,13 @@ def send_to_notebooklm(file_path):
                         # Usando locators dinâmicos do Playwright pois eles disparam eventos completos (click/mouse)
                         # o que é vital para o Angular Material (framework do NotebookLM) atualizar de fato.
                         
-                        # Clicar no dropdown "Pesquisa rápida" (pegamos o último interativo visível na estrutura DOM)
-                        dropdown = page.locator("text=/Pesquisa r[áa]pida|Quick search/i").locator("visible=true").last
+                        # Clicar no dropdown "Pesquisa rápida" (pegamos o primeiro que representa a aba lateral, em vez do modal central que fica no topo do z-index)
+                        dropdown = page.locator("text=/Pesquisa r[áa]pida|Quick search/i").locator("visible=true").first
                         dropdown.click(timeout=3000)
                         page.wait_for_timeout(1000)
                         
                         # Clicar na opção "Deep Research" 
-                        deep_option = page.locator("text=/Deep Research/i").locator("visible=true").last
+                        deep_option = page.locator("text=/Deep Research/i").locator("visible=true").first
                         deep_option.click(timeout=3000)
                         page.wait_for_timeout(1500)
                     except Exception as e:
@@ -492,8 +492,27 @@ def send_to_notebooklm(file_path):
                 
                 # Recarrega a página antes da 3ª pesquisa (Deep Research)
                 print("🔄 Recarregando a página antes da pesquisa Deep Research...")
-                page.reload()
-                page.wait_for_load_state("domcontentloaded")
+                
+                # Traz a página para frente e clica em uma região neutra para forçar o browser 
+                # a tirar a tab de "background throttle" (engasgo de inatividade)
+                try:
+                    page.bring_to_front()
+                    page.mouse.click(10, 10)
+                except:
+                    pass
+                
+                try:    
+                    page.reload(timeout=15000, wait_until="commit")
+                except Exception as e:
+                    print(f"⚠️ Aviso ao recarregar aba: {e}")
+                
+                # Outro clique para garantir que a página renderize e continue o onLoad
+                try: page.mouse.click(10, 50)
+                except: pass
+                
+                try: page.wait_for_load_state("domcontentloaded", timeout=10000)
+                except: pass
+                
                 page.wait_for_timeout(3000)
                 print("⏳ Aguardando a página estabilizar após recarga...")
                 page.evaluate("""() => {
