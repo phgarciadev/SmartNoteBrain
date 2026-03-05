@@ -184,6 +184,29 @@ def send_to_notebooklm(file_path):
                 page.goto("https://notebooklm.google.com/")
                 page.wait_for_timeout(4000)
                 
+                print("⏳ Aguardando a tela inicial 'Carregando seus notebooks...' sumir...")
+                page.evaluate("""() => {
+                    return new Promise((resolve) => {
+                        let attempts = 0;
+                        const check = setInterval(() => {
+                            attempts++;
+                            let text = document.body.textContent.toLowerCase();
+                            if (!text.includes('carregando seus notebooks') && 
+                                !text.includes('loading your notebooks') &&
+                                !text.includes('loading')) {
+                                clearInterval(check);
+                                resolve(true);
+                                return;
+                            }
+                            if (attempts > 60) { // 30s max wait
+                                clearInterval(check);
+                                resolve(false);
+                            }
+                        }, 500);
+                    });
+                }""")
+                page.wait_for_timeout(1000)
+                
                 print("➡️ Procurando botão de 'Criar/Novo notebook'...")
                 js_click_new = """() => {
                     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
