@@ -18,25 +18,33 @@ import subprocess
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
+def find_free_port():
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+        s.bind(('', 0))
+        return s.getsockname()[1]
+
 def is_port_open(port):
     with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
         return s.connect_ex(('localhost', port)) == 0
 
-def start_chrome():
-    print("🚀 Iniciando o Google Chrome com modo de depuração ativado...")
+def start_chrome(port, user_data_dir):
+    print(f"🚀 Iniciando o Google Chrome na porta {port}...")
     try:
-        debug_dir = Path.home() / ".config" / "google-chrome-debug"
-        debug_dir.mkdir(parents=True, exist_ok=True)
-        
-        subprocess.Popen([
+        # Prepara o comando
+        cmd = [
             "google-chrome-stable",
-            "--remote-debugging-port=9222",
-            f"--user-data-dir={debug_dir}"
-        ], stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            f"--remote-debugging-port={port}",
+            f"--user-data-dir={user_data_dir}",
+            "--new-window",
+            "--no-first-run",
+            "--no-default-browser-check"
+        ]
+        
+        subprocess.Popen(cmd, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
         
         sucesso = False
         for _ in range(15):
-            if is_port_open(9222):
+            if is_port_open(port):
                 sucesso = True
                 break
             time.sleep(0.5)
@@ -159,16 +167,37 @@ def send_to_notebooklm(file_path):
     prompt_genvid_expert = extract_prompt_from_file(file_path, 'GenVidExpert')
     prompt_genvid_pers = extract_prompt_from_file(file_path, 'GenVidPersonalization')
 
-    if not is_port_open(9222):
-        print("⚠️ Chrome não está rodando na porta 9222.")
-        if not start_chrome():
-            print("❌ Falha crítica: Não foi possível iniciar e conectar ao Chrome.")
-            sys.exit(1)
+    port = find_free_port()
+    
+    # Criar um diretório temporário isolado mas baseado no original (para herdar logins)
+    import shutil
+    import tempfile
+    
+    master_debug_dir = Path.home() / ".config" / "google-chrome-debug"
+    temp_prefix = f"notebooklm_run_{int(time.time())}_"
+    tmp_user_dir = Path(tempfile.mkdtemp(prefix=temp_prefix))
+    
+    if master_debug_dir.exists():
+        print(f"📂 Clonando perfil do Chrome para isolamento...")
+        # Copiar apenas arquivos essenciais para evitar lentidão
+        # No entanto, para garantir que o login funcione, geralmente precisamos de quase tudo.
+        # Copiaremos o diretório Default se existir, ou tudo se for pequeno.
+        try:
+            # Estratégia: copiar apenas o que é necessário para a sessão
+            # Se o diretório for muito grande, isso pode demorar. 
+            # Mas como o usuário pediu "extremo cuidado", vamos copiar para garantir funcionalidade.
+            shutil.copytree(master_debug_dir, tmp_user_dir, dirs_exist_ok=True)
+        except Exception as e:
+            print(f"⚠️ Aviso ao copiar perfil: {e}")
+
+    if not start_chrome(port, tmp_user_dir):
+        print("❌ Falha crítica: Não foi possível iniciar o Chrome isolado.")
+        sys.exit(1)
             
-    print("🔌 Conectando ao Chrome na porta 9222...")
+    print(f"🔌 Conectando ao Chrome na porta {port}...")
     with sync_playwright() as p:
         try:
-            browser = p.chromium.connect_over_cdp("http://localhost:9222")
+            browser = p.chromium.connect_over_cdp(f"http://localhost:{port}")
             context = browser.contexts[0]
             page = context.new_page()
             
@@ -851,12 +880,23 @@ def send_to_notebooklm(file_path):
                 print("✨ Sucesso Extremo com Vídeos!")
             
             if not is_specific_action and not test_cards_only and not test_video_only:
-                print("✨ Fluxo de automação finalizado!")
+                print("✅ Processo concluído com sucesso!")
             
+    except Exception as e:
+        print(f"❌ Erro durante a execução: {e}")
+        sys.exit(1)
+    finally:
+        # Fechar o browser para liberar a porta e recursos
+        try:
+            if 'browser' in locals() and browser:
+                browser.close()
+            # Remover diretório temporário
+            if 'tmp_user_dir' in locals() and tmp_user_dir.exists():
+                import shutil
+                shutil.rmtree(tmp_user_dir, ignore_errors=True)
         except Exception as e:
-            print(f"❌ Automação falhou. Erro capturado:\n{e}")
-        finally:
-            print("🏁 Fechando script (A aba continuará aberta).")
+            print(f"⚠️ Erro ao fechar o browser ou remover diretório temporário: {e}")
+        print("🏁 Script finalizado.")
 
 if __name__ == "__main__":
     import sys
