@@ -37,105 +37,21 @@
             }
           },
           {
-            "id": "6bd3f1419220b69b",
+            "id": "d262a6e8194e2345",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/4. Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC).md",
+                "file": "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/5. Membrana Plasmática e Envoltórios.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "4. Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC)"
-            }
-          },
-          {
-            "id": "87842447f1e0624c",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "DailyLearning/Disciplinas/11. Artes/6. Arte Contemporânea, Tecnologias e Mídias/1. Arte e Tecnologia Digital.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "1. Arte e Tecnologia Digital"
-            }
-          },
-          {
-            "id": "0c1ff9296e31cbde",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/4. Coerência Textual.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "4. Coerência Textual"
-            }
-          },
-          {
-            "id": "62eb9adc99dbb570",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "DailyLearning/Disciplinas/6. História/2. História Antiga/2. Mundo Grego-.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "2. Mundo Grego-"
-            }
-          },
-          {
-            "id": "401585ded57f6227",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "DailyLearning/Disciplinas/11. Artes/6. Arte Contemporânea, Tecnologias e Mídias/1. Arte e Tecnologia Digital.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "1. Arte e Tecnologia Digital"
-            }
-          },
-          {
-            "id": "6a7275519749d807",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/4. Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC).md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "4. Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC)"
-            }
-          },
-          {
-            "id": "4aba23e0428dd899",
-            "type": "leaf",
-            "state": {
-              "type": "markdown",
-              "state": {
-                "file": "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/4. Organização e Modelos Celulares.md",
-                "mode": "source",
-                "source": false
-              },
-              "icon": "lucide-file",
-              "title": "4. Organização e Modelos Celulares"
+              "title": "5. Membrana Plasmática e Envoltórios"
             }
           }
         ],
-        "currentTab": 8
+        "currentTab": 2
       }
     ],
     "direction": "vertical"
@@ -326,22 +242,31 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "4aba23e0428dd899",
+  "active": "d262a6e8194e2345",
   "lastOpenFiles": [
+    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/6. Transporte Celular.md",
+    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/5. Membrana Plasmática e Envoltórios.md",
+    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/4. Organização e Modelos Celulares.md",
+    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/2. Ácidos Nucleicos e Código Genético.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/3. Síntese Proteica e Expressão Gênica.md",
+    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/8. Organelas Citoplasmáticas e Sistema de Endomembranas.md",
+    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/11. Ciclo Celular e Divisão Celular.md",
+    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/12. Diferenciação Celular e Células-Tronco.md",
+    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/13. Origem e Evolução Celular.md",
+    "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/linkdonotebooklm.md",
+    "Dashboard.html",
+    "DailyLearning/Disciplinas/11. Artes/6. Arte Contemporânea, Tecnologias e Mídias/1. Arte e Tecnologia Digital.md",
+    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/4. Coerência Textual.md",
+    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/4. Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC).md",
+    "DailyLearning/Revisao Espacada.base",
+    "DailyLearning/Disciplinas/6. História/2. História Antiga/2. Mundo Grego-.md",
     "DailyLearning/Disciplinas/4. Física/4. Estática e Hidrostática/1. Equilíbrio do Ponto Material.md",
     "DailyLearning/Disciplinas/4. Física/4. Estática e Hidrostática/2. Equilíbrio do Corpo Extenso.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/9. Linguagem Gráfica na Física.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/7. Vetores e Operações Vetoriais.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/6. Grandezas Escalares e Vetoriais.md",
-    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/4. Coerência Textual.md",
-    "Dashboard.html",
-    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/4. Máximo Divisor Comum (MDC) e Mínimo Múltiplo Comum (MMC).md",
-    "DailyLearning/Disciplinas/11. Artes/6. Arte Contemporânea, Tecnologias e Mídias/1. Arte e Tecnologia Digital.md",
-    "DailyLearning/Disciplinas/6. História/2. História Antiga/2. Mundo Grego-.md",
     "PyScripts/__pycache__/add_buttons.cpython-314.pyc",
     "PyScripts/sedg3iqKG",
-    "DailyLearning/Revisao Espacada.base",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/5. Análise Dimensional.md",
     "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/3. Lugar.md",
@@ -349,18 +274,9 @@
     "Dashboard.md",
     "DailyLearning/Disciplinas/12. Atualidades/1. Geopolítica e Relações Internacionais/2. Conflitos no Oriente Médio.md",
     "DailyLearning/Disciplinas/12. Atualidades/1. Geopolítica e Relações Internacionais/1. Nova Ordem Mundial e Multipolaridade.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/4. Ordens de Grandeza e Estimativas.md",
-    "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/3. Notação Científica e Algarismos Significativos.md",
     "PyScripts/__pycache__/send_to_notebooklm.cpython-314.pyc",
     "PyScripts/__pycache__",
-    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/3. Coesão Textual.md",
-    "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/2. Procedimentos de Leitura.md",
-    "DailyLearning/Disciplinas/5. Química/1. Propriedades da Matéria e Atomística/2. Separação de misturas-.md",
-    "DailyLearning/Disciplinas/12. Atualidades/7. Saúde Pública e Bioética/6. Segurança Alimentar e fome.md",
-    "DailyLearning/Disciplinas/9. Sociologia/2. Cultura e Sociedade/2. Indústria cultural e meios de comunicação de massa.md",
-    "DailyLearning/Disciplinas/12. Atualidades/7. Saúde Pública e Bioética/4. Saúde Mental e bem-estar social.md",
     "PyScripts/add_notebooklm_button.py",
-    "Sem título.md",
     "PyScripts/send_to_notebooklm.py",
     "DailyLearning/RunBook.base",
     "semtitulo.html",
