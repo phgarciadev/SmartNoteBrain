@@ -372,8 +372,6 @@ def send_to_notebooklm(file_path):
                 page.wait_for_timeout(500)
                 #MVP2
                 if use_deep_research:
-                    print(f"➡️ [{step_name}] Fechando modal central para focar na aba esquerda...")
-                    page.keyboard.press("Escape")
                     page.wait_for_timeout(1000)
                     
                     print(f"➡️ [{step_name}] Mudando tipo para Deep Research...")
@@ -381,8 +379,8 @@ def send_to_notebooklm(file_path):
                         # Usando locators dinâmicos do Playwright pois eles disparam eventos completos (click/mouse)
                         # o que é vital para o Angular Material (framework do NotebookLM) atualizar de fato.
                         
-                        # Clicar no dropdown "Pesquisa rápida" (pegamos o primeiro que representa a aba lateral, em vez do modal central que fica no topo do z-index)
-                        dropdown = page.locator("text=/Pesquisa r[áa]pida|Quick search/i").locator("visible=true").first
+                        # Clicar no dropdown "Pesquisa rápida" (dentro do modal)
+                        dropdown = page.locator("text=/Pesquisa r[áa]pida|Quick search|Quick Search/i").locator("visible=true").first
                         dropdown.click(timeout=5000)
                         page.wait_for_timeout(1000)
                         
@@ -441,37 +439,39 @@ def send_to_notebooklm(file_path):
                             }
                         }
                     }
-                }""")
-                
-                print(f"⏳ [{step_name}] Aguardando a pesquisa concluir (esperando botão Importar habilitar)...")
-                
-                clicked_import = page.evaluate("""() => {
+                  clicked_import = page.evaluate("""() => {
                     return new Promise((resolve) => {
                         let attempts = 0;
                         const check = setInterval(() => {
                             attempts++;
                             
                             // 1. Busca ampla por botões ou elementos que contêm o texto de importação
+                            // Pegamos tudo que parece um botão ou contem o texto Importar
                             const allElements = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button, [role="button"], .mat-mdc-button, .mdc-button, div, span'));
                             
                             for(let el of allElements) {
                                 let txt = (el.textContent || '').trim().toLowerCase();
-                                // Se o texto contém exatamente "+ importar" ou "importar" e é visível
-                                if((txt === 'importar' || txt === '+ importar' || (txt.includes('importar') && !txt.includes('fontes'))) && el.offsetWidth > 0) {
+                                // Se o texto contém exatamente "+ importar", "importar", "Add" ou "Inserir"
+                                if((txt === 'importar' || txt === '+ importar' || txt === 'insert' || txt === 'inserir' || (txt.includes('importar') && !txt.includes('fontes'))) && el.offsetWidth > 0) {
                                     
                                     // Sobe para achar o elemento clicável caso seja um span/div interno
                                     let clickable = el;
                                     let depth = 0;
                                     while(clickable && depth < 5) {
                                         const style = window.getComputedStyle(clickable);
-                                        if(clickable.tagName === 'BUTTON' || clickable.getAttribute('role') === 'button' || style.cursor === 'pointer' || clickable.tagName.includes('-BUTTON')) {
-                                            if(!clickable.disabled && !clickable.hasAttribute('disabled')) {
+                                        const isButton = clickable.tagName === 'BUTTON' || clickable.getAttribute('role') === 'button' || style.cursor === 'pointer' || clickable.tagName.includes('-BUTTON');
+                                        
+                                        if(isButton) {
+                                            if(!clickable.disabled && !clickable.hasAttribute('disabled') && !clickable.classList.contains('disabled')) {
                                                 console.log('✅ Botão Importar/Inserir encontrado e clicado:', txt);
+                                                
+                                                // Clique real usando JS
                                                 clickable.click();
                                                 
                                                 // Dispara eventos manuais para garantir que o framework (Angular) sinta o clique
                                                 clickable.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
                                                 clickable.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
+                                                clickable.dispatchEvent(new Event('click', {bubbles: true}));
                                                 
                                                 clearInterval(check);
                                                 resolve(true);
@@ -483,9 +483,15 @@ def send_to_notebooklm(file_path):
                                     }
                                 }
                             }
-
-                            if(attempts >= 300) { // Timeout de 5 minutos
+ 
+                            if(attempts >= 900) { // Timeout de 15 minutos (Deep Research demora muito)
                                 clearInterval(check);
+                                resolve(false);
+                            }
+                        }, 1000);
+                    });
+                }""")
+ clearInterval(check);
                                 resolve(false);
                             }
                         }, 1000);
