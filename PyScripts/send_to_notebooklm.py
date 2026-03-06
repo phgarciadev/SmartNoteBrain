@@ -383,15 +383,33 @@ def send_to_notebooklm(file_path):
                         
                         # Clicar no dropdown "Pesquisa rápida" (pegamos o primeiro que representa a aba lateral, em vez do modal central que fica no topo do z-index)
                         dropdown = page.locator("text=/Pesquisa r[áa]pida|Quick search/i").locator("visible=true").first
-                        dropdown.click(timeout=3000)
+                        dropdown.click(timeout=5000)
                         page.wait_for_timeout(1000)
                         
-                        # Clicar na opção "Deep Research" 
-                        deep_option = page.locator("text=/Deep Research/i").locator("visible=true").first
-                        deep_option.click(timeout=3000)
+                        # Clicar na opção "Deep Research" - Usando uma estratégia mais agressiva
+                        print(f"➡️ [{step_name}] Selecionando opção 'Deep Research' no menu...")
+                        
+                        # 1. Tenta via Locator padrão do Playwright (mais seguro se funcionar)
+                        try:
+                            deep_option = page.locator("[role='menuitem']").filter(has_text=re.compile(r"Deep Research", re.I)).locator("visible=true").first
+                            deep_option.click(timeout=3000)
+                        except:
+                            # 2. Fallback para Javascript caso o locator falhe (Material menus podem ser chatos)
+                            print(f"🔄 [{step_name}] Fallback: Tentando selecionar 'Deep Research' via JS...")
+                            page.evaluate("""() => {
+                                const items = Array.from(document.querySelectorAll('[role="menuitem"], .mat-mdc-menu-item, button, span'));
+                                for (let item of items) {
+                                    if (item.textContent.includes('Deep Research')) {
+                                        item.click();
+                                        return true;
+                                    }
+                                }
+                                return false;
+                            }""")
+                        
                         page.wait_for_timeout(1500)
                     except Exception as e:
-                        print(f"⚠️ Aviso: Falha ao mudar para Deep Research via Playwright Locators: {e}")
+                        print(f"⚠️ Aviso: Falha ao mudar para Deep Research: {e}")
                     
                     # Garantir que a perda de foco não impeça a submissão (Enter)
                     print(f"➡️ [{step_name}] Refocando a caixa de pesquisa...")
@@ -648,18 +666,14 @@ def send_to_notebooklm(file_path):
                 if only_search:
                     do_search_and_import(prompt_deepsearch, "Só Search (Fonte 1)")
                 if only_deepresearch:
-                    # Logica de recarga e Deep Research copiada para execução isolada
-                    print("🔄 Recarregando a página antes da pesquisa Deep Research...")
+                    print("🔄 Estabilizando página para Deep Research isolado...")
                     try:
                         page.bring_to_front()
                         page.mouse.click(10, 10)
-                        page.reload(timeout=15000, wait_until="commit")
-                        page.mouse.click(10, 50)
-                        page.wait_for_load_state("domcontentloaded", timeout=10000)
+                        page.wait_for_timeout(1000)
+                        page.keyboard.press("Escape") # Fecha o modal central se existir
+                        page.wait_for_timeout(1000)
                     except: pass
-                    
-                    page.wait_for_timeout(3000)
-                    page.keyboard.press("Escape")
                     
                     do_search_and_import(prompt_deepsearch, "Só DeepResearch (Fonte 3)", use_deep_research=True)
             else:
