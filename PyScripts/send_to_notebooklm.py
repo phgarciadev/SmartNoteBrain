@@ -15,6 +15,10 @@ import sys
 import time
 import socket
 import subprocess
+import os
+import shutil
+import tempfile
+import re
 from pathlib import Path
 from playwright.sync_api import sync_playwright
 
@@ -94,7 +98,6 @@ def extract_prompt_from_file(file_path, prompt_name):
     return ""
 
 def send_to_notebooklm(file_path):
-    import re
     path = Path(file_path)
     if not path.exists():
         print(f"❌ Erro: Arquivo {file_path} não encontrado.")
@@ -143,7 +146,6 @@ def send_to_notebooklm(file_path):
     
     saved_url = None
     text = path.read_text(encoding="utf-8")
-    import re
     match = re.search(r'^NotebookLM:\s*"?([^"\n]+)"?', text, flags=re.MULTILINE | re.IGNORECASE)
     if match:
         extracted = match.group(1).strip()
@@ -169,24 +171,18 @@ def send_to_notebooklm(file_path):
 
     port = find_free_port()
     
-    # Criar um diretório temporário isolado mas baseado no original (para herdar logins)
-    import shutil
-    import tempfile
-    
     master_debug_dir = Path.home() / ".config" / "google-chrome-debug"
     temp_prefix = f"notebooklm_run_{int(time.time())}_"
     tmp_user_dir = Path(tempfile.mkdtemp(prefix=temp_prefix))
     
     if master_debug_dir.exists():
         print(f"📂 Clonando perfil do Chrome para isolamento...")
-        # Copiar apenas arquivos essenciais para evitar lentidão
-        # No entanto, para garantir que o login funcione, geralmente precisamos de quase tudo.
-        # Copiaremos o diretório Default se existir, ou tudo se for pequeno.
         try:
-            # Estratégia: copiar apenas o que é necessário para a sessão
-            # Se o diretório for muito grande, isso pode demorar. 
-            # Mas como o usuário pediu "extremo cuidado", vamos copiar para garantir funcionalidade.
-            shutil.copytree(master_debug_dir, tmp_user_dir, dirs_exist_ok=True)
+            # Ignorar arquivos de trava e sockets que impedem a cópia ou o novo Chrome de abrir
+            def ignore_files(dir, files):
+                return [f for f in files if f.startswith('Singleton') or f == 'lock']
+            
+            shutil.copytree(master_debug_dir, tmp_user_dir, dirs_exist_ok=True, ignore=ignore_files)
         except Exception as e:
             print(f"⚠️ Aviso ao copiar perfil: {e}")
 
@@ -303,7 +299,6 @@ def send_to_notebooklm(file_path):
                 print(f"🔗 URL Inicial do Notebook: {url_final}")
                 
                 try:
-                    import re
                     text = path.read_text(encoding="utf-8")
                     if text.startswith("---"):
                         parts = text.split("---", 2)
@@ -882,21 +877,28 @@ def send_to_notebooklm(file_path):
             if not is_specific_action and not test_cards_only and not test_video_only:
                 print("✅ Processo concluído com sucesso!")
             
-    except Exception as e:
-        print(f"❌ Erro durante a execução: {e}")
-        sys.exit(1)
-    finally:
-        # Fechar o browser para liberar a porta e recursos
-        try:
-            if 'browser' in locals() and browser:
-                browser.close()
-            # Remover diretório temporário
-            if 'tmp_user_dir' in locals() and tmp_user_dir.exists():
-                import shutil
-                shutil.rmtree(tmp_user_dir, ignore_errors=True)
         except Exception as e:
-            print(f"⚠️ Erro ao fechar o browser ou remover diretório temporário: {e}")
-        print("🏁 Script finalizado.")
+            print(f"❌ Erro durante a execução: {e}")
+            # Não damos sys.exit(1) aqui para permitir que o finally execute
+        finally:
+            # Fechar o browser para liberar a porta e recursos
+            try:
+                if 'browser' in locals() and browser:
+                    browser.close()
+            except:
+                pass
+                
+            # Remover diretório temporário
+            try:
+                if 'tmp_user_dir' in locals() and tmp_user_dir.exists():
+                    import shutil
+                    # Aguarda um pouco para o Chrome liberar os arquivos
+                    time.sleep(2)
+                    shutil.rmtree(tmp_user_dir, ignore_errors=True)
+            except Exception as e:
+                print(f"⚠️ Erro ao remover diretório temporário: {e}")
+            
+            print("🏁 Script finalizado.")
 
 if __name__ == "__main__":
     import sys
