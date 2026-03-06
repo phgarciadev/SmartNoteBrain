@@ -127,6 +127,10 @@ def send_to_notebooklm(file_path):
     test_cards_only = "--test-cards" in sys.argv
     test_video_only = "--test-video" in sys.argv
     
+    only_genquest = "--only-genquest" in sys.argv
+    only_genquest_expert = "--only-genquest-expert" in sys.argv
+    only_genvid = "--only-genvid" in sys.argv
+    only_genvid_expert = "--only-genvid-expert" in sys.argv
     only_deepsearch = "--only-deepsearch" in sys.argv
     only_deepresearch = "--only-deepresearch" in sys.argv
     is_specific_action = only_genquest or only_genquest_expert or only_genvid or only_genvid_expert or only_deepsearch or only_deepresearch
@@ -461,7 +465,7 @@ def send_to_notebooklm(file_path):
                                     }
                                 }
                             }
-
+ 
                             if(attempts >= 300) { // Timeout de 5 minutos
                                 clearInterval(check);
                                 resolve(false);
