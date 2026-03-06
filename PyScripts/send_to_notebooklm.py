@@ -131,7 +131,9 @@ def send_to_notebooklm(file_path):
     only_genquest_expert = "--only-genquest-expert" in sys.argv
     only_genvid = "--only-genvid" in sys.argv
     only_genvid_expert = "--only-genvid-expert" in sys.argv
-    is_specific_action = only_genquest or only_genquest_expert or only_genvid or only_genvid_expert
+    only_search = "--only-search" in sys.argv
+    only_deepresearch = "--only-deepresearch" in sys.argv
+    is_specific_action = only_genquest or only_genquest_expert or only_genvid or only_genvid_expert or only_search or only_deepresearch
     
     saved_url = None
     text = path.read_text(encoding="utf-8")
@@ -642,6 +644,24 @@ def send_to_notebooklm(file_path):
                 print("✅ Página recarregada e estabilizada. Iniciando Deep Research...")
                 
                 do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", use_deep_research=True)
+            elif only_search or only_deepresearch:
+                if only_search:
+                    do_search_and_import(prompt_deepsearch, "Só Search (Fonte 1)")
+                if only_deepresearch:
+                    # Logica de recarga e Deep Research copiada para execução isolada
+                    print("🔄 Recarregando a página antes da pesquisa Deep Research...")
+                    try:
+                        page.bring_to_front()
+                        page.mouse.click(10, 10)
+                        page.reload(timeout=15000, wait_until="commit")
+                        page.mouse.click(10, 50)
+                        page.wait_for_load_state("domcontentloaded", timeout=10000)
+                    except: pass
+                    
+                    page.wait_for_timeout(3000)
+                    page.keyboard.press("Escape")
+                    
+                    do_search_and_import(prompt_deepsearch, "Só DeepResearch (Fonte 3)", use_deep_research=True)
             else:
                 print("⚠️ Modo de teste ou ação única ativado. Pulando as importações de fontes.")
             

@@ -118,6 +118,18 @@ action Shell commands: Execute: NotebookLM Generate
 ```
 
 ```button
+name 🔍 Só Search (Pesquisa 1)
+type command
+action Shell commands: Execute: NotebookLM Only Search
+```
+
+```button
+name 🔍 Só DeepResearch (Pesquisa 3)
+type command
+action Shell commands: Execute: NotebookLM Only DeepResearch
+```
+
+```button
 name 📝 Só Questionário GenQuest
 type command
 action Shell commands: Execute: NotebookLM GenQuest
