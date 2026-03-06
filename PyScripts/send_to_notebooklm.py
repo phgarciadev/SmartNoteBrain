@@ -378,25 +378,28 @@ def send_to_notebooklm(file_path):
                     
                     print(f"➡️ [{step_name}] Mudando tipo para Deep Research...")
                     try:
-                        # Clicar no dropdown "Pesquisa rápida" (pegamos o primeiro que representa a aba lateral)
+                        # Usando locators dinâmicos do Playwright pois eles disparam eventos completos (click/mouse)
+                        # o que é vital para o Angular Material (framework do NotebookLM) atualizar de fato.
+                        
+                        # Clicar no dropdown "Pesquisa rápida" (pegamos o primeiro que representa a aba lateral, em vez do modal central que fica no topo do z-index)
                         dropdown = page.locator("text=/Pesquisa r[áa]pida|Quick search/i").locator("visible=true").first
                         dropdown.click(timeout=5000)
                         page.wait_for_timeout(1000)
                         
-                        # Clicar na opção "Deep Research"
+                        # Clicar na opção "Deep Research" - Usando uma estratégia mais agressiva
                         print(f"➡️ [{step_name}] Selecionando opção 'Deep Research' no menu...")
                         
-                        # Tenta via Locator padrão do Playwright
+                        # 1. Tenta via Locator padrão do Playwright (mais seguro se funcionar)
                         try:
-                            deep_option = page.locator("[role='menuitem'], .mat-mdc-menu-item").filter(has_text=re.compile(r"Deep Research", re.I)).locator("visible=true").first
+                            deep_option = page.locator("[role='menuitem']").filter(has_text=re.compile(r"Deep Research", re.I)).locator("visible=true").first
                             deep_option.click(timeout=3000)
                         except:
-                            # Fallback para Javascript
+                            # 2. Fallback para Javascript caso o locator falhe (Material menus podem ser chatos)
                             print(f"🔄 [{step_name}] Fallback: Tentando selecionar 'Deep Research' via JS...")
                             page.evaluate("""() => {
-                                const items = Array.from(document.querySelectorAll('[role="menuitem"], .mat-mdc-menu-item, button, span, div'));
+                                const items = Array.from(document.querySelectorAll('[role="menuitem"], .mat-mdc-menu-item, button, span'));
                                 for (let item of items) {
-                                    if (item.textContent.toLowerCase().includes('deep research')) {
+                                    if (item.textContent.includes('Deep Research')) {
                                         item.click();
                                         return true;
                                     }
@@ -449,47 +452,26 @@ def send_to_notebooklm(file_path):
                             attempts++;
                             
                             // 1. Busca ampla por botões ou elementos que contêm o texto de importação
-                            // Pegamos tudo que parece um botão ou contem o texto Importar
                             const allElements = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button, [role="button"], .mat-mdc-button, .mdc-button, div, span'));
                             
                             for(let el of allElements) {
                                 let txt = (el.textContent || '').trim().toLowerCase();
-                                
-                                // Lista de termos positivos (pode variar entre PT e EN)
-                                const validTerms = ['importar', '+ importar', 'inserir', '+ inserir', 'insert', '+ insert', 'adicionar', '+ adicionar', 'add', '+ add'];
-                                const matchesExact = validTerms.some(term => txt === term);
-                                const matchesPartial = (txt.includes('importar') && !txt.includes('fontes')) || 
-                                                       (txt.includes('inserir')) || 
-                                                       (txt.includes('insert')) ||
-                                                       (txt.includes('adicionar') && !txt.includes('fontes')) ||
-                                                       (txt.includes('add') && !txt.includes('sources') && !txt.includes('fontes'));
-
-                                if((matchesExact || matchesPartial) && el.offsetWidth > 0) {
+                                // Se o texto contém exatamente "+ importar" ou "importar" e é visível
+                                if((txt === 'importar' || txt === '+ importar' || (txt.includes('importar') && !txt.includes('fontes'))) && el.offsetWidth > 0) {
                                     
                                     // Sobe para achar o elemento clicável caso seja um span/div interno
                                     let clickable = el;
                                     let depth = 0;
                                     while(clickable && depth < 5) {
                                         const style = window.getComputedStyle(clickable);
-                                        const isButton = clickable.tagName === 'BUTTON' || clickable.getAttribute('role') === 'button' || style.cursor === 'pointer' || clickable.tagName.includes('-BUTTON');
-                                        
-                                        if(isButton) {
-                                            // Verifica se o botão está habilitado (não tem atributo disabled nem classe disabled)
-                                            const isDisabled = clickable.disabled || clickable.hasAttribute('disabled') || clickable.classList.contains('disabled') || clickable.classList.contains('md-disabled');
-                                            
-                                            if(!isDisabled) {
+                                        if(clickable.tagName === 'BUTTON' || clickable.getAttribute('role') === 'button' || style.cursor === 'pointer' || clickable.tagName.includes('-BUTTON')) {
+                                            if(!clickable.disabled && !clickable.hasAttribute('disabled')) {
                                                 console.log('✅ Botão Importar/Inserir encontrado e clicado:', txt);
-                                                
-                                                // Tenta focar antes de clicar
-                                                if (clickable.focus) clickable.focus();
-                                                
-                                                // Clique real usando JS
                                                 clickable.click();
                                                 
                                                 // Dispara eventos manuais para garantir que o framework (Angular) sinta o clique
                                                 clickable.dispatchEvent(new MouseEvent('mousedown', {bubbles: true}));
                                                 clickable.dispatchEvent(new MouseEvent('mouseup', {bubbles: true}));
-                                                clickable.dispatchEvent(new Event('click', {bubbles: true}));
                                                 
                                                 clearInterval(check);
                                                 resolve(true);
@@ -501,8 +483,8 @@ def send_to_notebooklm(file_path):
                                     }
                                 }
                             }
- 
-                            if(attempts >= 900) { // Timeout de 15 minutos (Deep Research demora muito)
+
+                            if(attempts >= 300) { // Timeout de 5 minutos
                                 clearInterval(check);
                                 resolve(false);
                             }
@@ -524,7 +506,7 @@ def send_to_notebooklm(file_path):
                         let stableCount = 0;
                         let attempts = 0;
                         const STABLE_THRESHOLD = 5; // ~2.5s de estabilidade
-                        const MAX_ATTEMPTS = 1200;   // 10 min timeout
+                        const MAX_ATTEMPTS = 600;   // 5 min timeout
                         
                         const check = setInterval(() => {
                             attempts++;
