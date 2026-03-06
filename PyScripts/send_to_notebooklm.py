@@ -127,11 +127,8 @@ def send_to_notebooklm(file_path):
     test_cards_only = "--test-cards" in sys.argv
     test_video_only = "--test-video" in sys.argv
     
-    only_genquest = "--only-genquest" in sys.argv
-    only_genquest_expert = "--only-genquest-expert" in sys.argv
-    only_genvid = "--only-genvid" in sys.argv
-    only_genvid_expert = "--only-genvid-expert" in sys.argv
-    is_specific_action = only_genquest or only_genquest_expert or only_genvid or only_genvid_expert
+    only_deepsearch = "--only-deepsearch" in sys.argv
+    is_specific_action = only_genquest or only_genquest_expert or only_genvid or only_genvid_expert or only_deepsearch
     
     saved_url = None
     text = path.read_text(encoding="utf-8")
@@ -554,7 +551,7 @@ def send_to_notebooklm(file_path):
                 else:
                     print(f"⚠️ [{step_name}] Timeout de 5 minutos atingido aguardando carregamentos. Prosseguindo...")
 
-            if not test_cards_only and not test_video_only and not is_specific_action:
+            if not test_cards_only and not test_video_only and (not is_specific_action or only_deepsearch):
                 do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
                 do_search_and_import(prompt_deepresearch, "DeepSearch (Fonte 2)")
                 
