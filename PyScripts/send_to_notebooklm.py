@@ -379,25 +379,30 @@ def send_to_notebooklm(file_path):
                         # Usando locators dinâmicos do Playwright pois eles disparam eventos completos (click/mouse)
                         # o que é vital para o Angular Material (framework do NotebookLM) atualizar de fato.
                         
-                        # Clicar no dropdown "Pesquisa rápida" (dentro do modal)
+                        # Tenta fechar modal central ANTES caso ele esteja atrapalhando o dropdown lateral (estratégia original)
+                        # Mas o usuário disse que quer EXATA mesma lógica. As duas primeiras não fecham modal.
+                        # Porém, o Deep Research original fechava. Vou tentar sem fechar primeiro, mas com locators mais abrangentes.
+                        
+                        # Clicar no dropdown "Pesquisa rápida" (pode estar no modal ou na sidebar)
+                        print(f"➡️ [{step_name}] Procurando dropdown de tipo de pesquisa...")
                         dropdown = page.locator("text=/Pesquisa r[áa]pida|Quick search|Quick Search/i").locator("visible=true").first
-                        dropdown.click(timeout=5000)
+                        dropdown.click(timeout=8000)
                         page.wait_for_timeout(1000)
                         
-                        # Clicar na opção "Deep Research" - Usando uma estratégia mais agressiva
+                        # Clicar na opção "Deep Research" 
                         print(f"➡️ [{step_name}] Selecionando opção 'Deep Research' no menu...")
                         
-                        # 1. Tenta via Locator padrão do Playwright (mais seguro se funcionar)
+                        # 1. Tenta via Locator padrão do Playwright 
                         try:
-                            deep_option = page.locator("[role='menuitem']").filter(has_text=re.compile(r"Deep Research", re.I)).locator("visible=true").first
+                            deep_option = page.locator("[role='menuitem'], .mat-mdc-menu-item").filter(has_text=re.compile(r"Deep Research", re.I)).locator("visible=true").first
                             deep_option.click(timeout=3000)
                         except:
-                            # 2. Fallback para Javascript caso o locator falhe (Material menus podem ser chatos)
+                            # 2. Fallback para Javascript
                             print(f"🔄 [{step_name}] Fallback: Tentando selecionar 'Deep Research' via JS...")
                             page.evaluate("""() => {
-                                const items = Array.from(document.querySelectorAll('[role="menuitem"], .mat-mdc-menu-item, button, span'));
+                                const items = Array.from(document.querySelectorAll('[role="menuitem"], .mat-mdc-menu-item, button, span, div'));
                                 for (let item of items) {
-                                    if (item.textContent.includes('Deep Research')) {
+                                    if (item.textContent.toLowerCase().includes('deep research')) {
                                         item.click();
                                         return true;
                                     }
@@ -429,6 +434,16 @@ def send_to_notebooklm(file_path):
                 page.wait_for_timeout(500)
                 
                 # Clica alternativamente na setinha azul de pesquisar (submit) caso o Enter resulte em nada.
+                page.evaluate("""() => {
+                    const icons = Array.from(document.querySelectorAll('.google-symbols, md-icon'));
+                    for(let icon of icons) {
+                        if(icon.textContent.includes('arrow_forward')) {
+                            let btn = icon.closest('button, [role="button"], md-icon-button, md-filled-icon-button');
+                            if (btn && !btn.disabled && btn.offsetWidth > 0) {
+                                btn.click();
+                            }
+                        }
+                    }
                 }""")
                 
                 print(f"⏳ [{step_name}] Aguardando a pesquisa concluir (esperando botão Importar habilitar)...")
@@ -445,8 +460,17 @@ def send_to_notebooklm(file_path):
                             
                             for(let el of allElements) {
                                 let txt = (el.textContent || '').trim().toLowerCase();
-                                // Se o texto contém exatamente "+ importar", "importar", "Add" ou "Inserir"
-                                if((txt === 'importar' || txt === '+ importar' || txt === 'insert' || txt === 'inserir' || (txt.includes('importar') && !txt.includes('fontes'))) && el.offsetWidth > 0) {
+                                
+                                // Lista de termos positivos (pode variar entre PT e EN)
+                                const validTerms = ['importar', '+ importar', 'inserir', '+ inserir', 'insert', '+ insert', 'adicionar', '+ adicionar', 'add', '+ add'];
+                                const matchesExact = validTerms.some(term => txt === term);
+                                const matchesPartial = (txt.includes('importar') && !txt.includes('fontes')) || 
+                                                       (txt.includes('inserir')) || 
+                                                       (txt.includes('insert')) ||
+                                                       (txt.includes('adicionar') && !txt.includes('fontes')) ||
+                                                       (txt.includes('add') && !txt.includes('sources') && !txt.includes('fontes'));
+
+                                if((matchesExact || matchesPartial) && el.offsetWidth > 0) {
                                     
                                     // Sobe para achar o elemento clicável caso seja um span/div interno
                                     let clickable = el;
@@ -456,8 +480,14 @@ def send_to_notebooklm(file_path):
                                         const isButton = clickable.tagName === 'BUTTON' || clickable.getAttribute('role') === 'button' || style.cursor === 'pointer' || clickable.tagName.includes('-BUTTON');
                                         
                                         if(isButton) {
-                                            if(!clickable.disabled && !clickable.hasAttribute('disabled') && !clickable.classList.contains('disabled')) {
+                                            // Verifica se o botão está habilitado (não tem atributo disabled nem classe disabled)
+                                            const isDisabled = clickable.disabled || clickable.hasAttribute('disabled') || clickable.classList.contains('disabled') || clickable.classList.contains('md-disabled');
+                                            
+                                            if(!isDisabled) {
                                                 console.log('✅ Botão Importar/Inserir encontrado e clicado:', txt);
+                                                
+                                                // Tenta focar antes de clicar
+                                                if (clickable.focus) clickable.focus();
                                                 
                                                 // Clique real usando JS
                                                 clickable.click();
@@ -500,7 +530,7 @@ def send_to_notebooklm(file_path):
                         let stableCount = 0;
                         let attempts = 0;
                         const STABLE_THRESHOLD = 5; // ~2.5s de estabilidade
-                        const MAX_ATTEMPTS = 600;   // 5 min timeout
+                        const MAX_ATTEMPTS = 1200;   // 10 min timeout
                         
                         const check = setInterval(() => {
                             attempts++;
