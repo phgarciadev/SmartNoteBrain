@@ -448,11 +448,22 @@ def send_to_notebooklm(file_path):
                 clicked_import = page.evaluate("""() => {
                     return new Promise((resolve) => {
                         let attempts = 0;
+                        
+                        function getAllElements(root, result = []) {
+                            result.push(...root.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button, [role="button"], .mat-mdc-button, .mdc-button, div, span'));
+                            for (let el of root.querySelectorAll('*')) {
+                                if (el.shadowRoot) {
+                                    getAllElements(el.shadowRoot, result);
+                                }
+                            }
+                            return result;
+                        }
+
                         const check = setInterval(() => {
                             attempts++;
                             
-                            // 1. Busca ampla por botões ou elementos que contêm o texto de importação
-                            const allElements = Array.from(document.querySelectorAll('button, md-filled-button, md-elevated-button, md-text-button, [role="button"], .mat-mdc-button, .mdc-button, div, span'));
+                            // 1. Busca ampla por botões ou elementos que contêm o texto de importação, incluindo shadow DOMs
+                            const allElements = getAllElements(document);
                             
                             for(let el of allElements) {
                                 let txt = (el.textContent || '').trim().toLowerCase();
@@ -478,13 +489,14 @@ def send_to_notebooklm(file_path):
                                                 return;
                                             }
                                         }
-                                        clickable = clickable.parentElement;
+                                        // Avança para o pai padrão, ou hospedeiro se estiver na raiz do Shadow DOM
+                                        clickable = clickable.parentElement || (clickable.getRootNode() && clickable.getRootNode().host);
                                         depth++;
                                     }
                                 }
                             }
 
-                            if(attempts >= 300) { // Timeout de 5 minutos
+                            if(attempts >= 1200) { // Timeout de 20 minutos para dar tempo do Deep Research
                                 clearInterval(check);
                                 resolve(false);
                             }
@@ -508,43 +520,58 @@ def send_to_notebooklm(file_path):
                         const STABLE_THRESHOLD = 5; // ~2.5s de estabilidade
                         const MAX_ATTEMPTS = 600;   // 5 min timeout
                         
+                        function getAllElements(root, result = []) {
+                            result.push(...root.querySelectorAll('*'));
+                            for (let el of root.querySelectorAll('*')) {
+                                if (el.shadowRoot) {
+                                    getAllElements(el.shadowRoot, result);
+                                }
+                            }
+                            return result;
+                        }
+
                         const check = setInterval(() => {
                             attempts++;
                             
-                            // 1. Loaders tradicionais
-                            const loaders = Array.from(document.querySelectorAll(
-                                'md-circular-progress, md-linear-progress, ' +
-                                '[role="progressbar"], ' +
-                                'mat-spinner, mat-progress-bar, mat-progress-spinner, ' +
-                                '.mat-mdc-progress-spinner, .mdc-circular-progress'
-                            ));
+                            const allElements = getAllElements(document);
                             
+                            // 1. Loaders tradicionais
                             let hasVisibleLoader = false;
-                            for (const el of loaders) {
-                                const rect = el.getBoundingClientRect();
-                                const style = window.getComputedStyle(el);
-                                if (rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') {
-                                    hasVisibleLoader = true;
-                                    break;
+                            for (const el of allElements) {
+                                const tag = el.tagName.toLowerCase();
+                                const role = el.getAttribute('role');
+                                const isLoader = tag === 'md-circular-progress' || tag === 'md-linear-progress' || 
+                                               role === 'progressbar' || 
+                                               tag === 'mat-spinner' || tag === 'mat-progress-bar' || tag === 'mat-progress-spinner' || 
+                                               el.classList.contains('mat-mdc-progress-spinner') || el.classList.contains('mdc-circular-progress');
+                                
+                                if (isLoader) {
+                                    const rect = el.getBoundingClientRect();
+                                    const style = window.getComputedStyle(el);
+                                    if (rect.width > 0 && rect.height > 0 && style.display !== 'none' && style.visibility !== 'hidden' && style.opacity !== '0') {
+                                        hasVisibleLoader = true;
+                                        break;
+                                    }
                                 }
                             }
                             
                             // 2. "SVGs animados" (Detecção de rotação ou tags animate)
                             if (!hasVisibleLoader) {
-                                const svgs = document.querySelectorAll('svg');
-                                for (const svg of svgs) {
-                                    const rect = svg.getBoundingClientRect();
-                                    const style = window.getComputedStyle(svg);
-                                    
-                                    // Se o SVG está visível e parece estar animando
-                                    if (rect.width > 0 && rect.height > 1 && style.display !== 'none' && style.visibility !== 'hidden') {
-                                        const hasAnimateTag = svg.querySelector('animate, animateTransform, animateMotion');
-                                        const hasRotationCSS = style.animationName && style.animationName !== 'none';
+                                for (const el of allElements) {
+                                    if (el.tagName.toLowerCase() === 'svg') {
+                                        const rect = el.getBoundingClientRect();
+                                        const style = window.getComputedStyle(el);
                                         
-                                        // No NotebookLM, loaders de fonte costumam ser SVGs que rodam ou pulsam
-                                        if (hasAnimateTag || hasRotationCSS) {
-                                            hasVisibleLoader = true;
-                                            break;
+                                        // Se o SVG está visível e parece estar animando
+                                        if (rect.width > 0 && rect.height > 1 && style.display !== 'none' && style.visibility !== 'hidden') {
+                                            const hasAnimateTag = el.querySelector('animate, animateTransform, animateMotion');
+                                            const hasRotationCSS = style.animationName && style.animationName !== 'none';
+                                            
+                                            // No NotebookLM, loaders de fonte costumam ser SVGs que rodam ou pulsam
+                                            if (hasAnimateTag || hasRotationCSS) {
+                                                hasVisibleLoader = true;
+                                                break;
+                                            }
                                         }
                                     }
                                 }
