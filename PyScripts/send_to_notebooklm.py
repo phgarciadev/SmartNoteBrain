@@ -429,17 +429,11 @@ def send_to_notebooklm(file_path):
                 page.wait_for_timeout(500)
                 
                 # Clica alternativamente na setinha azul de pesquisar (submit) caso o Enter resulte em nada.
-                page.evaluate("""() => {
-                    const icons = Array.from(document.querySelectorAll('.google-symbols, md-icon'));
-                    for(let icon of icons) {
-                        if(icon.textContent.includes('arrow_forward')) {
-                            let btn = icon.closest('button, [role="button"], md-icon-button, md-filled-icon-button');
-                            if (btn && !btn.disabled && btn.offsetWidth > 0) {
-                                btn.click();
-                            }
-                        }
-                    }
-                  clicked_import = page.evaluate("""() => {
+                }""")
+                
+                print(f"⏳ [{step_name}] Aguardando a pesquisa concluir (esperando botão Importar habilitar)...")
+                
+                clicked_import = page.evaluate("""() => {
                     return new Promise((resolve) => {
                         let attempts = 0;
                         const check = setInterval(() => {
@@ -486,12 +480,6 @@ def send_to_notebooklm(file_path):
  
                             if(attempts >= 900) { // Timeout de 15 minutos (Deep Research demora muito)
                                 clearInterval(check);
-                                resolve(false);
-                            }
-                        }, 1000);
-                    });
-                }""")
- clearInterval(check);
                                 resolve(false);
                             }
                         }, 1000);
