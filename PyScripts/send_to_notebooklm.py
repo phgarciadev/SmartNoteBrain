@@ -372,32 +372,26 @@ def send_to_notebooklm(file_path):
                 page.wait_for_timeout(500)
                 #MVP2
                 if use_deep_research:
+                    print(f"➡️ [{step_name}] Fechando modal central para focar na aba esquerda...")
+                    page.keyboard.press("Escape")
                     page.wait_for_timeout(1000)
                     
                     print(f"➡️ [{step_name}] Mudando tipo para Deep Research...")
                     try:
-                        # Usando locators dinâmicos do Playwright pois eles disparam eventos completos (click/mouse)
-                        # o que é vital para o Angular Material (framework do NotebookLM) atualizar de fato.
-                        
-                        # Tenta fechar modal central ANTES caso ele esteja atrapalhando o dropdown lateral (estratégia original)
-                        # Mas o usuário disse que quer EXATA mesma lógica. As duas primeiras não fecham modal.
-                        # Porém, o Deep Research original fechava. Vou tentar sem fechar primeiro, mas com locators mais abrangentes.
-                        
-                        # Clicar no dropdown "Pesquisa rápida" (pode estar no modal ou na sidebar)
-                        print(f"➡️ [{step_name}] Procurando dropdown de tipo de pesquisa...")
-                        dropdown = page.locator("text=/Pesquisa r[áa]pida|Quick search|Quick Search/i").locator("visible=true").first
-                        dropdown.click(timeout=8000)
+                        # Clicar no dropdown "Pesquisa rápida" (pegamos o primeiro que representa a aba lateral)
+                        dropdown = page.locator("text=/Pesquisa r[áa]pida|Quick search/i").locator("visible=true").first
+                        dropdown.click(timeout=5000)
                         page.wait_for_timeout(1000)
                         
-                        # Clicar na opção "Deep Research" 
+                        # Clicar na opção "Deep Research"
                         print(f"➡️ [{step_name}] Selecionando opção 'Deep Research' no menu...")
                         
-                        # 1. Tenta via Locator padrão do Playwright 
+                        # Tenta via Locator padrão do Playwright
                         try:
                             deep_option = page.locator("[role='menuitem'], .mat-mdc-menu-item").filter(has_text=re.compile(r"Deep Research", re.I)).locator("visible=true").first
                             deep_option.click(timeout=3000)
                         except:
-                            # 2. Fallback para Javascript
+                            # Fallback para Javascript
                             print(f"🔄 [{step_name}] Fallback: Tentando selecionar 'Deep Research' via JS...")
                             page.evaluate("""() => {
                                 const items = Array.from(document.querySelectorAll('[role="menuitem"], .mat-mdc-menu-item, button, span, div'));
