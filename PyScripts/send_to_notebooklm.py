@@ -128,7 +128,8 @@ def send_to_notebooklm(file_path):
     test_video_only = "--test-video" in sys.argv
     
     only_deepsearch = "--only-deepsearch" in sys.argv
-    is_specific_action = only_genquest or only_genquest_expert or only_genvid or only_genvid_expert or only_deepsearch
+    only_deepresearch = "--only-deepresearch" in sys.argv
+    is_specific_action = only_genquest or only_genquest_expert or only_genvid or only_genvid_expert or only_deepsearch or only_deepresearch
     
     saved_url = None
     text = path.read_text(encoding="utf-8")
@@ -551,94 +552,97 @@ def send_to_notebooklm(file_path):
                 else:
                     print(f"⚠️ [{step_name}] Timeout de 5 minutos atingido aguardando carregamentos. Prosseguindo...")
 
-            if not test_cards_only and not test_video_only and (not is_specific_action or only_deepsearch):
-                do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
-                do_search_and_import(prompt_deepresearch, "DeepSearch (Fonte 2)")
+            if not test_cards_only and not test_video_only and (not is_specific_action or only_deepsearch or only_deepresearch):
+                if not is_specific_action or only_deepsearch:
+                    do_search_and_import(prompt_deepsearch, "DeepSearch (Fonte 1)")
+                    if not only_deepsearch:
+                        do_search_and_import(prompt_deepresearch, "DeepSearch (Fonte 2)")
                 
-                # Recarrega a página antes da 3ª pesquisa (Deep Research)
-                print("🔄 Recarregando a página antes da pesquisa Deep Research...")
-                
-                # Traz a página para frente e clica em uma região neutra para forçar o browser 
-                # a tirar a tab de "background throttle" (engasgo de inatividade)
-                try:
-                    page.bring_to_front()
-                    page.mouse.click(10, 10)
-                except:
-                    pass
-                
-                try:    
-                    page.reload(timeout=15000, wait_until="commit")
-                except Exception as e:
-                    print(f"⚠️ Aviso ao recarregar aba: {e}")
-                
-                # Outro clique para garantir que a página renderize e continue o onLoad
-                try: page.mouse.click(10, 50)
-                except: pass
-                
-                try: page.wait_for_load_state("domcontentloaded", timeout=10000)
-                except: pass
-                
-                page.wait_for_timeout(3000)
-                
-                print("➡️ Tentando fechar modal central pós-recarga (Escape / Clique)...")
-                try:
-                    page.keyboard.press("Escape")
-                    page.wait_for_timeout(500)
-                    page.mouse.click(5, 5) # Clique na quina fora do modal
-                    page.wait_for_timeout(500)
-                    page.keyboard.press("Escape")
-                    page.wait_for_timeout(500)
+                if not is_specific_action or only_deepresearch:
+                    # Recarrega a página antes da 3ª pesquisa (Deep Research)
+                    print("🔄 Recarregando a página antes da pesquisa Deep Research...")
+                    
+                    # Traz a página para frente e clica em uma região neutra para forçar o browser 
+                    # a tirar a tab de "background throttle" (engasgo de inatividade)
+                    try:
+                        page.bring_to_front()
+                        page.mouse.click(10, 10)
+                    except:
+                        pass
+                    
+                    try:    
+                        page.reload(timeout=15000, wait_until="commit")
+                    except Exception as e:
+                        print(f"⚠️ Aviso ao recarregar aba: {e}")
+                    
+                    # Outro clique para garantir que a página renderize e continue o onLoad
+                    try: page.mouse.click(10, 50)
+                    except: pass
+                    
+                    try: page.wait_for_load_state("domcontentloaded", timeout=10000)
+                    except: pass
+                    
+                    page.wait_for_timeout(3000)
+                    
+                    print("➡️ Tentando fechar modal central pós-recarga (Escape / Clique)...")
+                    try:
+                        page.keyboard.press("Escape")
+                        page.wait_for_timeout(500)
+                        page.mouse.click(5, 5) # Clique na quina fora do modal
+                        page.wait_for_timeout(500)
+                        page.keyboard.press("Escape")
+                        page.wait_for_timeout(500)
+                        page.evaluate("""() => {
+                            const icons = Array.from(document.querySelectorAll('.google-symbols, md-icon'));
+                            for(let icon of icons) {
+                                if(icon.textContent.includes('close') || icon.textContent.includes('clear')) {
+                                    let btn = icon.closest('button, [role="button"], md-icon-button');
+                                    if (btn && !btn.disabled && btn.offsetWidth > 0) {
+                                        btn.click();
+                                    }
+                                }
+                            }
+                        }""")
+                        page.wait_for_timeout(1000)
+                    except Exception as e:
+                        print(f"⚠️ Erro ao tentar fechar modal: {e}")
+    
+                    print("⏳ Aguardando a página estabilizar após recarga...")
                     page.evaluate("""() => {
-                        const icons = Array.from(document.querySelectorAll('.google-symbols, md-icon'));
-                        for(let icon of icons) {
-                            if(icon.textContent.includes('close') || icon.textContent.includes('clear')) {
-                                let btn = icon.closest('button, [role="button"], md-icon-button');
-                                if (btn && !btn.disabled && btn.offsetWidth > 0) {
-                                    btn.click();
+                        return new Promise((resolve) => {
+                            let stableCount = 0;
+                            let attempts = 0;
+                            const check = setInterval(() => {
+                                attempts++;
+                                const loaders = Array.from(document.querySelectorAll(
+                                    'md-circular-progress, md-linear-progress, ' +
+                                    '[role="progressbar"], ' +
+                                    'mat-spinner, mat-progress-bar, mat-progress-spinner, ' +
+                                    '.mat-mdc-progress-spinner, .mdc-circular-progress'
+                                ));
+                                let hasLoader = false;
+                                for (const el of loaders) {
+                                    const rect = el.getBoundingClientRect();
+                                    const style = window.getComputedStyle(el);
+                                    if (rect.width > 0 && rect.height > 0 && 
+                                        style.display !== 'none' && 
+                                        style.visibility !== 'hidden' &&
+                                        style.opacity !== '0') {
+                                        hasLoader = true;
+                                        break;
+                                    }
                                 }
-                            }
-                        }
+                                if (!hasLoader) {
+                                    stableCount++;
+                                    if (stableCount >= 4) { clearInterval(check); resolve(true); return; }
+                                } else { stableCount = 0; }
+                                if (attempts >= 120) { clearInterval(check); resolve(false); }
+                            }, 500);
+                        });
                     }""")
-                    page.wait_for_timeout(1000)
-                except Exception as e:
-                    print(f"⚠️ Erro ao tentar fechar modal: {e}")
-
-                print("⏳ Aguardando a página estabilizar após recarga...")
-                page.evaluate("""() => {
-                    return new Promise((resolve) => {
-                        let stableCount = 0;
-                        let attempts = 0;
-                        const check = setInterval(() => {
-                            attempts++;
-                            const loaders = Array.from(document.querySelectorAll(
-                                'md-circular-progress, md-linear-progress, ' +
-                                '[role="progressbar"], ' +
-                                'mat-spinner, mat-progress-bar, mat-progress-spinner, ' +
-                                '.mat-mdc-progress-spinner, .mdc-circular-progress'
-                            ));
-                            let hasLoader = false;
-                            for (const el of loaders) {
-                                const rect = el.getBoundingClientRect();
-                                const style = window.getComputedStyle(el);
-                                if (rect.width > 0 && rect.height > 0 && 
-                                    style.display !== 'none' && 
-                                    style.visibility !== 'hidden' &&
-                                    style.opacity !== '0') {
-                                    hasLoader = true;
-                                    break;
-                                }
-                            }
-                            if (!hasLoader) {
-                                stableCount++;
-                                if (stableCount >= 4) { clearInterval(check); resolve(true); return; }
-                            } else { stableCount = 0; }
-                            if (attempts >= 120) { clearInterval(check); resolve(false); }
-                        }, 500);
-                    });
-                }""")
-                print("✅ Página recarregada e estabilizada. Iniciando Deep Research...")
-                
-                do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", use_deep_research=True)
+                    print("✅ Página recarregada e estabilizada. Iniciando Deep Research...")
+                    
+                    do_search_and_import(prompt_deepsearch, "DeepResearch - Novo Tipo (Fonte 3)", use_deep_research=True)
             else:
                 print("⚠️ Modo de teste ou ação única ativado. Pulando as importações de fontes.")
             

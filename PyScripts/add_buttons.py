@@ -112,9 +112,15 @@ def generate_buttons(prompts: dict, disciplina: str, assunto: str, topico: str, 
     """Gera os blocos de botões."""
     
     nb_button = """```button
-name 🔍 Só DeepSearch (3 Pesquisas)
+name 🔍 Só DeepSearch (1ª Pesquisa)
 type command
 action Shell commands: Execute: NotebookLM DeepSearch
+```
+
+```button
+name 🧪 Só DeepResearch (3ª Pesquisa)
+type command
+action Shell commands: Execute: NotebookLM DeepResearch
 ```
 
 ```button
