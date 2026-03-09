@@ -8,35 +8,19 @@
         "type": "tabs",
         "children": [
           {
-            "id": "8addd9b54bb90c29",
+            "id": "ab733b57479141f6",
             "type": "leaf",
-            "pinned": true,
             "state": {
               "type": "html-view",
               "state": {
                 "file": "Dashboard.html"
               },
-              "pinned": true,
               "icon": "code-glyph",
               "title": "Dashboard"
             }
           },
           {
-            "id": "d262a6e8194e2345",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "html-view",
-              "state": {
-                "file": "Dashboard.html"
-              },
-              "pinned": true,
-              "icon": "code-glyph",
-              "title": "Dashboard"
-            }
-          },
-          {
-            "id": "b14dd0362a03a2e8",
+            "id": "b9d6bacc37338abe",
             "type": "leaf",
             "state": {
               "type": "bases",
@@ -64,7 +48,7 @@
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -255,12 +239,13 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "b319895822a7e61c",
+  "active": "b9d6bacc37338abe",
   "lastOpenFiles": [
-    "Sem título.md",
     "Dashboard.html",
     "DailyLearning/RunBook.base",
     "DailyLearning/Revisao Espacada.base",
+    "DailyLearning/Disciplinas/2. Matemática/7. Análise Combinatória/1. Princípios de Contagem.md",
+    "Sem título.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/5. Membrana Plasmática e Envoltórios.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/6. Transporte Celular.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/4. Organização e Modelos Celulares.md",
@@ -286,7 +271,6 @@
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/5. Análise Dimensional.md",
     "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/3. Lugar.md",
     "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
-    "Dashboard.md",
     "PyScripts/__pycache__/send_to_notebooklm.cpython-314.pyc",
     "PyScripts/__pycache__",
     "PyScripts/add_notebooklm_button.py",
