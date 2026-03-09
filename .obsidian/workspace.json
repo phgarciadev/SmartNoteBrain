@@ -24,11 +24,13 @@
           {
             "id": "d262a6e8194e2345",
             "type": "leaf",
+            "pinned": true,
             "state": {
               "type": "html-view",
               "state": {
                 "file": "Dashboard.html"
               },
+              "pinned": true,
               "icon": "code-glyph",
               "title": "Dashboard"
             }
@@ -62,7 +64,7 @@
             }
           }
         ],
-        "currentTab": 2
+        "currentTab": 1
       }
     ],
     "direction": "vertical"
@@ -253,8 +255,9 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "b14dd0362a03a2e8",
+  "active": "d262a6e8194e2345",
   "lastOpenFiles": [
+    "DailyLearning/RunBook.base",
     "Dashboard.html",
     "DailyLearning/Revisao Espacada.base",
     "Sem título.md",
@@ -288,7 +291,6 @@
     "PyScripts/__pycache__",
     "PyScripts/add_notebooklm_button.py",
     "PyScripts/send_to_notebooklm.py",
-    "DailyLearning/RunBook.base",
     "semtitulo.html",
     "DailyLearning/Prompts.canvas",
     "Sem título.canvas"
