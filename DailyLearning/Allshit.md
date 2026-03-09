@@ -1,4 +1,4 @@
-111111111111111111111111111111111111111111111111111111111.1111111111111111e+21. **Língua Portuguesa**
+1. **Língua Portuguesa**
     1. **Leitura e Interpretação de Texto** (Compreensão global, níveis de significação explícita e implícita, intertextualidade, pressupostos, subentendidos e procedimentos de leitura crítica).
         1. **Níveis de Significação** (Identificação de informações explícitas na superfície do texto e inferência de informações implícitas, como pressupostos e subentendidos).
         2. **Procedimentos de Leitura** (Estratégias de compreensão global e pontual, localização de informações e reconhecimento do tema central versus ideias secundárias),.
@@ -80,7 +80,7 @@
         6. **Recursos Fonético-Fonológicos** (Efeitos de sentido produzidos por recursos sonoros e fonológicos no texto)
         7. **Relação entre Oralidade e Escrita** (Distinções, interações e marcas de oralidade na produção textual)
         8. **Ritmo e Sonoridade** (Recursos expressivos que envolvem a organização sonora e rítmica para construção de sentido)
-1.1111111111111111e+21. **Matemática**
+2. **Matemática**
     
     1. **Aritmética e Conjuntos Numéricos** (Inclui Razão, Proporção, Porcentagem)
         
@@ -228,7 +228,7 @@
         4. **Raízes de Números Complexos** (Cálculo e interpretação, com foco específico nas raízes da unidade).
         5. **Raízes em Equações Polinomiais** (Identificação de raízes reais e complexas em equações polinomiais e operações com polinômios de coeficientes reais).
         6. **Aplicações Avançadas (Fuvest)** (Fórmula de De Moivre para potenciação e radiciação, interpretação geométrica de operações, rotações no plano complexo, raízes n-ésimas da unidade e sua disposição no círculo unitário).
-1.1111111111111111e+21. **Biologia**
+3. **Biologia**
     
     1. **Bases Moleculares e Celulares / Citologia** (Componentes químicos da vida, estrutura e fisiologia celular, membrana, organelas, divisão celular e metabolismo energético como fotossíntese e respiração).
         
@@ -348,7 +348,7 @@
         5. **Impactos e Problemas Ambientais** (Poluição atmosférica, hídrica e do solo, mudanças climáticas, efeito estufa, chuva ácida, desmatamento, erosão, eutrofização, magnificação trófica, introdução de espécies exóticas e extinção).
         6. **Conservação e Sustentabilidade** (Preservação da biodiversidade, uso sustentável e manejo dos recursos naturais, tecnologias ambientais, recuperação de áreas degradadas, unidades de conservação e legislação ambiental).
         7. **Ecologia Humana e Saneamento** (Crescimento da população humana e demandas por recursos, tratamento de água e esgoto, destino do lixo/resíduos sólidos, reciclagem e relação entre alterações ambientais e doenças).
-1.1111111111111111e+21. **Física**
+4. **Física**
     
     1. **Fundamentos da Física** (Grandezas físicas, sistemas de unidades, análise dimensional, ordens de grandeza e vetores)
         1. **Grandezas Físicas e Processos de Medida** (Definição de grandezas fundamentais e derivadas, reconhecimento de grandezas significativas, procedimentos de mensuração e instrumentos de medida),,,,,.
@@ -460,7 +460,7 @@
         4. **Cosmologia e Astrofísica** (Surgimento e evolução do Universo, modelos cosmológicos e Big-Bang, evolução estelar, o sistema solar e sua evolução histórica),,,.
         5. **Partículas e Interações Fundamentais** (Modelo padrão de partículas elementares, interações fundamentais da natureza, identificação, comparação de intensidades e alcances das interações),,,.
         6. **Tecnologia e Sociedade em Física Moderna** (Riscos e benefícios do uso de radiações, procedimentos adequados para uso de radiações, armas nucleares, energia solar, comparação entre fontes de energia e matriz energética),,,.
-1.1111111111111111e+21. **Química**
+5. **Química**
     
     1. **Propriedades da Matéria e Atomística**
         1. **Propriedades e estados físicos da matéria:** Mudanças de estado físico, densidade, caracterização de sólidos e líquidos e pressão de vapor,,,.
@@ -523,7 +523,7 @@
         3. **Química Ambiental:** Poluição atmosférica (efeito estufa, chuva ácida, camada de ozônio), poluição da água e do solo,,,.
         4. **Tratamento e Ciclos:** Tratamento de água e esgoto, ciclos biogeoquímicos (Carbono, Nitrogênio, Enxofre) e química verde,,,.
         5. **Energia:** Petróleo, gás natural, carvão, biocombustíveis e impactos ambientais da matriz energética,,.
-1.1111111111111111e+21. **História**
+6. **História**
     
     1. **Teoria da História e Historiografia**
         1. **Conceitos fundamentais:** Tempo histórico, relação passado-presente e memória,.
@@ -585,7 +585,7 @@
         2. **Globalização:** Blocos econômicos, neoliberalismo e crises econômicas globais,.
         3. **Conflitos Recentes:** Conflitos no Oriente Médio, terrorismo e guerras contemporâneas,.
         4. **Desafios do Século XXI:** Questões ambientais, movimentos sociais, ascensão da China e transformações tecnológicas,.
-1.1111111111111111e+21. **Geografia**
+7. **Geografia**
     
     1. **Conceitos Fundamentais da Geografia**
         1. Espaço geográfico e sua produção,,,.
@@ -688,7 +688,7 @@
         2. Divisão regional oficial do IBGE,,.
         3. Complexos regionais geoeconômicos (Amazônia, Nordeste, Centro-Sul),.
         4. Especificidades das cinco grandes regiões (Norte, Nordeste, Centro-Oeste, Sudeste, Sul),.
-1.1111111111111111e+21. **Filosofia**
+8. **Filosofia**
     
     1. **História da Filosofia**
         1. Pré-socráticos e a origem da filosofia
@@ -760,7 +760,7 @@
         3. Desigualdade e Inclusão Social
         4. Justiça Social e Diversidade
         5. Desafios das sociedades democráticas
-1.1111111111111111e+21. **Sociologia**
+9. **Sociologia**
     
     1. **Fundamentos e Teoria Sociológica**
         1. O surgimento da Sociologia e o contexto histórico (Revolução Industrial e Científica),
@@ -823,7 +823,7 @@
         5. Redes sociais, algoritmos, privacidade e fake news,
         6. Questão ambiental e sustentabilidade (conflitos socioambientais),
         7. Globalização e mundialização da cultura
-1.1111111111111111e+21. **Educação Fisica**
+10. **Educação Fisica**
     
     1. **Práticas Corporais e Cultura de Movimento**
         1. **Esportes** (Classificação, regras, evolução histórica e lógica interna)
@@ -853,7 +853,7 @@
         2. **Autocuidado e Autonomia** (Planejamento de rotinas saudáveis e independência funcional)
         3. **Práticas Corporais e Trabalho** (Ergonomia, ginástica laboral e doenças ocupacionais)
         4. **Espaços Públicos e Sustentabilidade** (Uso democrático e preservação de locais para prática)
-1.1111111111111111e+21. **Artes**
+11. **Artes**
     
     1. **História da Arte**
         1. **Arte na Pré-História e Antiguidade** (Arte rupestre, Egito, Grécia e Roma).
@@ -894,7 +894,7 @@
         1. **Estética e Filosofia da Arte** (Conceitos de belo, feio, sublime, gosto e apreciação estética),.
         2. **Crítica de Arte e Recepção** (Análise crítica, interpretação e o papel do espectador),.
         3. **Psicologia da Arte e Percepção** (Como percebemos e processamos a arte).
-1.1111111111111111e+21. **Atualidades**
+12. **Atualidades**
     
     1. **Geopolítica e Relações Internacionais**
         1. Nova Ordem Mundial e Multipolaridade (Ascensão de China e Rússia)
@@ -957,7 +957,7 @@
         3. Cancelamento Cultural e "Justiçamento" virtual
         4. Revisionismo Histórico e disputas de memória (ex: derrubada de estátuas)
 		5. Manifestações Artísticas Contemporâneas e diversidade cultural
-1.1111111111111111e+21. **Literatura**
+13. **Literatura**
     
     1. **Teoria Literária e Gêneros**
         1. **Gêneros Literários** (Épico/Narrativo, Lírico e Dramático: características, estrutura e exemplos).

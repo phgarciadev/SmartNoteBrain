@@ -4,21 +4,36 @@
     "type": "split",
     "children": [
       {
-        "id": "a390b15d9de5865b",
+        "id": "848d3f22533e9320",
         "type": "tabs",
         "children": [
           {
-            "id": "92ca1fc925670496",
+            "id": "7b8ebf4cf994459f",
             "type": "leaf",
+            "pinned": true,
             "state": {
-              "type": "markdown",
+              "type": "html-view",
               "state": {
-                "file": "DailyLearning/Allshit.md",
-                "mode": "source",
-                "source": false
+                "file": "Dashboard.html"
               },
-              "icon": "lucide-file",
-              "title": "Allshit"
+              "pinned": true,
+              "icon": "code-glyph",
+              "title": "Dashboard"
+            }
+          },
+          {
+            "id": "44eab5feb190d424",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "bases",
+              "state": {
+                "file": "DailyLearning/Revisao Espacada.base",
+                "viewName": "Revisão Espaçada"
+              },
+              "pinned": true,
+              "icon": "lucide-table",
+              "title": "Revisao Espacada"
             }
           }
         ]
@@ -212,12 +227,13 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "92ca1fc925670496",
+  "active": "7b8ebf4cf994459f",
   "lastOpenFiles": [
-    "DailyLearning/RunBook.base",
-    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/10. Razão e Proporção.md",
-    "Dashboard.html",
     "DailyLearning/Revisao Espacada.base",
+    "Dashboard.html",
+    "DailyLearning/RunBook.base",
+    "DailyLearning/Allshit.md",
+    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/10. Razão e Proporção.md",
     "DailyLearning/Disciplinas/2. Matemática/7. Análise Combinatória/1. Princípios de Contagem.md",
     "Sem título.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/5. Membrana Plasmática e Envoltórios.md",
@@ -243,7 +259,6 @@
     "PyScripts/sedg3iqKG",
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/5. Análise Dimensional.md",
-    "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/3. Lugar.md",
     "PyScripts/__pycache__/send_to_notebooklm.cpython-314.pyc",
     "PyScripts/__pycache__",
     "PyScripts/add_notebooklm_button.py",
