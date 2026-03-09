@@ -64,7 +64,7 @@
             }
           }
         ],
-        "currentTab": 1
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -255,12 +255,12 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "d262a6e8194e2345",
+  "active": "b319895822a7e61c",
   "lastOpenFiles": [
-    "DailyLearning/RunBook.base",
-    "Dashboard.html",
-    "DailyLearning/Revisao Espacada.base",
     "Sem título.md",
+    "Dashboard.html",
+    "DailyLearning/RunBook.base",
+    "DailyLearning/Revisao Espacada.base",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/5. Membrana Plasmática e Envoltórios.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/6. Transporte Celular.md",
     "DailyLearning/Disciplinas/3. Biologia/1. Bases Moleculares e Celulares - Citologia/4. Organização e Modelos Celulares.md",
