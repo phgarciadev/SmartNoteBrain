@@ -52,7 +52,11 @@ views:
       - primeiro_contato
       - NotebookLM
     sort:
+      - property: formula.materia
+        direction: ASC
       - property: formula.assunto
+        direction: ASC
+      - property: file.name
         direction: ASC
     summaries: {}
     columnSize:

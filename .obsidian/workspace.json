@@ -4,51 +4,24 @@
     "type": "split",
     "children": [
       {
-        "id": "5f00ad33d4a500c9",
+        "id": "a390b15d9de5865b",
         "type": "tabs",
         "children": [
           {
-            "id": "ab733b57479141f6",
+            "id": "92ca1fc925670496",
             "type": "leaf",
             "state": {
-              "type": "html-view",
+              "type": "markdown",
               "state": {
-                "file": "Dashboard.html"
+                "file": "DailyLearning/Allshit.md",
+                "mode": "source",
+                "source": false
               },
-              "icon": "code-glyph",
-              "title": "Dashboard"
-            }
-          },
-          {
-            "id": "b9d6bacc37338abe",
-            "type": "leaf",
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "DailyLearning/RunBook.base",
-                "viewName": "Revisão Espaçada"
-              },
-              "icon": "lucide-table",
-              "title": "RunBook"
-            }
-          },
-          {
-            "id": "b319895822a7e61c",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "DailyLearning/Revisao Espacada.base",
-                "viewName": "Revisão Espaçada"
-              },
-              "pinned": true,
-              "icon": "lucide-table",
-              "title": "Revisao Espacada"
+              "icon": "lucide-file",
+              "title": "Allshit"
             }
           }
-        ],
-        "currentTab": 1
+        ]
       }
     ],
     "direction": "vertical"
@@ -239,10 +212,11 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "b9d6bacc37338abe",
+  "active": "92ca1fc925670496",
   "lastOpenFiles": [
-    "Dashboard.html",
     "DailyLearning/RunBook.base",
+    "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/10. Razão e Proporção.md",
+    "Dashboard.html",
     "DailyLearning/Revisao Espacada.base",
     "DailyLearning/Disciplinas/2. Matemática/7. Análise Combinatória/1. Princípios de Contagem.md",
     "Sem título.md",
@@ -270,7 +244,6 @@
     "DailyLearning/Disciplinas/1. Língua Portuguesa/1. Leitura e Interpretação de Texto/1. Níveis de Significação.md",
     "DailyLearning/Disciplinas/4. Física/1. Fundamentos da Física/5. Análise Dimensional.md",
     "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/3. Lugar.md",
-    "PyScripts/🛠️ PyScripts — Documentação e Ferramentas.md",
     "PyScripts/__pycache__/send_to_notebooklm.cpython-314.pyc",
     "PyScripts/__pycache__",
     "PyScripts/add_notebooklm_button.py",
