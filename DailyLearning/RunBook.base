@@ -42,7 +42,7 @@ views:
   - type: table
     name: Revisão Espaçada
     groupBy:
-      property: formula.materia
+      property: primeiro_contato
       direction: ASC
     order:
       - file.name
@@ -52,9 +52,9 @@ views:
       - primeiro_contato
       - NotebookLM
     sort:
-      - property: formula.assunto
+      - property: NotebookLM
         direction: ASC
-      - property: primeiro_contato
+      - property: formula.assunto
         direction: ASC
       - property: formula.iniciado_em
         direction: ASC
