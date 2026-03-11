@@ -8,6 +8,32 @@ R4: false
 NotebookLM: "[linkdonotebooklm](<linkdonotebooklm>)"
 ---
 
+## 📊 Métricas
+
+```button
+name 🃏 Flash Cards — Nível Base
+type command
+action Shell commands: Execute: Metrics Flash Cards Base
+```
+
+```button
+name 🃏 Flash Cards — Nível Vestibular
+type command
+action Shell commands: Execute: Metrics Flash Cards Vest
+```
+
+```button
+name 📝 Questões Abertas — Nível Base
+type command
+action Shell commands: Execute: Metrics Questoes Base
+```
+
+```button
+name 📝 Questões Abertas — Nível Vestibular
+type command
+action Shell commands: Execute: Metrics Questoes Vest
+```
+
 ## 📋 Prompts
 
 ```button
@@ -199,7 +225,6 @@ da disciplina: Biologia
 
 
 Outros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):
-Componentes Químicos da Célula
 Núcleo Celular
 Ciclo Celular e Divisão Celular
 Diferenciação Celular e Células-Tronco
@@ -268,7 +293,6 @@ Tópico(s) deste notebook (Somente esses):
 linkdonotebooklm
 
 Outros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):
-Componentes Químicos da Célula
 Núcleo Celular
 Ciclo Celular e Divisão Celular
 Diferenciação Celular e Células-Tronco
@@ -338,7 +362,6 @@ Tópico(s) deste notebook (Somente esses):
 linkdonotebooklm
 
 Outros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):
-Componentes Químicos da Célula
 Núcleo Celular
 Ciclo Celular e Divisão Celular
 Diferenciação Celular e Células-Tronco
@@ -422,7 +445,6 @@ Tópico(s) deste notebook (Somente esses):
 linkdonotebooklm
 
 Outros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):
-Componentes Químicos da Célula
 Núcleo Celular
 Ciclo Celular e Divisão Celular
 Diferenciação Celular e Células-Tronco
@@ -508,7 +530,6 @@ Tópico(s) deste notebook (Somente esses):
 linkdonotebooklm
 
 Outros tópicos, que >**NÃO SÃO**< o foco deste notebook; portanto, não devem fazer parte do aprofundamento, exceto por possiveis menções ou contextualização):
-Componentes Químicos da Célula
 Núcleo Celular
 Ciclo Celular e Divisão Celular
 Diferenciação Celular e Células-Tronco

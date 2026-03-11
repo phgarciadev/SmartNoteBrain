@@ -296,6 +296,108 @@ body {
 }
 .empty-state .emoji { font-size: 24px; margin-bottom: 6px; display: block; }
 
+/* ── Metrics ── */
+.metrics-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.metric-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
+}
+.metric-row:hover {
+  background: rgba(255,255,255,0.04);
+}
+.metric-icon {
+  font-size: 18px;
+  flex-shrink: 0;
+}
+.metric-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}
+.metric-label {
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+.metric-level {
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}
+.metric-bar-track {
+  width: 100%;
+  height: 5px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}
+.metric-bar-fill {
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+.metric-stats {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  flex-shrink: 0;
+  min-width: 48px;
+}
+.metric-count {
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+.metric-pct {
+  font-size: 13px;
+  font-weight: 700;
+}
+.metrics-total-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  margin-top: 4px;
+  background: linear-gradient(135deg, rgba(82,156,202,0.06) 0%, rgba(157,109,215,0.06) 100%);
+  border: 1px solid rgba(82,156,202,0.1);
+  border-radius: var(--radius-md);
+}
+.metrics-total-left {
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}
+.metrics-total-left strong {
+  color: var(--text-primary);
+}
+.metrics-total-pct {
+  font-size: 18px;
+  font-weight: 700;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 /* ── Footer ── */
 .dash-footer {
   text-align: center; padding: 24px 0 0; font-size: 10px; color: var(--text-tertiary);
@@ -355,7 +457,7 @@ body {
       <div class="subtitle">Painel de controle do seu estudo</div>
     </div>
     <div class="date-badge">
-      <span>📅</span> 10 de Março de 2026 — Terça-feira
+      <span>📅</span> 11 de Março de 2026 — Quarta-feira
     </div>
   </header>
 
@@ -372,11 +474,11 @@ body {
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
         </a>
       </div>
-      <div class="hero-subtitle">Disciplinas: Química, História, Biologia, Geografia</div>
-      <div class="iniciar-grid"><a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/5.%20Qu%C3%ADmica/6.%20Cin%C3%A9tica%20Qu%C3%ADmica/1.%20Velocidade%20das%20Rea%C3%A7%C3%B5es-"><div class="iniciar-left"><span class="iniciar-topic">Velocidade das Reações-</span><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span><span class="iniciar-assunto">Cinética Química</span></div></div><span class="iniciar-arrow">→</span></a>
-<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/6.%20Hist%C3%B3ria/7.%20Brasil%20Col%C3%B4nia/1.%20Povos%20Ind%C3%ADgenas-"><div class="iniciar-left"><span class="iniciar-topic">Povos Indígenas-</span><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(82,156,202,0.12);color:#529CCA">História</span><span class="iniciar-assunto">Brasil Colônia</span></div></div><span class="iniciar-arrow">→</span></a>
-<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/3.%20Biologia/1.%20Bases%20Moleculares%20e%20Celulares%20-%20Citologia/1.%20Componentes%20Qu%C3%ADmicos%20da%20C%C3%A9lula"><div class="iniciar-left"><span class="iniciar-topic">Componentes Químicos da Célula</span><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(203,123,62,0.12);color:#CB7B3E">Biologia</span><span class="iniciar-assunto">Bases Moleculares e Celulares - Citologia</span></div></div><span class="iniciar-arrow">→</span></a>
-<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/7.%20Geografia/2.%20Cartografia%20e%20Geotecnologias/1.%20Orienta%C3%A7%C3%A3o%20e%20localiza%C3%A7%C3%A3o"><div class="iniciar-left"><span class="iniciar-topic">Orientação e localização</span><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(200,91,142,0.12);color:#C85B8E">Geografia</span><span class="iniciar-assunto">Cartografia e Geotecnologias</span></div></div><span class="iniciar-arrow">→</span></a></div>
+      <div class="hero-subtitle">Disciplinas: Filosofia, Matemática, Sociologia, Química</div>
+      <div class="iniciar-grid"><a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/8.%20Filosofia/8.%20Antropologia%20Filos%C3%B3fica%20e%20Cultura/1.%20Condi%C3%A7%C3%A3o%20Humana"><div class="iniciar-left"><span class="iniciar-topic">Condição Humana</span><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(82,156,202,0.12);color:#529CCA">Filosofia</span><span class="iniciar-assunto">Antropologia Filosófica e Cultura</span></div></div><span class="iniciar-arrow">→</span></a>
+<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/2.%20Matem%C3%A1tica/7.%20An%C3%A1lise%20Combinat%C3%B3ria/1.%20Princ%C3%ADpios%20de%20Contagem"><div class="iniciar-left"><span class="iniciar-topic">Princípios de Contagem</span><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span><span class="iniciar-assunto">Análise Combinatória</span></div></div><span class="iniciar-arrow">→</span></a>
+<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/9.%20Sociologia/2.%20Cultura%20e%20Sociedade/1.%20Conceitos%20de%20cultura"><div class="iniciar-left"><span class="iniciar-topic">Conceitos de cultura</span><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(200,91,142,0.12);color:#C85B8E">Sociologia</span><span class="iniciar-assunto">Cultura e Sociedade</span></div></div><span class="iniciar-arrow">→</span></a>
+<a class="iniciar-card" href="obsidian://open?vault=SmartNoteBrain&file=DailyLearning/Disciplinas/5.%20Qu%C3%ADmica/1.%20Propriedades%20da%20Mat%C3%A9ria%20e%20Atom%C3%ADstica/2.%20Separa%C3%A7%C3%A3o%20de%20misturas-"><div class="iniciar-left"><span class="iniciar-topic">Separação de misturas-</span><div class="iniciar-card-meta"><span class="materia-tag" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span><span class="iniciar-assunto">Propriedades da Matéria e Atomística</span></div></div><span class="iniciar-arrow">→</span></a></div>
     </div>
 
     <!-- Stats + Progress (right) -->
@@ -385,7 +487,7 @@ body {
         <div class="card-title"><span>📊</span> Estatísticas</div>
         <div class="stats-row">
           <div class="stat-mini"><div class="val">846</div><div class="lbl">Total</div></div>
-          <div class="stat-mini"><div class="val c-green">0</div><div class="lbl">Estudados</div></div>
+          <div class="stat-mini"><div class="val c-green">4</div><div class="lbl">Estudados</div></div>
           <div class="stat-mini"><div class="val c-blue">0</div><div class="lbl">R1</div></div>
           <div class="stat-mini"><div class="val c-purple">0</div><div class="lbl">R2</div></div>
           <div class="stat-mini"><div class="val c-orange">0</div><div class="lbl">R3</div></div>
@@ -401,8 +503,8 @@ body {
           <div class="progress-bar-fill" style="width:0%"></div>
         </div>
         <div class="progress-details">
-          <span>0/846 tópicos</span>
-          <span>846 restantes</span>
+          <span>4/846 tópicos</span>
+          <span>842 restantes</span>
         </div>
       </div>
     </div>
@@ -413,9 +515,12 @@ body {
     <div class="card grid-left">
       <div class="card-title">
         <span>🔥</span> Revisões Pendentes
-        <span class="alert-count ok">0</span>
+        <span class="alert-count warn">4</span>
       </div>
-      <div class="empty-state"><span class="emoji">🎉</span>Parabéns! Nenhuma revisão pendente.</div>
+      <table class="notion-table"><thead><tr><th>📖 Tópico</th><th>📚 Matéria</th><th>📅 Data</th><th>🔄 Revisões</th></tr></thead><tbody><tr><td class="topic-name">Componentes Químicos da Célula</td><td><span class="materia-tag" style="background:rgba(212,76,71,0.12);color:#D44C47">Componentes Químicos da Célula.md</span></td><td>11/03</td><td><span class="rev-badge rev-0">0/4</span></td></tr>
+<tr><td class="topic-name">Propriedades e estados físicos da matéria-</td><td><span class="materia-tag" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span></td><td>11/03</td><td><span class="rev-badge rev-0">0/4</span></td></tr>
+<tr><td class="topic-name">Teoria da História e Historiografia</td><td><span class="materia-tag" style="background:rgba(82,156,202,0.12);color:#529CCA">História</span></td><td>11/03</td><td><span class="rev-badge rev-0">0/4</span></td></tr>
+<tr><td class="topic-name">Espaço geográfico e sua produção</td><td><span class="materia-tag" style="background:rgba(200,91,142,0.12);color:#C85B8E">Geografia</span></td><td>11/03</td><td><span class="rev-badge rev-0">0/4</span></td></tr></tbody></table>
     </div>
 
     <!-- Cronograma (right) -->
@@ -423,8 +528,8 @@ body {
       <div class="card-title"><span>🗓️</span> Cronograma Semanal</div>
       <div class="crono-grid">
 <div class="crono-day"><div class="crono-label">Seg</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Língua Portuguesa</span> <span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span> <span class="crono-pill" style="background:rgba(198,168,56,0.12);color:#C6A838">Literatura</span></div></div>
-<div class="crono-day today"><div class="crono-label">Ter</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span> <span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">História</span> <span class="crono-pill" style="background:rgba(203,123,62,0.12);color:#CB7B3E">Biologia</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Geografia</span></div></div>
-<div class="crono-day"><div class="crono-label">Qua</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">Filosofia</span> <span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Sociologia</span> <span class="crono-pill" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span></div></div>
+<div class="crono-day"><div class="crono-label">Ter</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span> <span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">História</span> <span class="crono-pill" style="background:rgba(203,123,62,0.12);color:#CB7B3E">Biologia</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Geografia</span></div></div>
+<div class="crono-day today"><div class="crono-label">Qua</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">Filosofia</span> <span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Sociologia</span> <span class="crono-pill" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span></div></div>
 <div class="crono-day"><div class="crono-label">Qui</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Atualidades</span> <span class="crono-pill" style="background:rgba(203,123,62,0.12);color:#CB7B3E">Biologia</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Geografia</span></div></div>
 <div class="crono-day"><div class="crono-label">Sex</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Matemática</span> <span class="crono-pill" style="background:rgba(198,168,56,0.12);color:#C6A838">Artes</span> <span class="crono-pill" style="background:rgba(82,156,202,0.12);color:#529CCA">História</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Língua Portuguesa</span></div></div>
 <div class="crono-day"><div class="crono-label">Sáb</div><div class="crono-discs"><span class="crono-pill" style="background:rgba(77,171,154,0.12);color:#4DAB9A">Física</span> <span class="crono-pill" style="background:rgba(200,91,142,0.12);color:#C85B8E">Educação Fisica</span> <span class="crono-pill" style="background:rgba(212,76,71,0.12);color:#D44C47">Química</span> <span class="crono-pill" style="background:rgba(203,123,62,0.12);color:#CB7B3E">Biologia</span></div></div>
@@ -432,25 +537,55 @@ body {
       </div>
     </div>
 
-    <!-- ═══ ROW 3: Disciplinas + Recentes ═══ -->
+    <!-- ═══ ROW 3: Métricas ═══ -->
+
+    <!-- Métricas de Exercícios (full width) -->
+    <div class="card grid-full">
+      <div class="card-title"><span>📝</span> Métricas de Exercícios</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div>
+          <div class="metrics-grid">
+<div class="metric-row"><span class="metric-icon">🃏</span><div class="metric-info"><div class="metric-label">Flash Cards <span class="metric-level" style="background:rgba(157,109,215,0.12);color:var(--accent-purple)">Base</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:0%;background:var(--accent-purple)"></div></div></div><div class="metric-stats"><span class="metric-count">0/0</span><span class="metric-pct" style="color:var(--accent-purple)">0%</span></div></div>
+<div class="metric-row"><span class="metric-icon">🃏</span><div class="metric-info"><div class="metric-label">Flash Cards <span class="metric-level" style="background:rgba(82,156,202,0.12);color:var(--accent-blue)">Vest.</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:0%;background:var(--accent-blue)"></div></div></div><div class="metric-stats"><span class="metric-count">0/0</span><span class="metric-pct" style="color:var(--accent-blue)">0%</span></div></div>
+<div class="metric-row"><span class="metric-icon">📝</span><div class="metric-info"><div class="metric-label">Questões Abertas <span class="metric-level" style="background:rgba(77,171,154,0.12);color:var(--accent-green)">Base</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:0%;background:var(--accent-green)"></div></div></div><div class="metric-stats"><span class="metric-count">0/0</span><span class="metric-pct" style="color:var(--accent-green)">0%</span></div></div>
+<div class="metric-row"><span class="metric-icon">📝</span><div class="metric-info"><div class="metric-label">Questões Abertas <span class="metric-level" style="background:rgba(203,123,62,0.12);color:var(--accent-orange)">Vest.</span></div><div class="metric-bar-track"><div class="metric-bar-fill" style="width:0%;background:var(--accent-orange)"></div></div></div><div class="metric-stats"><span class="metric-count">0/0</span><span class="metric-pct" style="color:var(--accent-orange)">0%</span></div></div>
+          </div>
+          <div class="metrics-total-row">
+            <div class="metrics-total-left">
+              <span>📊 Total: <strong>0</strong> exercícios</span>
+              <span>✅ Acertos: <strong>0</strong></span>
+              <span>🔄 Sessões: <strong>0</strong></span>
+            </div>
+            <span class="metrics-total-pct">0%</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.4px;font-weight:600;margin-bottom:8px;">🕐 Últimas Práticas</div>
+          <div class="empty-state"><span class="emoji">📝</span>Nenhuma prática registrada ainda.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ ROW 4: Disciplinas + Recentes ═══ -->
 
     <!-- Progresso por Disciplina (left) -->
     <div class="card grid-left">
       <div class="card-title"><span>📚</span> Progresso por Disciplina</div>
       <div class="disc-list">
 <div class="disc-row"><span class="disc-name">Matemática</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#529CCA"></div></div><span class="disc-pct">0/129</span></div>
-<div class="disc-row"><span class="disc-name">Biologia</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#9D6DD7"></div></div><span class="disc-pct">0/99</span></div>
+<div class="disc-row"><span class="disc-name">Biologia</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#9D6DD7"></div></div><span class="disc-pct">0/98</span></div>
 <div class="disc-row"><span class="disc-name">Física</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#4DAB9A"></div></div><span class="disc-pct">0/97</span></div>
-<div class="disc-row"><span class="disc-name">Geografia</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#CB7B3E"></div></div><span class="disc-pct">0/85</span></div>
+<div class="disc-row"><span class="disc-name">Geografia</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:1%;background:#CB7B3E"></div></div><span class="disc-pct">1/85</span></div>
 <div class="disc-row"><span class="disc-name">Língua Portuguesa</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#D44C47"></div></div><span class="disc-pct">0/72</span></div>
 <div class="disc-row"><span class="disc-name">Filosofia</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#C6A838"></div></div><span class="disc-pct">0/61</span></div>
 <div class="disc-row"><span class="disc-name">Sociologia</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#C85B8E"></div></div><span class="disc-pct">0/54</span></div>
 <div class="disc-row"><span class="disc-name">Atualidades</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#529CCA"></div></div><span class="disc-pct">0/52</span></div>
-<div class="disc-row"><span class="disc-name">Química</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#9D6DD7"></div></div><span class="disc-pct">0/51</span></div>
+<div class="disc-row"><span class="disc-name">Química</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:2%;background:#9D6DD7"></div></div><span class="disc-pct">1/51</span></div>
 <div class="disc-row"><span class="disc-name">Literatura</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#4DAB9A"></div></div><span class="disc-pct">0/50</span></div>
-<div class="disc-row"><span class="disc-name">História</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#CB7B3E"></div></div><span class="disc-pct">0/47</span></div>
+<div class="disc-row"><span class="disc-name">História</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:2%;background:#CB7B3E"></div></div><span class="disc-pct">1/47</span></div>
 <div class="disc-row"><span class="disc-name">Artes</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#D44C47"></div></div><span class="disc-pct">0/26</span></div>
 <div class="disc-row"><span class="disc-name">Educação Fisica</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:0%;background:#C6A838"></div></div><span class="disc-pct">0/23</span></div>
+<div class="disc-row"><span class="disc-name">Componentes Químicos da Célula.md</span><div class="disc-bar-track"><div class="disc-bar-fill" style="width:100%;background:#C85B8E"></div></div><span class="disc-pct">1/1</span></div>
       </div>
     </div>
 
@@ -458,7 +593,10 @@ body {
     <div class="grid-right" style="display:flex;flex-direction:column;gap:14px;">
       <div class="card">
         <div class="card-title"><span>🕐</span> Últimos Estudados</div>
-        <div class="empty-state"><span class="emoji">📝</span>Nenhum tópico estudado ainda.</div>
+        <table class="notion-table"><thead><tr><th>📖 Tópico</th><th>📅 Data</th><th>R1</th><th>R2</th><th>R3</th><th>R4</th></tr></thead><tbody><tr><td class="topic-name">Componentes Químicos da Célula</td><td>10/03</td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
+<tr><td class="topic-name">Propriedades e estados físicos da matéria-</td><td>10/03</td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
+<tr><td class="topic-name">Teoria da História e Historiografia</td><td>10/03</td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr>
+<tr><td class="topic-name">Espaço geográfico e sua produção</td><td>10/03</td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td><td><span class="check-off">⬜</span></td></tr></tbody></table>
       </div>
       <div class="card">
         <div class="card-title"><span>🚀</span> Acesso Rápido</div>
@@ -479,7 +617,7 @@ body {
   </div>
 
   <div class="dash-footer">
-    Gerado em 2026-03-10 · SmartNoteBrain
+    Gerado em 2026-03-11 · SmartNoteBrain
   </div>
 
 </div>

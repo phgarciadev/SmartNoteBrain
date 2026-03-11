@@ -1,7 +1,11 @@
 #!/usr/bin/env python3
 """
-Script para adicionar botões (plugin Buttons) nos arquivos .md de Disciplinas.
-Cada botão copia o prompt completo com valores preenchidos dinamicamente.
+update_notebooks.py — Atualiza os arquivos .md de Disciplinas com:
+  1. Botões de métricas (Flash Cards e Questões Abertas)
+  2. Botões de prompts (NotebookLM, DeepSearch, etc.)
+
+Uso:
+    python3 PyScripts/update_notebooks.py
 """
 
 import re
@@ -108,8 +112,35 @@ def fill_prompt(template: str, disciplina: str, assunto: str, topico: str, promp
     return result
 
 
-def generate_buttons(prompts: dict, disciplina: str, assunto: str, topico: str, other_topics_block: str) -> str:
-    """Gera os blocos de botões."""
+def generate_metrics_buttons() -> str:
+    """Gera os blocos de botões de métricas."""
+    return """```button
+name 🃏 Flash Cards — Nível Base
+type command
+action Shell commands: Execute: Metrics Flash Cards Base
+```
+
+```button
+name 🃏 Flash Cards — Nível Vestibular
+type command
+action Shell commands: Execute: Metrics Flash Cards Vest
+```
+
+```button
+name 📝 Questões Abertas — Nível Base
+type command
+action Shell commands: Execute: Metrics Questoes Base
+```
+
+```button
+name 📝 Questões Abertas — Nível Vestibular
+type command
+action Shell commands: Execute: Metrics Questoes Vest
+```"""
+
+
+def generate_prompt_buttons(prompts: dict, disciplina: str, assunto: str, topico: str, other_topics_block: str) -> str:
+    """Gera os blocos de botões de prompts."""
     
     nb_button = """```button
 name 🤖 Gerar NotebookLM (Completo)
@@ -210,14 +241,22 @@ def process_file(filepath: Path, base_dir: Path, prompts: dict) -> str:
             
     other_topics_block = "\n".join(other_topics_list)
 
-    # Remove seção antiga se existir
-    content = re.sub(r'\n?## 📋 Prompts.*', '', content, flags=re.DOTALL).rstrip()
+    # Remove seções antigas se existirem
+    content = re.sub(r'\n?## 📊 Métricas.*?(?=\n## |$)', '', content, flags=re.DOTALL)
+    content = re.sub(r'\n?## 📋 Prompts.*', '', content, flags=re.DOTALL)
+    content = content.rstrip()
     
-    # Gera botões
-    buttons = generate_buttons(prompts, disciplina, assunto, topico, other_topics_block)
+    # Gera seções
+    metrics = generate_metrics_buttons()
+    prompt_buttons = generate_prompt_buttons(prompts, disciplina, assunto, topico, other_topics_block)
     
-    # Adiciona seção de botões
-    new_content = content + "\n\n## 📋 Prompts\n\n" + buttons + "\n"
+    # Adiciona ambas as seções
+    new_content = (
+        content
+        + "\n\n## 📊 Métricas\n\n" + metrics
+        + "\n\n## 📋 Prompts\n\n" + prompt_buttons
+        + "\n"
+    )
     
     filepath.write_text(new_content, encoding="utf-8")
     return "ok"
@@ -241,9 +280,8 @@ def main():
     
     stats = {"ok": 0, "skipped": 0, "error": 0}
     
-    print("\n🔘 Adicionando botões...\n")
+    print("\n🔄 Atualizando notebooks (métricas + prompts)...\n")
     
-    # We need to process all files again to update the buttons
     for md_file in base_dir.rglob("*.md"):
         result = process_file(md_file, base_dir, prompts)
         
@@ -257,7 +295,7 @@ def main():
             print(f"❌ {md_file.name}: {result}")
     
     print(f"\n📊 Resumo:")
-    print(f"   ✅ Com botões: {stats['ok']}")
+    print(f"   ✅ Atualizados: {stats['ok']}")
     print(f"   ⏭️  Pulados: {stats['skipped']}")
     print(f"   ❌ Erros: {stats['error']}")
 

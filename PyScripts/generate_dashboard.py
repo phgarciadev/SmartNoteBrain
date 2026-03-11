@@ -16,9 +16,11 @@ from pathlib import Path
 from datetime import datetime, timedelta, date
 from html import escape
 from urllib.parse import quote
+from collections import defaultdict
 
 VAULT_ROOT = Path(__file__).parent.parent
 DISCIPLINAS = VAULT_ROOT / "DailyLearning" / "Disciplinas"
+METRICS_FILE = VAULT_ROOT / "DailyLearning" / "metrics.json"
 OUTPUT = VAULT_ROOT / "Dashboard.html"
 
 MESES = [
@@ -51,6 +53,45 @@ CRONOGRAMA = {
 }
 
 
+def load_metrics() -> list[dict]:
+    """Carrega métricas de exercícios do metrics.json."""
+    if METRICS_FILE.exists():
+        try:
+            data = json.loads(METRICS_FILE.read_text(encoding="utf-8"))
+            if isinstance(data, list):
+                return data
+        except (json.JSONDecodeError, Exception):
+            pass
+    return []
+
+
+def calc_metrics_summary(metrics: list[dict]) -> dict:
+    """Calcula resumo das métricas por tipo."""
+    summary = {}
+    type_labels = {
+        "flash_cards_base": ("🃏", "Flash Cards", "Base"),
+        "flash_cards_vest": ("🃏", "Flash Cards", "Vest."),
+        "questoes_abertas_base": ("📝", "Questões Abertas", "Base"),
+        "questoes_abertas_vest": ("📝", "Questões Abertas", "Vest."),
+    }
+    for key in type_labels:
+        entries = [m for m in metrics if m.get("type") == key]
+        total_done = sum(m.get("done", 0) for m in entries)
+        total_correct = sum(m.get("correct", 0) for m in entries)
+        pct = round(total_correct / total_done * 100) if total_done > 0 else 0
+        icon, name, level = type_labels[key]
+        summary[key] = {
+            "icon": icon,
+            "name": name,
+            "level": level,
+            "total_done": total_done,
+            "total_correct": total_correct,
+            "pct": pct,
+            "sessions": len(entries),
+        }
+    return summary
+
+
 def find_next_topics(pages: list[dict], today_weekday: int) -> list[dict]:
     """Para cada disciplina do dia, encontra o próximo tópico não iniciado
     em cada assunto (o primeiro não-iniciado após o último iniciado)."""
@@ -59,7 +100,6 @@ def find_next_topics(pages: list[dict], today_weekday: int) -> list[dict]:
     disc_unique = list(dict.fromkeys(disciplinas_hoje))
 
     # Agrupar páginas: materia → assunto → lista de páginas (já ordenadas pelo rglob)
-    from collections import defaultdict
     tree: dict[str, dict[str, list[dict]]] = defaultdict(lambda: defaultdict(list))
     for p in pages:
         tree[p["materia"]][p["assunto"]].append(p)
@@ -194,7 +234,7 @@ def check_html(val: bool) -> str:
 
 # ── Geração do HTML estático ────────────────────────────────────────────────
 
-def build_html(pages: list[dict]) -> str:
+def build_html(pages: list[dict], metrics: list[dict]) -> str:
     today = date.today()
     total = len(pages)
     iniciados = [p for p in pages if p["iniciado"]]
@@ -238,6 +278,14 @@ def build_html(pages: list[dict]) -> str:
         [p for p in iniciados if p["primeiro_contato"]],
         key=lambda x: x["primeiro_contato"], reverse=True
     )[:8]
+
+    # ── Métricas de exercícios ──
+    metrics_summary = calc_metrics_summary(metrics)
+    total_exercicios = sum(s["total_done"] for s in metrics_summary.values())
+    total_acertos = sum(s["total_correct"] for s in metrics_summary.values())
+    total_pct = round(total_acertos / total_exercicios * 100) if total_exercicios > 0 else 0
+    total_sessions = sum(s["sessions"] for s in metrics_summary.values())
+    recentes_metrics = sorted(metrics, key=lambda x: x.get("date", ""), reverse=True)[:5]
 
     # ── Build stat cards HTML ──
     stats = [
@@ -366,6 +414,68 @@ def build_html(pages: list[dict]) -> str:
     crono_html = "\n".join(crono_rows)
 
     disc_hoje_str = ", ".join(disc_hoje_unique) if disc_hoje_unique else "—"
+
+    # ── Build métricas HTML ──
+    type_colors = {
+        "flash_cards_base": ("var(--accent-purple)", "rgba(157,109,215,0.12)"),
+        "flash_cards_vest": ("var(--accent-blue)", "rgba(82,156,202,0.12)"),
+        "questoes_abertas_base": ("var(--accent-green)", "rgba(77,171,154,0.12)"),
+        "questoes_abertas_vest": ("var(--accent-orange)", "rgba(203,123,62,0.12)"),
+    }
+    metrics_rows = []
+    for key in ["flash_cards_base", "flash_cards_vest", "questoes_abertas_base", "questoes_abertas_vest"]:
+        s = metrics_summary[key]
+        fg, bg = type_colors[key]
+        bar_w = min(s["pct"], 100)
+        metrics_rows.append(
+            f'<div class="metric-row">'
+            f'<span class="metric-icon">{s["icon"]}</span>'
+            f'<div class="metric-info">'
+            f'<div class="metric-label">{escape(s["name"])} <span class="metric-level" style="background:{bg};color:{fg}">{s["level"]}</span></div>'
+            f'<div class="metric-bar-track"><div class="metric-bar-fill" style="width:{bar_w}%;background:{fg}"></div></div>'
+            f'</div>'
+            f'<div class="metric-stats">'
+            f'<span class="metric-count">{s["total_correct"]}/{s["total_done"]}</span>'
+            f'<span class="metric-pct" style="color:{fg}">{s["pct"]}%</span>'
+            f'</div>'
+            f'</div>'
+        )
+    metrics_bars_html = "\n".join(metrics_rows)
+
+    # Últimas práticas
+    type_labels_map = {
+        "flash_cards_base": "🃏 FC Base",
+        "flash_cards_vest": "🃏 FC Vest.",
+        "questoes_abertas_base": "📝 QA Base",
+        "questoes_abertas_vest": "📝 QA Vest.",
+    }
+    if not recentes_metrics:
+        recentes_metrics_html = '<div class="empty-state"><span class="emoji">📝</span>Nenhuma prática registrada ainda.</div>'
+    else:
+        rec_m_rows = []
+        for m in recentes_metrics:
+            mtype = type_labels_map.get(m.get("type", ""), m.get("type", ""))
+            mfile = re.sub(r'^.*Disciplinas/', '', m.get("file", ""))
+            mfile = re.sub(r'^\.md$', '', re.sub(r'^\d+\.\s*', '', Path(mfile).stem))
+            mdone = m.get("done", 0)
+            mcorrect = m.get("correct", 0)
+            mpct = round(mcorrect / mdone * 100) if mdone > 0 else 0
+            mdate = format_date(m.get("date", ""))
+            rec_m_rows.append(
+                f'<tr>'
+                f'<td>{escape(mtype)}</td>'
+                f'<td class="topic-name">{escape(mfile)}</td>'
+                f'<td>{mcorrect}/{mdone} ({mpct}%)</td>'
+                f'<td>{mdate}</td>'
+                f'</tr>'
+            )
+        recentes_metrics_html = (
+            '<table class="notion-table"><thead><tr>'
+            '<th>Tipo</th><th>Tópico</th><th>Acerto</th><th>Data</th>'
+            '</tr></thead><tbody>'
+            + "\n".join(rec_m_rows)
+            + '</tbody></table>'
+        )
 
     # ── Final HTML ──
     return f"""<!DOCTYPE html>
@@ -666,6 +776,108 @@ body {{
 }}
 .empty-state .emoji {{ font-size: 24px; margin-bottom: 6px; display: block; }}
 
+/* ── Metrics ── */
+.metrics-grid {{
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}}
+.metric-row {{
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: rgba(255,255,255,0.02);
+  border: 1px solid rgba(255,255,255,0.04);
+  border-radius: var(--radius-md);
+  transition: all var(--transition);
+}}
+.metric-row:hover {{
+  background: rgba(255,255,255,0.04);
+}}
+.metric-icon {{
+  font-size: 18px;
+  flex-shrink: 0;
+}}
+.metric-info {{
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-width: 0;
+}}
+.metric-label {{
+  font-size: 12px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}}
+.metric-level {{
+  padding: 0 6px;
+  border-radius: 999px;
+  font-size: 9.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.3px;
+}}
+.metric-bar-track {{
+  width: 100%;
+  height: 5px;
+  background: rgba(255,255,255,0.06);
+  border-radius: 999px;
+  overflow: hidden;
+}}
+.metric-bar-fill {{
+  height: 100%;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}}
+.metric-stats {{
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 1px;
+  flex-shrink: 0;
+  min-width: 48px;
+}}
+.metric-count {{
+  font-size: 11px;
+  color: var(--text-secondary);
+  font-weight: 500;
+}}
+.metric-pct {{
+  font-size: 13px;
+  font-weight: 700;
+}}
+.metrics-total-row {{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 12px;
+  margin-top: 4px;
+  background: linear-gradient(135deg, rgba(82,156,202,0.06) 0%, rgba(157,109,215,0.06) 100%);
+  border: 1px solid rgba(82,156,202,0.1);
+  border-radius: var(--radius-md);
+}}
+.metrics-total-left {{
+  display: flex;
+  gap: 16px;
+  font-size: 11px;
+  color: var(--text-secondary);
+}}
+.metrics-total-left strong {{
+  color: var(--text-primary);
+}}
+.metrics-total-pct {{
+  font-size: 18px;
+  font-weight: 700;
+  background: var(--gradient-main);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}}
+
 /* ── Footer ── */
 .dash-footer {{
   text-align: center; padding: 24px 0 0; font-size: 10px; color: var(--text-tertiary);
@@ -793,7 +1005,33 @@ body {{
       </div>
     </div>
 
-    <!-- ═══ ROW 3: Disciplinas + Recentes ═══ -->
+    <!-- ═══ ROW 3: Métricas ═══ -->
+
+    <!-- Métricas de Exercícios (full width) -->
+    <div class="card grid-full">
+      <div class="card-title"><span>📝</span> Métricas de Exercícios</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;">
+        <div>
+          <div class="metrics-grid">
+{metrics_bars_html}
+          </div>
+          <div class="metrics-total-row">
+            <div class="metrics-total-left">
+              <span>📊 Total: <strong>{total_exercicios}</strong> exercícios</span>
+              <span>✅ Acertos: <strong>{total_acertos}</strong></span>
+              <span>🔄 Sessões: <strong>{total_sessions}</strong></span>
+            </div>
+            <span class="metrics-total-pct">{total_pct}%</span>
+          </div>
+        </div>
+        <div>
+          <div style="font-size:11px;color:var(--text-tertiary);text-transform:uppercase;letter-spacing:0.4px;font-weight:600;margin-bottom:8px;">🕐 Últimas Práticas</div>
+          {recentes_metrics_html}
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══ ROW 4: Disciplinas + Recentes ═══ -->
 
     <!-- Progresso por Disciplina (left) -->
     <div class="card grid-left">
@@ -844,7 +1082,10 @@ def main():
     pages = load_pages()
     print(f"   {len(pages)} tópicos encontrados")
 
-    html = build_html(pages)
+    metrics = load_metrics()
+    print(f"   {len(metrics)} registros de métricas encontrados")
+
+    html = build_html(pages, metrics)
     OUTPUT.write_text(html, encoding="utf-8")
     print(f"✅ Dashboard gerado: {OUTPUT}")
 
