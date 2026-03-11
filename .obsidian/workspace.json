@@ -8,32 +8,15 @@
         "type": "tabs",
         "children": [
           {
-            "id": "70c72ef94d37e120",
+            "id": "2d0dc9d799c596b7",
             "type": "leaf",
-            "pinned": true,
             "state": {
               "type": "html-view",
               "state": {
                 "file": "Dashboard.html"
               },
-              "pinned": true,
               "icon": "code-glyph",
               "title": "Dashboard"
-            }
-          },
-          {
-            "id": "44eab5feb190d424",
-            "type": "leaf",
-            "pinned": true,
-            "state": {
-              "type": "bases",
-              "state": {
-                "file": "DailyLearning/Revisao Espacada.base",
-                "viewName": "Revisão Espaçada"
-              },
-              "pinned": true,
-              "icon": "lucide-table",
-              "title": "Revisao Espacada"
             }
           },
           {
@@ -52,17 +35,32 @@
             }
           },
           {
-            "id": "bb783f7432bee7dd",
+            "id": "44eab5feb190d424",
+            "type": "leaf",
+            "pinned": true,
+            "state": {
+              "type": "bases",
+              "state": {
+                "file": "DailyLearning/Revisao Espacada.base",
+                "viewName": "Revisão Espaçada"
+              },
+              "pinned": true,
+              "icon": "lucide-table",
+              "title": "Revisao Espacada"
+            }
+          },
+          {
+            "id": "93bc60035d14e67c",
             "type": "leaf",
             "state": {
               "type": "markdown",
               "state": {
-                "file": "DailyLearning/Disciplinas/8. Filosofia/1. História da Filosofia/1. Pré-socráticos e a origem da filosofia.md",
+                "file": "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/2. Números Naturais e Inteiros.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "1. Pré-socráticos e a origem da filosofia"
+              "title": "2. Números Naturais e Inteiros"
             }
           }
         ],
@@ -257,13 +255,13 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "bb783f7432bee7dd",
+  "active": "93bc60035d14e67c",
   "lastOpenFiles": [
-    "DailyLearning/metrics.json",
-    "Dashboard.html",
-    "DailyLearning/Disciplinas/8. Filosofia/1. História da Filosofia/1. Pré-socráticos e a origem da filosofia.md",
     "DailyLearning/Revisao Espacada.base",
+    "Dashboard.html",
     "DailyLearning/RunBook.base",
+    "DailyLearning/Disciplinas/8. Filosofia/1. História da Filosofia/1. Pré-socráticos e a origem da filosofia.md",
+    "DailyLearning/metrics.json",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/1. Teoria dos Conjuntos.md",
     "DailyLearning/Disciplinas/8. Filosofia/8. Antropologia Filosófica e Cultura/1. Condição Humana.md",
     "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/1. Espaço geográfico e sua produção.md",
@@ -294,7 +292,6 @@
     "PyScripts/__pycache__",
     "PyScripts/add_notebooklm_button.py",
     "PyScripts/send_to_notebooklm.py",
-    "semtitulo.html",
     "DailyLearning/Prompts.canvas",
     "Sem título.canvas"
   ]
