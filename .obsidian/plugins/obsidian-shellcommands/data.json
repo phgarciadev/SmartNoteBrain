@@ -317,7 +317,7 @@
     {
       "id": "metrics_flash_cards_base",
       "platform_specific_commands": {
-        "default": "python3 PyScripts/update_metrics.py \"{{file_path:absolute}}\" flash_cards_base \"{{input:Feitas,Acertadas (ex: 10,8)}}\""
+        "default": "python3 PyScripts/update_metrics.py \"{{file_path:absolute}}\" flash_cards_base"
       },
       "shells": {},
       "alias": "Metrics Flash Cards Base",
@@ -353,7 +353,7 @@
     {
       "id": "metrics_flash_cards_vest",
       "platform_specific_commands": {
-        "default": "python3 PyScripts/update_metrics.py \"{{file_path:absolute}}\" flash_cards_vest \"{{input:Feitas,Acertadas (ex: 10,8)}}\""
+        "default": "python3 PyScripts/update_metrics.py \"{{file_path:absolute}}\" flash_cards_vest"
       },
       "shells": {},
       "alias": "Metrics Flash Cards Vest",
@@ -389,7 +389,7 @@
     {
       "id": "metrics_questoes_base",
       "platform_specific_commands": {
-        "default": "python3 PyScripts/update_metrics.py \"{{file_path:absolute}}\" questoes_abertas_base \"{{input:Feitas,Acertadas (ex: 10,8)}}\""
+        "default": "python3 PyScripts/update_metrics.py \"{{file_path:absolute}}\" questoes_abertas_base"
       },
       "shells": {},
       "alias": "Metrics Questoes Base",
@@ -425,7 +425,7 @@
     {
       "id": "metrics_questoes_vest",
       "platform_specific_commands": {
-        "default": "python3 PyScripts/update_metrics.py \"{{file_path:absolute}}\" questoes_abertas_vest \"{{input:Feitas,Acertadas (ex: 10,8)}}\""
+        "default": "python3 PyScripts/update_metrics.py \"{{file_path:absolute}}\" questoes_abertas_vest"
       },
       "shells": {},
       "alias": "Metrics Questoes Vest",
