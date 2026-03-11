@@ -65,7 +65,8 @@
               "title": "1. Pré-socráticos e a origem da filosofia"
             }
           }
-        ]
+        ],
+        "currentTab": 3
       }
     ],
     "direction": "vertical"
@@ -256,13 +257,14 @@
       "obsidian-shellcommands:Shell commands: Custom variables": false
     }
   },
-  "active": "70c72ef94d37e120",
+  "active": "bb783f7432bee7dd",
   "lastOpenFiles": [
+    "DailyLearning/metrics.json",
+    "Dashboard.html",
     "DailyLearning/Disciplinas/8. Filosofia/1. História da Filosofia/1. Pré-socráticos e a origem da filosofia.md",
     "DailyLearning/Revisao Espacada.base",
     "DailyLearning/RunBook.base",
     "DailyLearning/Disciplinas/2. Matemática/1. Aritmética e Conjuntos Numéricos/1. Teoria dos Conjuntos.md",
-    "Dashboard.html",
     "DailyLearning/Disciplinas/8. Filosofia/8. Antropologia Filosófica e Cultura/1. Condição Humana.md",
     "DailyLearning/Disciplinas/7. Geografia/1. Conceitos Fundamentais da Geografia/1. Espaço geográfico e sua produção.md",
     "DailyLearning/Disciplinas/1. Componentes Químicos da Célula.md",
